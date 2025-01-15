@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Text.Json
 
 <h2>Introduction</h2>
 Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
@@ -14,3 +15,51 @@ Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">Ma
         &lt;Map&gt;&lt;/Map&gt;
     </code>
 </div>
+
+<h3>Add Listeners</h3>
+<div class="mb-3">
+    <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad"></Map>
+</div>
+
+<div class="container alert alert-dark">
+    <code>
+        &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
+
+<pre>
+
+&#64;code
+{
+    private Map _map { get; set; } = new Map();
+    private readonly MapOptions _mapOptions = new MapOptions();
+    private async Task HandleMapLoad(EventArgs args)
+    {
+        // Add map listeners after it has loaded
+        await _map.AddListener&lt;dynamic&gt;("click", OnClick);
+    }
+
+    public void OnClick(dynamic eventData)
+    {
+        Console.WriteLine(JsonSerializer.Serialize(eventData));
+        Console.WriteLine("Layer has been clicked");
+    }
+}
+</pre>
+        
+    </code>
+</div>
+
+@code
+{
+    private Map _map { get; set; } = new Map();
+    private readonly MapOptions _mapOptions = new MapOptions();
+    private async Task HandleMapLoad(EventArgs args)
+    {
+        await _map.AddListener<dynamic>("click", OnClick);
+    }
+    
+    public void OnClick(dynamic eventData)
+    {
+        Console.WriteLine(JsonSerializer.Serialize(eventData));
+        Console.WriteLine("Layer has been clicked");
+    }
+}

@@ -5,7 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Community.Blazor.MapLibre.Examples</title>
-    <base href="/Blazor.MapLibre/" />
+    <script>
+        // Dynamically set base href depending on whether it's localhost or deployed
+        const isLocalhost = window.location.hostname === "localhost";
+        const basePath = isLocalhost ? "/" : "/Blazor.MapLibre/";
+        document.write(`<base href="${basePath}">`);
+    </script>
     <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
