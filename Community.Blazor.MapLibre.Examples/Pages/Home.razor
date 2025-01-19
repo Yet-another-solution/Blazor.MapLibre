@@ -4,29 +4,34 @@
 
 <h2>Introduction</h2>
 Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
+<div class="d-flex flex-column flex-sm-row gap-3">
+    <div class="col">
+        <h3>Quickstart</h3>
+        <div class="shadow rounded">
+            <div class="mb-3 rounded">
+                <Map Class="rounded"></Map>
+            </div>
 
-<h2>Quickstart</h2>
+            <div class="container alert alert-dark">
+                <code>
+                    &lt;Map&gt;&lt;/Map&gt;
+                </code>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+        <h3>Add Listeners</h3>
+        <div class="shadow rounded">
+            <div class="mb-3">
+                <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" Class="rounded"></Map>
+            </div>
 
-<div class="mb-3">
-    <Map></Map>
-</div>
+            <div class="container alert alert-dark">
+                <code>
+                    &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
 
-<div class="container alert alert-dark">
-    <code>
-        &lt;Map&gt;&lt;/Map&gt;
-    </code>
-</div>
-
-<h3>Add Listeners</h3>
-<div class="mb-3">
-    <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad"></Map>
-</div>
-
-<div class="container alert alert-dark">
-    <code>
-        &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
-
-<pre>
+                    <pre>
 
 &#64;code
 {
@@ -45,9 +50,13 @@ Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">Ma
     }
 }
 </pre>
-        
-    </code>
+
+                </code>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 @code
 {
@@ -55,19 +64,11 @@ Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">Ma
     private readonly MapOptions _mapOptions = new MapOptions();
     private async Task HandleMapLoad(EventArgs args)
     {
-        await _map.AddControl(ControlType.FullscreenControl);
-        await _map.AddControl(ControlType.GeolocateControl);
-        await _map.AddControl(ControlType.GlobeControl);
-        await _map.AddControl(ControlType.LogoControl);
-        await _map.AddControl(ControlType.NavigationControl);
-        await _map.AddControl(ControlType.ScaleControl);
-        await _map.AddControl(ControlType.TerrainControl);
-
         await _map.AddImage("sample-image", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png");
 
         await _map.AddListener<dynamic>("click", OnClick);
     }
-    
+
     public void OnClick(dynamic eventData)
     {
         Console.WriteLine(JsonSerializer.Serialize(eventData));

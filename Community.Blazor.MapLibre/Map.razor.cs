@@ -59,6 +59,12 @@ public partial class Map : ComponentBase, IAsyncDisposable
     private DotNetObjectReference<Map> _dotNetObjectReference = null!;
 
     /// <summary>
+    /// Optional CSS class names. If given, these will be included in the class attribute of the component.
+    /// </summary>
+    [Parameter]
+    public virtual string? Class { get; set; } = null;
+
+    /// <summary>
     /// Invokes the OnLoad event callback when the map component has fully loaded.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation.</returns>
@@ -153,6 +159,12 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask AddLayer(Layer layer, string? beforeId = null) =>
         await _jsModule.InvokeVoidAsync("MapInterop.addLayer", MapId, layer, beforeId);
 
+    /// <summary>
+    /// Adds a source to the map with the specified identifier and source object.
+    /// </summary>
+    /// <param name="id">A unique identifier for the source.</param>
+    /// <param name="source">The source object to add to the map, implementing the <see cref="ISource"/> interface.</param>
+    /// <returns>A task that represents the asynchronous operation of adding the source.</returns>
     public async ValueTask AddSource(string id, ISource source) =>
         await _jsModule.InvokeVoidAsync("MapInterop.addSource", MapId, id, source);
 
