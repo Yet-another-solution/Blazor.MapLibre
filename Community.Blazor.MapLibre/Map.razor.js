@@ -112,6 +112,23 @@ const MapInterop = {
      */
     addSource: (container, id, source) => {
         mapInstances[container].addSource(id, source);
+    },
+    /**
+     * Adds a sprite to the specified map container.
+     *
+     * @function
+     * @param {string} container - The identifier for the map container.
+     * @param {string} id - The unique identifier for the sprite.
+     * @param {string} url - The URL of the sprite image.
+     * @param {Object} [options] - Optional parameters for the sprite, such as pixel ratio.
+     */
+    addSprite: (container, id, url, options) => {
+        const map = mapInstances[container];
+        if(options === undefined || options === null){
+            map.addSprite(id, url);
+        } else {
+            map.addSprite(id, url, options);
+        }
     }
 }
 export { MapInterop };

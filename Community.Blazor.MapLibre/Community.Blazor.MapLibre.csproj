@@ -12,6 +12,7 @@
         <LicenseUrl>https://opensource.org/license/unlicense</LicenseUrl>
         <RepositoryUrl>https://github.com/Yet-another-solution/Blazor.MapLibre</RepositoryUrl>
         <PackageTags>Blazor; MapLibre; Components</PackageTags>
+        <PackageIconUrl>https://maplibre.org/img/maplibre-logos/maplibre-logo-square-dark-blue-bg.png</PackageIconUrl>
     </PropertyGroup>
 
 

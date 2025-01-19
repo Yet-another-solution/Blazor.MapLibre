@@ -182,6 +182,16 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask AddSource(string id, ISource source) =>
         await _jsModule.InvokeVoidAsync("MapInterop.addSource", MapId, id, source);
 
+    /// <summary>
+    /// Adds a sprite to the map using the specified sprite id, URL, and optional configuration.
+    /// </summary>
+    /// <param name="id">The unique identifier for the sprite to be added.</param>
+    /// <param name="url">The URL of the sprite image to be loaded.</param>
+    /// <param name="options">Optional parameters to configure the sprite.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask AddSprite(string id, string url, object? options = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.addSprite", MapId, id, url, options);
+
 
     #endregion
 }
