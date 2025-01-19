@@ -1,37 +1,34 @@
 ﻿@page "/"
 @using System.Text.Json
-@using Community.Blazor.MapLibre.Models.Control
 
 <h2>Introduction</h2>
-Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
-<div class="d-flex flex-column flex-sm-row gap-3">
-    <div class="col">
-        <h3>Quickstart</h3>
-        <div class="shadow rounded">
-            <div class="mb-3 rounded">
-                <Map Class="rounded"></Map>
-            </div>
-
-            <div class="container alert alert-dark">
-                <code>
-                    &lt;Map&gt;&lt;/Map&gt;
-                </code>
-            </div>
+<p class="mb-3">
+    Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
+</p>
+<div class="d-flex flex-column flex-xl-row gap-3 mb-5">
+    <div class="shadow rounded col">
+        <div>
+            <Map Class="rounded-top" Height="300px"></Map>
+        </div>
+        <h3 class="p-3">Quickstart</h3>
+        <div class="alert alert-dark mb-0">
+            <code>
+                &lt;Map&gt;&lt;/Map&gt;
+            </code>
         </div>
     </div>
     
-    <div class="col">
-        <h3>Add Listeners</h3>
-        <div class="shadow rounded">
-            <div class="mb-3">
-                <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" Class="rounded"></Map>
-            </div>
+    <div class="shadow rounded col">
+        <div>
+            <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" Class="rounded-top"
+                 Height="300px"></Map>
+        </div>
+        <h3 class="p-3">Add Listeners</h3>
+        <div class="alert alert-dark mb-0">
+            <code>
+                &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
 
-            <div class="container alert alert-dark">
-                <code>
-                    &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
-
-                    <pre>
+                <pre>
 
 &#64;code
 {
@@ -51,8 +48,7 @@ Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">Ma
 }
 </pre>
 
-                </code>
-            </div>
+            </code>
         </div>
     </div>
 </div>

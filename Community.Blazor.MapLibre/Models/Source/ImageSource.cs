@@ -19,16 +19,4 @@ public class ImageSource : SourceBase
     /// Each corner is specified as an array containing `[longitude, latitude]`.
     /// </summary>
     public List<List<double>> Coordinates { get; set; } = new List<List<double>>();
-
-    /// <inheritdoc />
-    public override object Serialize()
-    {
-        var baseData = base.Serialize();
-        return new
-        {
-            baseData,
-            Url,
-            Coordinates
-        };
-    }
 }

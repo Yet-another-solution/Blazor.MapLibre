@@ -37,20 +37,4 @@ public class VectorTileSource : SourceBase
     /// Indicates if tiles should be re-parsed for higher zoom levels rather than just scaling their contents. Optional.
     /// </summary>
     public bool? ReparseOverscaled { get; set; }
-
-    /// <inheritdoc />
-    public override object Serialize()
-    {
-        var baseData = base.Serialize();
-        return new
-        {
-            baseData,
-            Url,
-            Tiles,
-            Bounds,
-            Scheme,
-            VectorLayerIds,
-            ReparseOverscaled
-        };
-    }
 }

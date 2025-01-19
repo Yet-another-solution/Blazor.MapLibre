@@ -26,6 +26,20 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public string MapId { get; set; } = $"map-{Guid.NewGuid()}";
 
     /// <summary>
+    /// Specifies the width of the map component. Can be set using valid CSS width values (e.g., "100%", "500px").
+    /// Defaults to "100%".
+    /// </summary>
+    [Parameter]
+    public string Width { get; set; } = "100%";
+
+    /// <summary>
+    /// Specifies the height of the map component.
+    /// Accepts values in CSS units (e.g., "500px", "100%") to determine the vertical size of the map.
+    /// </summary>
+    [Parameter]
+    public string Height { get; set; } = "500px";
+
+    /// <summary>
     /// Callback event that is triggered when the map completes loading.
     /// Allows users to execute custom logic upon the successful initialization of the map.
     /// </summary>

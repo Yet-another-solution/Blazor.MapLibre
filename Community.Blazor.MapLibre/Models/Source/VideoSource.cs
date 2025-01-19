@@ -18,16 +18,4 @@ public class VideoSource : SourceBase
     /// top left, top right, bottom right, bottom left. Required.
     /// </summary>
     public List<List<double>> Coordinates { get; set; } = new List<List<double>>();
-
-    /// <inheritdoc />
-    public override object Serialize()
-    {
-        var baseData = base.Serialize();
-        return new
-        {
-            baseData,
-            Urls,
-            Coordinates
-        };
-    }
 }

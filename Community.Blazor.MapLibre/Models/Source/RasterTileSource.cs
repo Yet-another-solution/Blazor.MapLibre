@@ -22,17 +22,4 @@ public class RasterTileSource : SourceBase
     /// The bounding box for the source, specified as an array `[sw.lng, sw.lat, ne.lng, ne.lat]`. Optional.
     /// </summary>
     public double[]? Bounds { get; set; }
-
-    /// <inheritdoc />
-    public override object Serialize()
-    {
-        var baseData = base.Serialize();
-        return new
-        {
-            baseData,
-            Url,
-            Tiles,
-            Bounds
-        };
-    }
 }

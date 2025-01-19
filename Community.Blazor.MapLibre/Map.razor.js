@@ -110,8 +110,20 @@ const MapInterop = {
      * @param {string} id - The unique identifier for the new source.
      * @param {Object} source - The source configuration object to be added.
      */
-    addSource: (continaer, id, source) => {
+    addSource: (container, id, source) => {
         mapInstances[container].addSource(id, source);
+        console.log(source);
+        /*
+        mapInstances[container].addLayer({
+            'id': 'space-data',
+            'type': 'fill',
+            'source': 'spaces',
+            'layout': {},
+            'paint': {
+                'fill-color': '#088',
+                'fill-opacity': 0.8
+            }
+        });*/
     }
 }
 export { MapInterop };
