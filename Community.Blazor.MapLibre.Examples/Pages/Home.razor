@@ -1,65 +1,67 @@
 ﻿@page "/"
 @using System.Text.Json
+@using Community.Blazor.MapLibre.Models
 
 <h2>Introduction</h2>
-Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
-
-<h2>Quickstart</h2>
-
-<div class="mb-3">
-    <Map></Map>
-</div>
-
-<div class="container alert alert-dark">
-    <code>
-        &lt;Map&gt;&lt;/Map&gt;
-    </code>
-</div>
-
-<h3>Add Listeners</h3>
-<div class="mb-3">
-    <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad"></Map>
-</div>
-
-<div class="container alert alert-dark">
-    <code>
-        &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
-
+<p class="mb-3">
+    Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
+</p>
+<div class="d-flex flex-column flex-xl-row gap-3 mb-5">
+    <div class="shadow rounded col">
+        <div>
+            <Map Class="rounded-top" Height="300px"></Map>
+        </div>
+        <h3 class="p-3">Quickstart</h3>
+        <div class="alert alert-dark mb-0">
+            <code>
+                &lt;Map&gt;&lt;/Map&gt;
+            </code>
+        </div>
+    </div>
+    
+    <div class="shadow rounded col">
+        <div>
+            <Map Options="_mapOptions" Class="rounded-top"
+                 Height="300px"></Map>
+        </div>
+        <h3 class="p-3">Custom options</h3>
+        <div class="alert alert-dark mb-0">
+            <code>
 <pre>
+&lt;Map Options="_mapOptions" Class="rounded-top"
+     Height="300px"&gt;&lt;/Map&gt;
 
-&#64;code
+@@code
 {
-    private Map _map { get; set; } = new Map();
-    private readonly MapOptions _mapOptions = new MapOptions();
-    private async Task HandleMapLoad(EventArgs args)
+    private readonly MapOptions _mapOptions = new MapOptions()
     {
-        // Add map listeners after it has loaded
-        await _map.AddListener&lt;dynamic&gt;("click", OnClick);
-    }
-
-    public void OnClick(dynamic eventData)
-    {
-        Console.WriteLine(JsonSerializer.Serialize(eventData));
-        Console.WriteLine("Layer has been clicked");
-    }
+        Container = "UniqueMapId",
+        Center = new LngLat()
+        {
+            Latitude = -2.320679,
+            Longitude = 112.772537
+        },
+        Zoom = 3
+    };
 }
 </pre>
-        
-    </code>
+            </code>
+        </div>
+    </div>
 </div>
+
 
 @code
 {
-    private Map _map { get; set; } = new Map();
-    private readonly MapOptions _mapOptions = new MapOptions();
-    private async Task HandleMapLoad(EventArgs args)
+    private readonly MapOptions _mapOptions = new MapOptions()
     {
-        await _map.AddListener<dynamic>("click", OnClick);
-    }
+        Container = "UniqueMapId",
+        Center = new LngLat()
+        {
+            Latitude = -2.320679, 
+            Longitude = 112.772537
+        },
+        Zoom = 3
+    };
     
-    public void OnClick(dynamic eventData)
-    {
-        Console.WriteLine(JsonSerializer.Serialize(eventData));
-        Console.WriteLine("Layer has been clicked");
-    }
 }

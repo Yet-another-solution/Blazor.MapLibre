@@ -6,6 +6,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Unlicense License][license-shield]][license-url]
 [![Issues][issues-shield]][issues-url]
+[![NuGet][nuget-shield]][nuget-url]
 
 
 
@@ -59,7 +60,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-TBA
+This project should help people working on Blazor projects to use maps more easily.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -68,15 +69,16 @@ TBA
 <!-- GETTING STARTED -->
 ## Getting Started
 
-TBA
-
 ### Prerequisites
 
-TBA
+This project is created on .NET 8 so you need to use this or never version to run it.
 
 ### Installation
 
-TBA
+Install the package:
+```bash
+dotnet add package Community.Blazor.MapLibre
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,14 +87,35 @@ TBA
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-TBA
+After the package is installed you can use it with simple:
+```csharp
+<Map />
+```
 
+You can customize the map more with options using `MapOptions.cs`:
+```csharp
+<Map Options="_mapOptions"></Map>
+
+@code
+{
+    private readonly MapOptions _mapOptions = new MapOptions();
+}
+```
 
 
 <!-- ROADMAP -->
 ## Roadmap
+- ✅ Completed  
+- ☑️ Partially implemented
+- ❌ Not started
 
-TBA
+| Feature   | Status |
+|-----------|--------|
+| Map       |        |
+| - Options | ✅       |
+| Events    |        |
+| - on      | ✅       |
+
 
 See the [open issues](https://github.com/Yet-another-solution/Blazor.MapLibre/issues) for a full list of proposed features (and known issues).
 
@@ -158,3 +181,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [issues-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/issues
 [license-shield]: https://img.shields.io/github/license/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
 [license-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/blob/master/LICENSE.txt
+[nuget-shield]: https://img.shields.io/nuget/v/Community.Blazor.MapLibre.svg?style=for-the-badge
+[nuget-url]: https://www.nuget.org/packages/Community.Blazor.MapLibre

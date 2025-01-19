@@ -22,7 +22,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       # Step 3: Restore dependencies
       - name: Restore dependencies
@@ -79,7 +79,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       # Step 3: Publish the library to NuGet (using GitHub token or API key)
       - name: Publish to NuGet
