@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Text.Json
+@using Community.Blazor.MapLibre.Models
 
 <h2>Introduction</h2>
 <p class="mb-3">
@@ -20,34 +21,30 @@
     
     <div class="shadow rounded col">
         <div>
-            <Map @ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" Class="rounded-top"
+            <Map Options="_mapOptions" Class="rounded-top"
                  Height="300px"></Map>
         </div>
-        <h3 class="p-3">Add Listeners</h3>
+        <h3 class="p-3">Custom options</h3>
         <div class="alert alert-dark mb-0">
             <code>
-                &lt;Map &#64;ref="_map" Options="_mapOptions" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
+<pre>
+&lt;Map Options="_mapOptions" Class="rounded-top"
+     Height="300px"&gt;&lt;/Map&gt;
 
-                <pre>
-
-&#64;code
+@@code
 {
-    private Map _map { get; set; } = new Map();
-    private readonly MapOptions _mapOptions = new MapOptions();
-    private async Task HandleMapLoad(EventArgs args)
+    private readonly MapOptions _mapOptions = new MapOptions()
     {
-        // Add map listeners after it has loaded
-        await _map.AddListener&lt;dynamic&gt;("click", OnClick);
-    }
-
-    public void OnClick(dynamic eventData)
-    {
-        Console.WriteLine(JsonSerializer.Serialize(eventData));
-        Console.WriteLine("Layer has been clicked");
-    }
+        Container = "UniqueMapId",
+        Center = new LngLat()
+        {
+            Latitude = -2.320679,
+            Longitude = 112.772537
+        },
+        Zoom = 3
+    };
 }
 </pre>
-
             </code>
         </div>
     </div>
@@ -56,18 +53,15 @@
 
 @code
 {
-    private Map _map { get; set; } = new Map();
-    private readonly MapOptions _mapOptions = new MapOptions();
-    private async Task HandleMapLoad(EventArgs args)
+    private readonly MapOptions _mapOptions = new MapOptions()
     {
-        await _map.AddImage("sample-image", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png");
-
-        await _map.AddListener<dynamic>("click", OnClick);
-    }
-
-    public void OnClick(dynamic eventData)
-    {
-        Console.WriteLine(JsonSerializer.Serialize(eventData));
-        Console.WriteLine("Layer has been clicked");
-    }
+        Container = "UniqueMapId",
+        Center = new LngLat()
+        {
+            Latitude = -2.320679, 
+            Longitude = 112.772537
+        },
+        Zoom = 3
+    };
+    
 }
