@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.Text.Json
+@using Community.Blazor.MapLibre.Models.Control
 
 <h2>Introduction</h2>
 Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
@@ -54,6 +55,16 @@ Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">Ma
     private readonly MapOptions _mapOptions = new MapOptions();
     private async Task HandleMapLoad(EventArgs args)
     {
+        await _map.AddControl(ControlType.FullscreenControl);
+        await _map.AddControl(ControlType.GeolocateControl);
+        await _map.AddControl(ControlType.GlobeControl);
+        await _map.AddControl(ControlType.LogoControl);
+        await _map.AddControl(ControlType.NavigationControl);
+        await _map.AddControl(ControlType.ScaleControl);
+        await _map.AddControl(ControlType.TerrainControl);
+
+        await _map.AddImage("sample-image", "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cat_silhouette.svg/400px-Cat_silhouette.svg.png");
+
         await _map.AddListener<dynamic>("click", OnClick);
     }
     

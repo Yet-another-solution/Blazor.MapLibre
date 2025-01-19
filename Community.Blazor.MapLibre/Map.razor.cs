@@ -1,4 +1,9 @@
 using System.Collections.Concurrent;
+using System.Text.Json;
+using Community.Blazor.MapLibre.Models;
+using Community.Blazor.MapLibre.Models.Control;
+using Community.Blazor.MapLibre.Models.Image;
+using Community.Blazor.MapLibre.Models.Source;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -120,7 +125,37 @@ public partial class Map : ComponentBase, IAsyncDisposable
 
     #region Methods
 
-    
+    /// <summary>
+    /// Adds a control to the map instance based on the specified control type and options.
+    /// </summary>
+    /// <param name="controlType">The type of control to be added to the map.</param>
+    /// <param name="options">Optional settings or parameters specific to the control being added.</param>
+    /// <returns>A task that represents the asynchronous operation of adding the control.</returns>
+    public async ValueTask AddControl(ControlType controlType, object? options = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.addControl", MapId, controlType.ToString(), options);
+
+    /// <summary>
+    /// Adds an image to the map for use in styling or layer configuration.
+    /// </summary>
+    /// <param name="id">The unique identifier for the image to be added to the map.</param>
+    /// <param name="url">The URL pointing to the image resource to be added.</param>
+    /// <param name="options">Optional parameters to configure the image, such as pixel ratio or content layout.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask AddImage(string id, string url, object? options = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.addImage", MapId, id, url, options);
+
+    /// <summary>
+    /// Adds a layer to the MapLibre map with the specified properties and an optional position before another layer.
+    /// </summary>
+    /// <param name="layer">The layer to be added, defining the rendering and customization options.</param>
+    /// <param name="beforeId">An optional layer ID indicating the position before which the new layer should be added. If null, the layer is added to the end.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask AddLayer(Layer layer, string? beforeId = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.addLayer", MapId, layer, beforeId);
+
+    public async ValueTask AddSource(string id, ISource source) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.addSource", MapId, id, source);
+
 
     #endregion
 }
