@@ -11,7 +11,7 @@ public class CallbackHandler
     private readonly IJSObjectReference _jsRuntimeReference;
     private readonly string _eventType;
     private readonly Delegate _callbackDelegate;
-    private readonly Type _argumentType;
+    private readonly Type? _argumentType;
 
     /// <summary>
     /// Constructor for initializing a callback handler with arguments.
@@ -56,7 +56,7 @@ public class CallbackHandler
     [JSInvokable]
     public void Invoke(string args)
     {
-        if (string.IsNullOrWhiteSpace(args))
+        if (string.IsNullOrWhiteSpace(args) || _argumentType is null)
         {
             _callbackDelegate.DynamicInvoke(); // Invoke delegate without arguments.
             return;

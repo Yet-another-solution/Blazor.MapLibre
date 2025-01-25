@@ -15,7 +15,7 @@ public class MapOptions
     /// @defaultValue false
     /// </summary>
     /// <remarks>Can be bool or string</remarks>
-    public object Hash { get; set; }
+    public object Hash { get; set; } = false;
 
     /// <summary>
     /// If `false`, no mouse, touch, or keyboard listeners will be attached to the map, so it will not respond to interaction.
@@ -27,7 +27,7 @@ public class MapOptions
     /// The HTML element in which MapLibre GL JS will render the map, or the element's string `id`. The specified element must have no children.
     /// </summary>
     /// <remarks>Can be string (ID) or HTMLElement reference</remarks>
-    public object Container { get; set; } 
+    public object Container { get; set; } = "";
 
     /// <summary>
     /// The threshold, measured in degrees, that determines when the map's bearing will snap to north.
@@ -42,7 +42,7 @@ public class MapOptions
     /// @defaultValue compact: true, customAttribution: "MapLibre ..."
     /// </summary>
     /// <remarks>Can be false or AttributionControlOptions</remarks>
-    public object AttributionControl { get; set; }
+    public object? AttributionControl { get; set; }
 
     /// <summary>
     /// If `true`, the MapLibre logo will be shown.
@@ -61,7 +61,7 @@ public class MapOptions
     /// `contextType` can be set to `webgl2` or `webgl` to force a WebGL version.
     /// @defaultValue antialias: false, powerPreference: "high-performance", preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false, desynchronized: false, contextType: "webgl2withfallback"
     /// </summary>
-    public WebGLContextAttributes CanvasContextAttributes { get; set; }
+    public WebGLContextAttributes? CanvasContextAttributes { get; set; }
 
     /// <summary>
     /// If `false`, the map won't attempt to re-request tiles once they expire per their HTTP `cacheControl`/`expires` headers.
@@ -72,7 +72,7 @@ public class MapOptions
     /// <summary>
     /// If set, the map will be constrained to the given bounds.
     /// </summary>
-    public LngLatBounds MaxBounds { get; set; }
+    public LngLatBounds? MaxBounds { get; set; }
 
     /// <summary>
     /// If `true`, the "scroll to zoom" interaction is enabled.

@@ -5,6 +5,6 @@ namespace Community.Blazor.MapLibre.Models;
 /// </summary>
 public class LngLatBounds
 {
-    public LngLat Southwest { get; set; }
-    public LngLat Northeast { get; set; }
+    public required LngLat Southwest { get; set; }
+    public required LngLat Northeast { get; set; }
 }
