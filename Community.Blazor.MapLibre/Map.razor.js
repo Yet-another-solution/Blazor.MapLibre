@@ -129,6 +129,56 @@ const MapInterop = {
         } else {
             map.addSprite(id, url, options);
         }
+    },
+    /**
+     * Checks if all map tiles are loaded for the given container.
+     *
+     * @param {string} container - The identifier of the map container to check.
+     * @returns {boolean} Returns true if all tiles are loaded, otherwise false.
+     */
+    areTilesLoaded: (container) => {
+        return mapInstances[container].areTilesLoaded();
+    },
+    /**
+     * Calculates the camera options based on the provided longitude, latitude, altitude, bearing, pitch, and roll.
+     *
+     * @param {string} container - The container identifier for the map instance.
+     * @param {Array<number>} cameraLngLat - The longitude and latitude of the camera position as an array [longitude, latitude].
+     * @param {number} cameraAltitude - The altitude of the camera in meters.
+     * @param {number} bearing - The bearing of the camera in degrees.
+     * @param {number} pitch - The pitch of the camera in degrees.
+     * @param {number} roll - The roll of the camera in degrees.
+     * @returns {Object} The calculated camera options.
+     */
+    calculateCameraOptionsFromCameraLngLatAltRotation: (container, cameraLngLat, cameraAltitude, bearing, pitch, roll) => {
+        return mapInstances[container].calculateCameraOptionsFromCameraLngLatAltRotation(cameraLngLat, cameraAltitude, bearing, pitch, roll);
+    },
+    /**
+     * Calculates camera options for transitioning from one location to another.
+     *
+     * @param {string} container - The identifier of the map container.
+     * @param {Array<number>} from - The starting coordinates of the transition [latitude, longitude].
+     * @param {number} altitudeFrom - The altitude at the starting location.
+     * @param {Array<number>} to - The destination coordinates of the transition [latitude, longitude].
+     * @param {number} altitudeTo - The altitude at the destination location.
+     * @returns {Object} The calculated camera options for the transition.
+     */
+    calculateCameraOptionsFromTo: (container, from, altitudeFrom, to, altitudeTo) => {
+        return mapInstances[container].calculateCameraOptionsFromTo(from, altitudeFrom, to, altitudeTo);
+    },
+    /**
+     * Calculates and returns the camera options needed to fit the provided bounds within the specified container.
+     *
+     * @param {string} container - The identifier for the map container.
+     * @param {Object} bounds - The geographical bounds to be displayed within the container.
+     * @param {Object} [options] - Optional settings for adjusting the camera view, such as padding or max zoom.
+     * @returns {Object} The camera options to fit the bounds within the specified container.
+     */
+    cameraForBounds: (container, bounds, options) => {
+        return mapInstances[container].cameraForBounds(bounds, options);
+    },
+    easeTo: (container, options, eventData) => {
+        mapInstances[container].easeTo(options, eventData);
     }
 }
 export { MapInterop };

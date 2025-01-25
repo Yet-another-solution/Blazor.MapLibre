@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using Community.Blazor.MapLibre.Models;
+using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Source;
@@ -191,6 +192,48 @@ public partial class Map : ComponentBase, IAsyncDisposable
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask AddSprite(string id, string url, object? options = null) =>
         await _jsModule.InvokeVoidAsync("MapInterop.addSprite", MapId, id, url, options);
+
+    /// <summary>
+    /// Determines whether all map tiles have been fully loaded.
+    /// </summary>
+    /// <returns>A task that resolves to a boolean indicating whether the tiles are completely loaded.</returns>
+    public async ValueTask<bool> AreTilesLoaded() =>
+        await _jsModule.InvokeAsync<bool>("MapInterop.areTilesLoaded", MapId);
+
+    /// <summary>
+    /// Calculates and returns camera options based on the provided longitude and latitude coordinates,
+    /// altitude, and rotation parameters including bearing, pitch, and optional roll.
+    /// </summary>
+    /// <param name="cameraLngLat">The geographic longitude and latitude coordinates of the camera.</param>
+    /// <param name="cameraAltitude">The altitude of the camera in meters.</param>
+    /// <param name="bearing">The compass direction that the camera is facing, in degrees.</param>
+    /// <param name="pitch">The tilt of the camera, in degrees from the horizontal plane.</param>
+    /// <param name="roll">Optional roll angle of the camera, in degrees (rotation along the view vector).</param>
+    /// <returns>A <see cref="CameraOptions"/> object containing the calculated camera options, including position, zoom, and rotation.</returns>
+    public async ValueTask<CameraOptions> CalculateCameraOptionsFromCameraLngLatAltRotation(LngLat cameraLngLat,
+        double cameraAltitude, double bearing, double pitch, double? roll = null) =>
+        await _jsModule.InvokeAsync<CameraOptions>("MapInterop.calculateCameraOptionsFromCameraLngLatAltRotation", MapId, cameraLngLat, cameraAltitude, bearing, pitch, roll);
+
+    /// <summary>
+    /// Calculates the camera options to transition from one location to another, considering their respective altitudes.
+    /// </summary>
+    /// <param name="from">The starting geographical coordinates.</param>
+    /// <param name="altitudeFrom">The altitude at the starting location.</param>
+    /// <param name="to">The destination geographical coordinates.</param>
+    /// <param name="altitudeTo">The altitude at the destination location. This parameter is optional.</param>
+    /// <returns>A task representing the asynchronous operation that provides the calculated CameraOptions.</returns>
+    public async ValueTask<CameraOptions> CalculateCameraOptionsFromTo(LngLat from, double altitudeFrom, LngLat to,
+        double? altitudeTo = null) =>
+        await _jsModule.InvokeAsync<CameraOptions>("MapInterop.calculateCameraOptionsFromTo", MapId, from, altitudeFrom, to, altitudeTo);
+
+    /// <summary>
+    /// Computes the required center, zoom, and bearing to fit the specified bounding box within the viewport.
+    /// </summary>
+    /// <param name="bounds">The geographical bounding box to be fitted.</param>
+    /// <param name="options">Optional parameters to customize the calculation.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the resulting center, zoom, and bearing.</returns>
+    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, object? options = null) =>
+        await _jsModule.InvokeAsync<CenterZoomBearing>("MapInterop.cameraForBounds", MapId, bounds, options);
 
 
     #endregion
