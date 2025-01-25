@@ -177,6 +177,13 @@ const MapInterop = {
     cameraForBounds: (container, bounds, options) => {
         return mapInstances[container].cameraForBounds(bounds, options);
     },
+    /**
+     * Smoothly animates the map viewport to the specified location and zoom level.
+     *
+     * @param {string} container - The identifier of the map container.
+     * @param {Object} options - Configuration options for easing to the target state, such as center, zoom, bearing, and pitch.
+     * @param {Object} [eventData] - Optional additional metadata for the event triggered by the easing action.
+     */
     easeTo: (container, options, eventData) => {
         mapInstances[container].easeTo(options, eventData);
     }
