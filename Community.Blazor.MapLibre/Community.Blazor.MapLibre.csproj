@@ -13,6 +13,8 @@
         <RepositoryUrl>https://github.com/Yet-another-solution/Blazor.MapLibre</RepositoryUrl>
         <PackageTags>Blazor; MapLibre; Components</PackageTags>
         <PackageIconUrl>https://maplibre.org/img/maplibre-logos/maplibre-logo-square-dark-blue-bg.png</PackageIconUrl>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
 
@@ -22,6 +24,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>
