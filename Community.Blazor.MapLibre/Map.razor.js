@@ -186,6 +186,43 @@ const MapInterop = {
      */
     easeTo: (container, options, eventData) => {
         mapInstances[container].easeTo(options, eventData);
+    },
+    /**
+     * Adjusts the map view within the specified container to fit the given geographical bounds.
+     *
+     * @param {string} container - The identifier for the map container that needs to fit the bounds.
+     * @param {Object} bounds - The geographical bounds to fit within the map view.
+     * @param {Object} [options] - Optional settings for fitting the bounds, such as padding or animation.
+     * @param {Object} [eventData] - Optional event-related data to be associated with this operation.
+     */
+    fitBounds: (container, bounds, options, eventData) => {
+        mapInstances[container].fitBounds(bounds, options, eventData);
+    },
+    /**
+     * Adjusts the map view to fit the given screen coordinates.
+     *
+     * @function fitScreenCoordinates
+     * @param {string} container - The identifier for the map container instance.
+     * @param {Array<number>} p0 - The first screen coordinate as [x, y].
+     * @param {Array<number>} p1 - The second screen coordinate as [x, y].
+     * @param {number} bearing - The map's bearing in degrees to apply during the fit.
+     * @param {Object} [options] - Optional configuration parameters for fitting the coordinates.
+     * @param {Object} [eventData] - Optional event data to be dispatched with the fit operation.
+     */
+    fitScreenCoordinates: (container, p0, p1, bearing, options, eventData) => {
+        mapInstances[container].fitScreenCoordinates(p0, p1, bearing, options, eventData);
+    },
+    /**
+     * Animates the map view to a specified center and zoom level with a smooth transition effect.
+     *
+     * @function
+     * @param {string} container - The identifier for the map container instance to apply the flyTo action.
+     * @param {Object} options - The flyTo options containing the target coordinates, zoom level, and optional padding.
+     * @param {Object} eventData - Optional additional event data associated with the flyTo action.
+     */
+    flyTo: (container, options, eventData) => {
+        mapInstances[container].flyTo(options, eventData);
+        
     }
 }
 export { MapInterop };

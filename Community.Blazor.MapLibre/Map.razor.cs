@@ -253,6 +253,76 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask EaseTo(EaseToOptions options, object? eventData = null) =>
         await _jsModule.InvokeVoidAsync("MapInterop.easeTo", MapId, options, eventData);
 
+    /// <summary>
+    /// Pans and zooms the map to contain its visible area within the specified geographical bounds. This function will also reset the map's bearing to 0 if bearing is nonzero.
+    /// </summary>
+    /// <param name="bounds">The geographical bounds to fit within the viewport.</param>
+    /// <param name="options">Options to customize the behavior of the fit bounds operation.</param>
+    /// <param name="eventData">Additional event data associated with the operation, if any.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask FitBounds(LngLatBounds bounds, FitBoundOptions? options = null, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.fitBounds", MapId, bounds, options, eventData);
+
+    /// <summary>
+    /// Pans, rotates, and zooms the map to fit the bounding box formed by two given screen points 
+    /// after rotating the map to the specified bearing. If the current map bearing is passed, the map will
+    /// zoom without rotating.
+    /// </summary>
+    /// <remarks>
+    /// Triggers the following events during the animation lifecycle: <c>movestart</c>, <c>move</c>, <c>moveend</c>, 
+    /// <c>zoomstart</c>, <c>zoom</c>, <c>zoomend</c>, and <c>rotate</c>.
+    /// </remarks>
+    /// <param name="p0">The first screen point, specified in pixel coordinates.</param>
+    /// <param name="p1">The second screen point, specified in pixel coordinates.</param>
+    /// <param name="bearing">The desired final map bearing, in degrees, for the animation.</param>
+    /// <param name="options">Optional parameters to customize the animation behavior and padding.</param>
+    /// <param name="eventData">Additional data to include with the triggered animation events.</param>
+    /// <example>
+    /// <code>
+    /// var p0 = new PointLike(220, 400);
+    /// var p1 = new PointLike(500, 900);
+    /// await map.FitScreenCoordinates(p0, p1, map.GetBearing(), new FitBoundOptions
+    /// {
+    ///     Padding = new PaddingOptions { Top = 10, Bottom = 25, Left = 15, Right = 5 }
+    /// });
+    /// </code>
+    /// </example>
+    public async ValueTask FitScreenCoordinates(PointLike p0, PointLike p1, double bearing,
+        FitBoundOptions? options = null, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.fitScreenCoordinates", MapId, p0, p1, bearing, options, eventData);
+
+    /// <summary>
+    /// Smoothly transitions the map by animating changes to the center, zoom, bearing, pitch, and roll properties. 
+    /// The animation follows a flight-like curve, incorporating zooming and panning to maintain orientation over large distances.
+    /// </summary>
+    /// <remarks>
+    /// Triggers the following events during the animation lifecycle: <c>movestart</c>, <c>move</c>, <c>moveend</c>, 
+    /// <c>zoomstart</c>, <c>zoom</c>, <c>zoomend</c>, <c>pitchstart</c>, <c>pitch</c>, <c>pitchend</c>, <c>rollstart</c>, 
+    /// <c>roll</c>, <c>rollend</c>, and <c>rotate</c>. The animation will be skipped and instead transition 
+    /// immediately if the user’s operating system has the ‘reduced motion’ accessibility feature enabled, unless the 
+    /// <paramref name="options"/> object includes <c>essential: true</c>.
+    /// </remarks>
+    /// <param name="options">Describes the animation destination and transition behavior. Includes camera and animation properties.</param>
+    /// <param name="eventData">Additional data to include with triggered animation events.</param>
+    /// <example>
+    /// <code>
+    /// // Fly to a specific location with default duration and easing.
+    /// await map.FlyTo(new FlyToOptions { Center = new LngLat(0, 0), Zoom = 9 });
+    ///
+    /// // Customize the flight animation with specific options.
+    /// await map.FlyTo(new FlyToOptions
+    /// {
+    ///     Center = new LngLat(0, 0),
+    ///     Zoom = 9,
+    ///     Speed = 0.2,
+    ///     Curve = 1,
+    ///     Easing = t => t
+    /// });
+    /// </code>
+    /// </example>
+    public async ValueTask FlyTo(FlyToOptions options, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.flyTo", MapId, options, eventData);
+
 
     #endregion
 }
