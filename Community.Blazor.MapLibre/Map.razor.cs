@@ -323,6 +323,47 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask FlyTo(FlyToOptions options, object? eventData = null) =>
         await _jsModule.InvokeVoidAsync("MapInterop.flyTo", MapId, options, eventData);
 
+    /// <summary>
+    /// Gets the bearing of the map's current view direction.
+    /// </summary>
+    /// <returns>Returns the map's current bearing, a value in degrees.</returns>
+    public async ValueTask<double> GetBearing() =>
+        await _jsModule.InvokeAsync<double>("MapInterop.getBearing", MapId);
+
+    /// <summary>
+    /// Gets the geographical bounds visible in the current viewport.
+    /// </summary>
+    /// <returns>The <see cref="LngLatBounds"/> object representing the visible geographical bounds.</returns>
+    public async ValueTask<LngLatBounds> GetBounds() =>
+        await _jsModule.InvokeAsync<LngLatBounds>("MapInterop.getBounds", MapId);
+
+    /// <summary>
+    /// Gets the elevation of the camera target with respect to the terrain.
+    /// </summary>
+    /// <returns>The elevation of the center point in meters.</returns>
+    public async ValueTask<double> GetCameraTargetElevation() =>
+        await _jsModule.InvokeAsync<double>("MapInterop.getCameraTargetElevation", MapId);
+
+    /// <summary>
+    /// Gets a reference to the map's HTML canvas element.
+    /// </summary>
+    /// <returns>A JSObjectReference representing the canvas element.</returns>
+    public async ValueTask<IJSObjectReference> GetCanvas() =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("MapInterop.getCanvas", MapId);
+
+    /// <summary>
+    /// Gets the container of the map's canvas element.
+    /// </summary>
+    /// <returns>A JSObjectReference representing the canvas container.</returns>
+    public async ValueTask<IJSObjectReference> GetCanvasContainer() =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("MapInterop.getCanvasContainer", MapId);
+
+    /// <summary>
+    /// Gets the geographical center of the current map view.
+    /// </summary>
+    /// <returns>A <see cref="LngLat"/> representing the center of the viewport.</returns>
+    public async ValueTask<LngLat> GetCenter() =>
+        await _jsModule.InvokeAsync<LngLat>("MapInterop.getCenter", MapId);
 
     #endregion
 }

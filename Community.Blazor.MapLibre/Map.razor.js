@@ -222,7 +222,73 @@ const MapInterop = {
      */
     flyTo: (container, options, eventData) => {
         mapInstances[container].flyTo(options, eventData);
-        
-    }
+    },
+    /**
+     * Retrieves the current bearing (direction) of the map associated with the specified container.
+     * The bearing typically refers to the compass direction, in degrees, that the map is rotated to.
+     *
+     * @param {string} container - The identifier of the container associated with the map instance.
+     * @returns {number} The bearing of the map in degrees.
+     */
+    getBearing: (container) => {
+        return mapInstances[container].getBearing();
+    },
+    /**
+     * Retrieves the geographical boundaries of a map instance associated with the specified container.
+     *
+     * @param {string} container - The identifier of the container associated with the map instance.
+     * @returns {Object} An object representing the geographical boundaries of the map instance.
+     */
+    getBounds: (container) => {
+        return mapInstances[container].getBounds();
+    },
+    /**
+     * Retrieves the camera target elevation for the specified map container.
+     *
+     * This function checks if the `getCameraTargetElevation` method is available
+     * for the given map instance. If it is, the method is invoked to obtain the
+     * camera target elevation. If the method is not supported, a warning message
+     * is logged to the console, and `null` is returned.
+     *
+     * @param {string} container - The identifier of the map container for which the
+     * camera target elevation is to be retrieved.
+     * @returns {number|null} The camera target elevation if supported, or `null`
+     * if the method is not available for the map instance.
+     */
+    getCameraTargetElevation: (container) => {
+        if (mapInstances[container].getCameraTargetElevation) {
+            return mapInstances[container].getCameraTargetElevation();
+        } else {
+            console.warn("getCameraTargetElevation is not supported for this map instance.");
+            return null;
+        }
+    },
+    /**
+     * Retrieves the canvas element associated with a specific container.
+     *
+     * @param {string} container - The identifier for the container whose canvas is to be retrieved.
+     * @returns {HTMLCanvasElement} The canvas element associated with the specified container.
+     */
+    getCanvas: (container) => {
+        return mapInstances[container].getCanvas();
+    },
+    /**
+     * Retrieves the canvas container associated with the given container.
+     *
+     * @param {string} container - The identifier for the container whose canvas container is to be retrieved.
+     * @returns {Object} The canvas container associated with the specified container.
+     */
+    getCanvasContainer: (container) => {
+        return mapInstances[container].getCanvasContainer();
+    },
+    /**
+     * Retrieves the center coordinates of the map instance associated with the specified container.
+     *
+     * @param {string} container - The identifier of the container associated with the map instance.
+     * @returns {Object} An object representing the center coordinates of the map.
+     */
+    getCenter: (container) => {
+        return mapInstances[container].getCenter();
+    },
 }
 export { MapInterop };
