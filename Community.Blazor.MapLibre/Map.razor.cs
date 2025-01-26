@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using Community.Blazor.MapLibre.Models;
+using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Source;
@@ -192,6 +193,177 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask AddSprite(string id, string url, object? options = null) =>
         await _jsModule.InvokeVoidAsync("MapInterop.addSprite", MapId, id, url, options);
 
+    /// <summary>
+    /// Determines whether all map tiles have been fully loaded.
+    /// </summary>
+    /// <returns>A task that resolves to a boolean indicating whether the tiles are completely loaded.</returns>
+    public async ValueTask<bool> AreTilesLoaded() =>
+        await _jsModule.InvokeAsync<bool>("MapInterop.areTilesLoaded", MapId);
+
+    /// <summary>
+    /// Calculates and returns camera options based on the provided longitude and latitude coordinates,
+    /// altitude, and rotation parameters including bearing, pitch, and optional roll.
+    /// </summary>
+    /// <param name="cameraLngLat">The geographic longitude and latitude coordinates of the camera.</param>
+    /// <param name="cameraAltitude">The altitude of the camera in meters.</param>
+    /// <param name="bearing">The compass direction that the camera is facing, in degrees.</param>
+    /// <param name="pitch">The tilt of the camera, in degrees from the horizontal plane.</param>
+    /// <param name="roll">Optional roll angle of the camera, in degrees (rotation along the view vector).</param>
+    /// <returns>A <see cref="CameraOptions"/> object containing the calculated camera options, including position, zoom, and rotation.</returns>
+    public async ValueTask<CameraOptions> CalculateCameraOptionsFromCameraLngLatAltRotation(LngLat cameraLngLat,
+        double cameraAltitude, double bearing, double pitch, double? roll = null) =>
+        await _jsModule.InvokeAsync<CameraOptions>("MapInterop.calculateCameraOptionsFromCameraLngLatAltRotation", MapId, cameraLngLat, cameraAltitude, bearing, pitch, roll);
+
+    /// <summary>
+    /// Calculates the camera options to transition from one location to another, considering their respective altitudes.
+    /// </summary>
+    /// <param name="from">The starting geographical coordinates.</param>
+    /// <param name="altitudeFrom">The altitude at the starting location.</param>
+    /// <param name="to">The destination geographical coordinates.</param>
+    /// <param name="altitudeTo">The altitude at the destination location. This parameter is optional.</param>
+    /// <returns>A task representing the asynchronous operation that provides the calculated CameraOptions.</returns>
+    public async ValueTask<CameraOptions> CalculateCameraOptionsFromTo(LngLat from, double altitudeFrom, LngLat to,
+        double? altitudeTo = null) =>
+        await _jsModule.InvokeAsync<CameraOptions>("MapInterop.calculateCameraOptionsFromTo", MapId, from, altitudeFrom, to, altitudeTo);
+
+    /// <summary>
+    /// Computes the required center, zoom, and bearing to fit the specified bounding box within the viewport.
+    /// </summary>
+    /// <param name="bounds">The geographical bounding box to be fitted.</param>
+    /// <param name="options">Optional parameters to customize the calculation.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the resulting center, zoom, and bearing.</returns>
+    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, object? options = null) =>
+        await _jsModule.InvokeAsync<CenterZoomBearing>("MapInterop.cameraForBounds", MapId, bounds, options);
+
+    /// <summary>
+    /// Smoothly transitions the camera's view to the specified target, animating parameters such as
+    /// center, zoom, bearing, pitch, roll, and padding. Any unspecified parameters will retain their current values.
+    /// </summary>
+    /// <remarks>
+    /// The transition is animated unless the user has enabled the "reduced motion" accessibility feature 
+    /// in their operating system. This can be overridden by including <c>essential: true</c> in the options.
+    /// </remarks>
+    /// <param name="options">
+    /// The options describing the destination and animation behavior. Accepts both camera and animation-related properties.
+    /// </param>
+    /// <param name="eventData">
+    /// Additional data to be included in events triggered during the transition (e.g., move, zoom, rotate events).
+    /// </param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask EaseTo(EaseToOptions options, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.easeTo", MapId, options, eventData);
+
+    /// <summary>
+    /// Pans and zooms the map to contain its visible area within the specified geographical bounds. This function will also reset the map's bearing to 0 if bearing is nonzero.
+    /// </summary>
+    /// <param name="bounds">The geographical bounds to fit within the viewport.</param>
+    /// <param name="options">Options to customize the behavior of the fit bounds operation.</param>
+    /// <param name="eventData">Additional event data associated with the operation, if any.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask FitBounds(LngLatBounds bounds, FitBoundOptions? options = null, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.fitBounds", MapId, bounds, options, eventData);
+
+    /// <summary>
+    /// Pans, rotates, and zooms the map to fit the bounding box formed by two given screen points 
+    /// after rotating the map to the specified bearing. If the current map bearing is passed, the map will
+    /// zoom without rotating.
+    /// </summary>
+    /// <remarks>
+    /// Triggers the following events during the animation lifecycle: <c>movestart</c>, <c>move</c>, <c>moveend</c>, 
+    /// <c>zoomstart</c>, <c>zoom</c>, <c>zoomend</c>, and <c>rotate</c>.
+    /// </remarks>
+    /// <param name="p0">The first screen point, specified in pixel coordinates.</param>
+    /// <param name="p1">The second screen point, specified in pixel coordinates.</param>
+    /// <param name="bearing">The desired final map bearing, in degrees, for the animation.</param>
+    /// <param name="options">Optional parameters to customize the animation behavior and padding.</param>
+    /// <param name="eventData">Additional data to include with the triggered animation events.</param>
+    /// <example>
+    /// <code>
+    /// var p0 = new PointLike(220, 400);
+    /// var p1 = new PointLike(500, 900);
+    /// await map.FitScreenCoordinates(p0, p1, map.GetBearing(), new FitBoundOptions
+    /// {
+    ///     Padding = new PaddingOptions { Top = 10, Bottom = 25, Left = 15, Right = 5 }
+    /// });
+    /// </code>
+    /// </example>
+    public async ValueTask FitScreenCoordinates(PointLike p0, PointLike p1, double bearing,
+        FitBoundOptions? options = null, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.fitScreenCoordinates", MapId, p0, p1, bearing, options, eventData);
+
+    /// <summary>
+    /// Smoothly transitions the map by animating changes to the center, zoom, bearing, pitch, and roll properties. 
+    /// The animation follows a flight-like curve, incorporating zooming and panning to maintain orientation over large distances.
+    /// </summary>
+    /// <remarks>
+    /// Triggers the following events during the animation lifecycle: <c>movestart</c>, <c>move</c>, <c>moveend</c>, 
+    /// <c>zoomstart</c>, <c>zoom</c>, <c>zoomend</c>, <c>pitchstart</c>, <c>pitch</c>, <c>pitchend</c>, <c>rollstart</c>, 
+    /// <c>roll</c>, <c>rollend</c>, and <c>rotate</c>. The animation will be skipped and instead transition 
+    /// immediately if the user’s operating system has the ‘reduced motion’ accessibility feature enabled, unless the 
+    /// <paramref name="options"/> object includes <c>essential: true</c>.
+    /// </remarks>
+    /// <param name="options">Describes the animation destination and transition behavior. Includes camera and animation properties.</param>
+    /// <param name="eventData">Additional data to include with triggered animation events.</param>
+    /// <example>
+    /// <code>
+    /// // Fly to a specific location with default duration and easing.
+    /// await map.FlyTo(new FlyToOptions { Center = new LngLat(0, 0), Zoom = 9 });
+    ///
+    /// // Customize the flight animation with specific options.
+    /// await map.FlyTo(new FlyToOptions
+    /// {
+    ///     Center = new LngLat(0, 0),
+    ///     Zoom = 9,
+    ///     Speed = 0.2,
+    ///     Curve = 1,
+    ///     Easing = t => t
+    /// });
+    /// </code>
+    /// </example>
+    public async ValueTask FlyTo(FlyToOptions options, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.flyTo", MapId, options, eventData);
+
+    /// <summary>
+    /// Gets the bearing of the map's current view direction.
+    /// </summary>
+    /// <returns>Returns the map's current bearing, a value in degrees.</returns>
+    public async ValueTask<double> GetBearing() =>
+        await _jsModule.InvokeAsync<double>("MapInterop.getBearing", MapId);
+
+    /// <summary>
+    /// Gets the geographical bounds visible in the current viewport.
+    /// </summary>
+    /// <returns>The <see cref="LngLatBounds"/> object representing the visible geographical bounds.</returns>
+    public async ValueTask<LngLatBounds> GetBounds() =>
+        await _jsModule.InvokeAsync<LngLatBounds>("MapInterop.getBounds", MapId);
+
+    /// <summary>
+    /// Gets the elevation of the camera target with respect to the terrain.
+    /// </summary>
+    /// <returns>The elevation of the center point in meters.</returns>
+    public async ValueTask<double> GetCameraTargetElevation() =>
+        await _jsModule.InvokeAsync<double>("MapInterop.getCameraTargetElevation", MapId);
+
+    /// <summary>
+    /// Gets a reference to the map's HTML canvas element.
+    /// </summary>
+    /// <returns>A JSObjectReference representing the canvas element.</returns>
+    public async ValueTask<IJSObjectReference> GetCanvas() =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("MapInterop.getCanvas", MapId);
+
+    /// <summary>
+    /// Gets the container of the map's canvas element.
+    /// </summary>
+    /// <returns>A JSObjectReference representing the canvas container.</returns>
+    public async ValueTask<IJSObjectReference> GetCanvasContainer() =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("MapInterop.getCanvasContainer", MapId);
+
+    /// <summary>
+    /// Gets the geographical center of the current map view.
+    /// </summary>
+    /// <returns>A <see cref="LngLat"/> representing the center of the viewport.</returns>
+    public async ValueTask<LngLat> GetCenter() =>
+        await _jsModule.InvokeAsync<LngLat>("MapInterop.getCenter", MapId);
 
     #endregion
 }

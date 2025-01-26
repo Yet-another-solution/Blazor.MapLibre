@@ -6,13 +6,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <PackageId>Community.Blazor.MapLibre</PackageId>
-        <Version>0.1.0</Version>
+        <Version>0.2.0</Version>
         <Authors>Yet-Another-Solution</Authors>
         <Description>C# Wrapper around a MapLibre GL JS library</Description>
         <LicenseUrl>https://opensource.org/license/unlicense</LicenseUrl>
         <RepositoryUrl>https://github.com/Yet-another-solution/Blazor.MapLibre</RepositoryUrl>
         <PackageTags>Blazor; MapLibre; Components</PackageTags>
         <PackageIconUrl>https://maplibre.org/img/maplibre-logos/maplibre-logo-square-dark-blue-bg.png</PackageIconUrl>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
 
@@ -22,6 +24,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

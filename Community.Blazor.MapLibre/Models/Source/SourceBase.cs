@@ -15,5 +15,5 @@ public abstract class SourceBase : ISource
     /// <summary>
     /// Contains attribution text for the source, displayed on the map UI to credit the data provider.
     /// </summary>
-    public string Attribution { get; set; } = "";
+    public string? Attribution { get; set; } = "";
 }
