@@ -235,6 +235,24 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, object? options = null) =>
         await _jsModule.InvokeAsync<CenterZoomBearing>("MapInterop.cameraForBounds", MapId, bounds, options);
 
+    /// <summary>
+    /// Smoothly transitions the camera's view to the specified target, animating parameters such as
+    /// center, zoom, bearing, pitch, roll, and padding. Any unspecified parameters will retain their current values.
+    /// </summary>
+    /// <remarks>
+    /// The transition is animated unless the user has enabled the "reduced motion" accessibility feature 
+    /// in their operating system. This can be overridden by including <c>essential: true</c> in the options.
+    /// </remarks>
+    /// <param name="options">
+    /// The options describing the destination and animation behavior. Accepts both camera and animation-related properties.
+    /// </param>
+    /// <param name="eventData">
+    /// Additional data to be included in events triggered during the transition (e.g., move, zoom, rotate events).
+    /// </param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async ValueTask EaseTo(EaseToOptions options, object? eventData = null) =>
+        await _jsModule.InvokeVoidAsync("MapInterop.easeTo", MapId, options, eventData);
+
 
     #endregion
 }
