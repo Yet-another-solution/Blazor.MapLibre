@@ -11,7 +11,16 @@ public class LngLat
     public double Longitude { get; set; }
     [JsonPropertyName("lat")]
     public double Latitude { get; set; }
-    
+
+    /// <summary>
+    /// Default constructor. Allows initialization with object initializers.
+    /// </summary>
+    public LngLat()
+    {
+        Longitude = 0;
+        Latitude = 0;
+    }
+
     /// <summary>
     /// Constructor that initializes the coordinate with provided longitude and latitude values.
     /// </summary>
