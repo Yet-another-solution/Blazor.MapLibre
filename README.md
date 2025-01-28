@@ -117,16 +117,16 @@ You can customize the map more with options using `MapOptions.cs`:
 | - on()                                                | **✅ Complete**               |
 | - off()                                               | **❌ Not started**            |
 | - once()                                              | **❌ Not started**            |
-| **Methods**                                           |                |
-| - addControl()                                        | **✅ Complete**               |
-| - addImage()                                          | **✅ Complete**               |
+| **Methods**                                           |                              |
+| - addControl()                                        | **☑️ Partially Implemented** |
+| - addImage()                                          | **☑️ Partially Implemented** |
 | - addLayer()                                          | **✅ Complete**               |
 | - addSource()                                         | **✅ Complete**               |
-| - addSprite()                                         | **✅ Complete**               |
+| - addSprite()                                         | **☑️ Partially Implemented** |
 | - areTilesLoaded()                                    | **✅ Complete**               |
 | - calculateCameraOptionsFromCameraLngLatAltRotation() | **✅ Complete**               |  
 | - calculateCameraOptionsFromTo()                      | **✅ Complete**               |  
-| - cameraForBounds()                                   | **✅ Complete**               |  
+| - cameraForBounds()                                   | **☑️ Partially Implemented** |  
 | - easeTo()                                            | **✅ Complete**               |
 | - fitBounds()                                         | **✅ Complete**               |
 | - fitScreenCoordinates()                              | **✅ Complete**               |
@@ -137,105 +137,81 @@ You can customize the map more with options using `MapOptions.cs`:
 | - getCanvas()                                         | **✅ Complete**               |
 | - getCanvasContainer()                                | **✅ Complete**               |
 | - getCenter()                                         | **✅ Complete**               |
-| - getCenterClampedToGround()                          | **☑️ Partially implemented**  |
-| - getCenterElevation()                                | **☑️ Partially implemented**  |
-| - getContainer()                                      | **☑️ Partially implemented**  |
-| - getFeatureState()                                   | **☑️ Partially implemented**  |
-| - getFilter()                                         | **☑️ Partially implemented**  |
-| - getGlyphs()                                         | **☑️ Partially implemented**  |
-| - getImage()                                          | **☑️ Partially implemented**  |
-| - getLayer()                                          | **☑️ Partially implemented**  |
-| - getLayersOrder()                                    | **☑️ Partially implemented**  |
-| - getLayoutProperty()                                 | **☑️ Partially implemented**  |
-| - getLight()                                          | **☑️ Partially implemented**  |
-| - getMaxBounds()                                      | **☑️ Partially implemented**  |
-| - getMaxPitch()                                       | **☑️ Partially implemented**  |
-| - getMaxZoom()                                        | **☑️ Partially implemented**  |
-| - getMinPitch()                                       | **☑️ Partially implemented**  |
-| - getMinZoom()                                        | **☑️ Partially implemented**  |
-| - getPadding()                                        | **☑️ Partially implemented**  |
-| - getPaintProperty()                                  | **☑️ Partially implemented**  |
-| - getPitch()                                          | **☑️ Partially implemented**  |
-| - getPixelRatio()                                     | **☑️ Partially implemented**  |
-| - getProjection()                                     | **☑️ Partially implemented**  |
-| - getRenderWorldCopies()                              | **☑️ Partially implemented**  |
-| - getRoll()                                           | **☑️ Partially implemented**  |
-| - getSky()                                            | **☑️ Partially implemented**  |
-| - getSource()                                         | **☑️ Partially implemented**  |
-| - getSprite()                                         | **☑️ Partially implemented**  |
-| - getStyle()                                          | **☑️ Partially implemented**  |
-| - getTerrain()                                        | **☑️ Partially implemented**  |
-| - getVerticalFieldOfView()                            | **☑️ Partially implemented**  |
-| - getZoom()                                           | **☑️ Partially implemented**  |
-| - hasControl()                                        | **☑️ Partially implemented**  |
-| - hasImage()                                          | **☑️ Partially implemented**  |
-| - isMoving()                                          | **☑️ Partially implemented**  |
-| - isRotating()                                        | **☑️ Partially implemented**  |
-| - isSourceLoaded()                                    | **☑️ Partially implemented**  |
-| - isStyleLoaded()                                     | **☑️ Partially implemented**  |
-| - isZooming()                                         | **☑️ Partially implemented**  |
-| - jumpTo()                                            | **☑️ Partially implemented**  |
-| - listens()                                           | **☑️ Partially implemented**  |
-| - listImages()                                        | **☑️ Partially implemented**  |
-| - loaded()                                            | **☑️ Partially implemented**  |
-| - loadImage()                                         | **☑️ Partially implemented**  |
-| - moveLayer()                                         | **☑️ Partially implemented**  |
-| - panBy()                                             | **☑️ Partially implemented**  |
-| - panTo()                                             | **☑️ Partially implemented**  |
-| - project()                                           | **☑️ Partially implemented**  |
-| - queryRenderedFeatures()                             | **☑️ Partially implemented**  |
-| - querySourceFeatures()                               | **☑️ Partially implemented**  |
-| - queryTerrainElevation()                             | **☑️ Partially implemented**  |
-| - redraw()                                            | **☑️ Partially implemented**  |
-| - remove()                                            | **☑️ Partially implemented**  |
-| - removeControl()                                     | **☑️ Partially implemented**  |
-| - removeFeatureState()                                | **☑️ Partially implemented**  |
-| - removeImage()                                       | **☑️ Partially implemented**  |
-| - removeLayer()                                       | **☑️ Partially implemented**  |
-| - removeSource()                                      | **☑️ Partially implemented**  |
-| - removeSprite()                                      | **☑️ Partially implemented**  |
-| - resetNorth()                                        | **☑️ Partially implemented**  |
-| - resetNorthPitch()                                   | **☑️ Partially implemented**  |
-| - resize()                                            | **☑️ Partially implemented**  |
-| - rotateTo()                                          | **☑️ Partially implemented**  |
-| - setBearing()                                        | **☑️ Partially implemented**  |
-| - setCenter()                                         | **☑️ Partially implemented**  |
-| - setCenterClampedToGround()                          | **☑️ Partially implemented**  |
-| - setCenterElevation()                                | **☑️ Partially implemented**  |
-| - setEventedParent()                                  | **☑️ Partially implemented**  |
-| - setFeatureState()                                   | **☑️ Partially implemented**  |
-| - setFilter()                                         | **☑️ Partially implemented**  |
-| - setGlyphs()                                         | **☑️ Partially implemented**  |
-| - setLayerZoomRange()                                 | **☑️ Partially implemented**  |
-| - setLayoutProperty()                                 | **☑️ Partially implemented**  |
-| - setLight()                                          | **☑️ Partially implemented**  |
-| - setMaxBounds()                                      | **☑️ Partially implemented**  |
-| - setMaxPitch()                                       | **☑️ Partially implemented**  |
-| - setMaxZoom()                                        | **☑️ Partially implemented**  |
-| - setMinPitch()                                       | **☑️ Partially implemented**  |
-| - setMinZoom()                                        | **☑️ Partially implemented**  |
-| - setPadding()                                        | **☑️ Partially implemented**  |
-| - setPaintProperty()                                  | **☑️ Partially implemented**  |
-| - setPitch()                                          | **☑️ Partially implemented**  |
-| - setPixelRatio()                                     | **☑️ Partially implemented**  |
-| - setProjection()                                     | **☑️ Partially implemented**  |
-| - setRenderWorldCopies()                              | **☑️ Partially implemented**  |
-| - setRoll()                                           | **☑️ Partially implemented**  |
-| - setSky()                                            | **☑️ Partially implemented**  |
-| - setSprite()                                         | **☑️ Partially implemented**  |
-| - setStyle()                                          | **☑️ Partially implemented**  |
-| - setTerrain()                                        | **☑️ Partially implemented**  |
-| - setTransformRequest()                               | **☑️ Partially implemented**  |
-| - setVerticalFieldOfView()                            | **☑️ Partially implemented**  |
-| - setZoom()                                           | **☑️ Partially implemented**  |
-| - snapToNorth()                                       | **☑️ Partially implemented**  |
-| - stop()                                              | **☑️ Partially implemented**  |
-| - triggerRepaint()                                    | **☑️ Partially implemented**  |
-| - unproject()                                         | **☑️ Partially implemented**  |
-| - updateImage()                                       | **☑️ Partially implemented**  |
-| - zoomIn()                                            | **☑️ Partially implemented**  |
-| - zoomOut()                                           | **☑️ Partially implemented**  |
-| - zoomTo()                                            | **☑️ Partially implemented**  |
+| - getCenterClampedToGround()                          | **✅ Complete**               |
+| - getCenterElevation()                                | **✅ Complete**               |
+| - getContainer()                                      | **✅ Complete**               |
+| - getFeatureState()                                   | **☑️ Partially Implemented** |
+| - getFilter()                                         | **✅ Complete**               |
+| - getGlyphs()                                         | **✅ Complete**               |
+| - getImage()                                          | **✅ Complete**               |
+| - getLayer()                                          | **✅ Complete**               |
+| - getLayersOrder()                                    | **✅ Complete**               |
+| - getLayoutProperty()                                 | **☑️ Partially Implemented** |
+| - getLight()                                          | **☑️ Partially Implemented** |
+| - getMaxBounds()                                      | **☑️ Partially Implemented** |
+| - getMaxPitch()                                       | **✅ Complete**               |
+| - getMaxZoom()                                        | **✅ Complete**               |
+| - getMinPitch()                                       | **✅ Complete**               |
+| - getMinZoom()                                        | **✅ Complete**               |
+| - getPadding()                                        | **☑️ Partially Implemented** |
+| - getPaintProperty()                                  | **☑️ Partially Implemented** |
+| - getPitch()                                          | **✅ Complete**               |
+| - getPixelRatio()                                     | **✅ Complete**               |
+| - getProjection()                                     | **☑️ Partially Implemented** |
+| - getRenderWorldCopies()                              | **✅ Complete**               |
+| - getRoll()                                           | **✅ Complete**               |
+| - getSky()                                            | **☑️ Partially Implemented** |
+| - getSource()                                         | **☑️ Partially Implemented** |
+| - getSprite()                                         | **☑️ Partially Implemented** |
+| - getStyle()                                          | **☑️ Partially Implemented** |
+| - getTerrain()                                        | **☑️ Partially Implemented** |
+| - getVerticalFieldOfView()                            | **✅ Complete**               |
+| - getZoom()                                           | **✅ Complete**               |
+| - hasControl()                                        | **☑️ Partially Implemented** |
+| - hasImage()                                          | **✅ Complete**               |
+| - isMoving()                                          | **✅ Complete**               |
+| - isRotating()                                        | **✅ Complete**               |
+| - isSourceLoaded()                                    | **✅ Complete**               |
+| - isStyleLoaded()                                     | **✅ Complete**               |
+| - isZooming()                                         | **✅ Complete**               |
+| - jumpTo()                                            | **☑️ Partially Implemented** |
+| - listens()                                           | **✅ Complete**               |
+| - listImages()                                        | **✅ Complete**               |
+| - loaded()                                            | **✅ Complete**               |
+| - loadImage()                                         | **☑️ Partially Implemented** |
+| - moveLayer()                                         | **✅ Complete**               |
+| - panBy()                                             | **☑️ Partially Implemented** |
+| - panTo()                                             | **☑️ Partially Implemented** |
+| - project()                                           | **☑️ Partially Implemented** |
+| - queryRenderedFeatures()                             | **☑️ Partially Implemented** |
+| - querySourceFeatures()                               | **☑️ Partially Implemented** |
+| - queryTerrainElevation()                             | **☑️ Partially Implemented** |
+| - redraw()                                            | **✅ Complete**               |
+| - remove()                                            | **✅ Complete**               |
+| - removeControl()                                     | **☑️ Partially Implemented** |
+| - removeFeatureState()                                | **☑️ Partially Implemented** |
+| - removeImage()                                       | **✅ Complete**               |
+| - removeLayer()                                       | **✅ Complete**               |
+| - removeSource()                                      | **✅ Complete**               |
+| - removeSprite()                                      | **✅ Complete**               |
+| - resetNorth()                                        | **☑️ Partially Implemented** |
+| - resetNorthPitch()                                   | **☑️ Partially Implemented** |
+| - resize()                                            | **☑️ Partially Implemented** |
+| - rotateTo()                                          | **☑️ Partially Implemented** |
+| - setBearing()                                        | **✅ Complete**               |
+| - setCenter()                                         | **☑️ Partially Implemented** |
+| - setCenterClampedToGround()                          | **✅ Complete**               |
+| - setCenterElevation()                                | **✅ Complete**               |
+| - setFeatureState()                                   | **☑️ Partially Implemented** |
+| - setZoom()                                           | **✅ Complete**               |
+| - setStyle()                                          | **☑️ Partially Implemented** |
+| - stop()                                              | **✅ Complete**               |
+| - unproject()                                         | **☑️ Partially Implemented** |
+| - updateImage()                                       | **☑️ Partially Implemented** |
+| - zoomIn()                                            | **☑️ Partially Implemented** |
+| - zoomOut()                                           | **☑️ Partially Implemented** |
+| - zoomTo()                                            | **☑️ Partially Implemented** |
+
 
 
 See the [open issues](https://github.com/Yet-another-solution/Blazor.MapLibre/issues) for a full list of proposed features (and known issues).
