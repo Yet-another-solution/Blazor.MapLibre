@@ -11,7 +11,7 @@ public class FitBoundOptions : FlyToOptions
     /// <summary>
     /// The center of the given bounds relative to the map's center, measured in pixels.
     /// </summary>
-    public LngLat? Offset { get; set; }
+    public new PointLike? Offset { get; set; }
     /// <summary>
     /// The maximum zoom level to allow when the map view transitions to the specified bounds.
     /// </summary>
