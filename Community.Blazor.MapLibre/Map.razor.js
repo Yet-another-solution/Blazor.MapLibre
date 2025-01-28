@@ -290,5 +290,724 @@ const MapInterop = {
     getCenter: (container) => {
         return mapInstances[container].getCenter();
     },
+    /**
+     * Retrieves the center point of the map clamped to the ground for the specified container.
+     * The center point corresponds to the geographical coordinates at the center of the map view.
+     *
+     * @param {string} container - The identifier for the map container instance.
+     * @returns {Object} An object representing the center coordinates clamped to the ground.
+     */
+    getCenterClampedToGround: (container) => {
+        return mapInstances[container].getCenterClampedToGround();
+    },
+    /**
+     * Gets the center elevation of the map instance associated with the provided container.
+     *
+     * @function
+     * @param {string} container - The identifier for the container whose map instance's center elevation is to be retrieved.
+     * @returns {number} The elevation value at the center of the map.
+     */
+    getCenterElevation: (container) => {
+        return mapInstances[container].getCenterElevation();
+    },
+    /**
+     * Retrieves the container instance corresponding to the given container identifier.
+     *
+     * @param {string} container - The identifier for the desired container.
+     * @returns {*} The container instance associated with the specified container identifier.
+     */
+    getContainer: (container) => {
+        return mapInstances[container].getContainer();
+    },
+    /**
+     * Retrieves the state of a specific feature within a given container.
+     *
+     * @param {string} container - The identifier for the container where the feature is located.
+     * @param {Object} feature - The feature object whose state needs to be retrieved.
+     * @returns {Object} The current state of the specified feature.
+     */
+    getFeatureState: (container, feature) => {
+        return mapInstances[container].getFeatureState(feature);
+    },
+    /**
+     * Retrieves the filter configuration for a specified layer in the given map container.
+     *
+     * @param {string} container - The identifier of the map container instance.
+     * @param {string} layerId - The identifier of the layer whose filter is being retrieved.
+     * @returns {Array|Object|null} The filter configuration applied to the specified layer, or null if no filter exists.
+     */
+    getFilter: (container, layerId) => {
+        return mapInstances[container].getFilter(layerId);
+    },
+    /**
+     * Retrieves the glyphs associated with the specified container.
+     *
+     * @param {string} container - The identifier of the container to fetch glyphs for.
+     * @returns {Array} An array of glyph objects associated with the container.
+     */
+    getGlyphs: (container) => {
+        return mapInstances[container].getGlyphs();
+    },
+    /**
+     * Retrieves an image from the specified container using its identifier.
+     *
+     * @param {string} container - The name of the container from which to retrieve the image.
+     * @param {string} id - The unique identifier of the image to retrieve.
+     * @returns {*} The image associated with the given identifier in the specified container.
+     */
+    getImage: (container, id) => {
+        return mapInstances[container].getImage(id);
+    },
+    /**
+     * Retrieves a specific layer from a map instance associated with the given container.
+     *
+     * @param {string} container - The identifier of the container holding the map instance.
+     * @param {string} id - The unique identifier of the layer to retrieve.
+     * @returns {Object|undefined} The layer object if found, or undefined if the layer does not exist.
+     */
+    getLayer: (container, id) => {
+        return mapInstances[container].getLayer(id);
+    },
+    /**
+     * Retrieves the order of layers within a specific map container.
+     *
+     * @param {string} container - The identifier for the map container whose layer order is to be retrieved.
+     * @returns {Array} An array representing the order of layers in the specified container.
+     */
+    getLayersOrder: (container) => {
+        return mapInstances[container].getLayersOrder();
+    },
+    /**
+     * Retrieves the value of a specified layout property for a given layer in a map container.
+     *
+     * @function
+     * @param {string} container - The identifier of the map container instance.
+     * @param {string} layerId - The unique identifier of the layer whose property is being accessed.
+     * @param {string} name - The name of the layout property to retrieve.
+     * @returns {*} The value of the requested layout property, as defined within the specified layer.
+     */
+    getLayoutProperty: (container, layerId, name) => {
+        return mapInstances[container].getLayoutProperty(layerId, name);
+    },
+    /**
+     * Retrieves the light object of the map style.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object} The light specification of the map style.
+     */
+    getLight: (container) => {
+        return mapInstances[container].getLight();
+    },
+    /**
+     * Retrieves the maximum geographical bounds the map is constrained to.
+     * @param {string} container - The map container identifier.
+     * @returns {Object|null} The max bounds (LngLatBounds) or null if not set.
+     */
+    getMaxBounds: (container) => {
+        return mapInstances[container].getMaxBounds();
+    },
+    /**
+     * Retrieves the map's maximum allowable pitch.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} Maximum allowable pitch in degrees.
+     */
+    getMaxPitch: (container) => {
+        return mapInstances[container].getMaxPitch();
+    },
+    /**
+     * Retrieves the map's maximum allowable zoom level.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} Maximum allowable zoom level.
+     */
+    getMaxZoom: (container) => {
+        return mapInstances[container].getMaxZoom();
+    },
+    /**
+     * Retrieves the map's minimum allowable pitch.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} Minimum allowable pitch in degrees.
+     */
+    getMinPitch: (container) => {
+        return mapInstances[container].getMinPitch();
+    },
+    /**
+     * Retrieves the map's minimum allowable zoom level.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} Minimum allowable zoom level.
+     */
+    getMinZoom: (container) => {
+        return mapInstances[container].getMinZoom();
+    },
+    /**
+     * Retrieves the current padding applied around the map viewport.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object} Padding options applied to the map.
+     */
+    getPadding: (container) => {
+        return mapInstances[container].getPadding();
+    },
+    /**
+     * Retrieves the value of a paint property of a specified layer.
+     * @param {string} container - The identifier of the map container.
+     * @param {string} layerId - The ID of the layer to get the paint property from.
+     * @param {string} name - The name of the paint property.
+     * @returns {*} The value of the specified paint property.
+     */
+    getPaintProperty: (container, layerId, name) => {
+        return mapInstances[container].getPaintProperty(layerId, name);
+    },
+    /**
+     * Retrieves the current pitch (tilt) of the map in degrees.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} The current pitch of the map.
+     */
+    getPitch: (container) => {
+        return mapInstances[container].getPitch();
+    },
+    /**
+     * Retrieves the map's pixel ratio.
+     * Note: The actual applied pixel ratio may be lower than specified due to max canvas size restrictions.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} The pixel ratio of the map.
+     */
+    getPixelRatio: (container) => {
+        return mapInstances[container].getPixelRatio();
+    },
+    /**
+     * Retrieves the projection specification of the map.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object} The projection specification of the map.
+     */
+    getProjection: (container) => {
+        return mapInstances[container].getProjection();
+    },
+    /**
+     * Retrieves the state of `renderWorldCopies`.
+     * @param {string} container - The identifier of the map container.
+     * @returns {boolean} True if multiple world copies are rendered, false otherwise.
+     */
+    getRenderWorldCopies: (container) => {
+        return mapInstances[container].getRenderWorldCopies();
+    },
+    /**
+     * Retrieves the current roll angle of the map in degrees.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} The roll angle of the map.
+     */
+    getRoll: (container) => {
+        return mapInstances[container].getRoll();
+    },
+    /**
+     * Retrieves the sky properties of the map style.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object} The sky properties of the map.
+     */
+    getSky: (container) => {
+        return mapInstances[container].getSky();
+    },
+    /**
+     * Retrieves a source by its ID from the map's style.
+     * @param {string} container - The identifier of the map container.
+     * @param {string} id - The ID of the source to retrieve.
+     * @returns {Object|undefined} The source object if found, or undefined.
+     */
+    getSource: (container, id) => {
+        return mapInstances[container].getSource(id);
+    },
+    /**
+     * Retrieves the style's sprite as a list of objects.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Array} The list of sprite objects for the style.
+     */
+    getSprite: (container) => {
+        return mapInstances[container].getSprite();
+    },
+    /**
+     * Retrieves the map's style specification.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object} The style specification object of the map.
+     */
+    getStyle: (container) => {
+        return mapInstances[container].getStyle();
+    },
+    /**
+     * Retrieves the terrain options if terrain is loaded.
+     * @param {string} container - The identifier of the map container.
+     * @returns {Object|undefined} The terrain specification object or undefined if not loaded.
+     */
+    getTerrain: (container) => {
+        return mapInstances[container].getTerrain();
+    },
+    /**
+     * Retrieves the map's current vertical field of view in degrees.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} The vertical field of view of the map.
+     */
+    getVerticalFieldOfView: (container) => {
+        return mapInstances[container].getVerticalFieldOfView();
+    },
+    /**
+     * Retrieves the map's current zoom level.
+     * @param {string} container - The identifier of the map container.
+     * @returns {number} The current zoom level of the map.
+     */
+    getZoom: (container) => {
+        return mapInstances[container].getZoom();
+    },
+    /**
+     * Checks if a control exists on the map.
+     * @param {string} container - The identifier of the map container.
+     * @param {IControl} control - The control to check.
+     * @returns {boolean} True if the control exists on the map.
+     */
+    hasControl: (container, control) => {
+        return mapInstances[container].hasControl(control);
+    },
+    /**
+     * Checks whether an image with the given ID exists in the style.
+     * @param {string} container - The identifier of the map container.
+     * @param {string} id - ID of the image.
+     * @returns {boolean} True if the image exists.
+     */
+    hasImage: (container, id) => {
+        return mapInstances[container].hasImage(id);
+    },
+    /**
+     * Returns true if the map is moving.
+     * @param {string} container - The identifier of the map container.
+     * @returns {boolean} True if the map is moving.
+     */
+    isMoving: (container) => {
+        return mapInstances[container].isMoving();
+    },
+    /**
+     * Returns true if the map is rotating.
+     * @param {string} container - The identifier of the map container.
+     * @returns {boolean} True if the map is rotating.
+     */
+    isRotating: (container) => {
+        return mapInstances[container].isRotating();
+    },
+    /**
+     * Returns true if the specified source is loaded.
+     * @param {string} container - The identifier of the map container.
+     * @param {string} id - The source ID.
+     * @returns {boolean} True if the source is loaded.
+     */
+    isSourceLoaded: (container, id) => {
+        return mapInstances[container].isSourceLoaded(id);
+    },
+    /**
+     * Returns true if the map's style is fully loaded.
+     * @param {string} container - The identifier of the map container.
+     * @returns {boolean} True if the style is loaded.
+     */
+    isStyleLoaded: (container) => {
+        return mapInstances[container].isStyleLoaded();
+    },
+    /**
+     * Returns true if the map is zooming.
+     * @param {string} container - The identifier of the map container.
+     * @returns {boolean} True if the map is zooming.
+     */
+    isZooming: (container) => {
+        return mapInstances[container].isZooming();
+    },
+    /**
+     * Changes any combination of center, zoom, bearing, pitch, or roll without animation.
+     * @param {string} container - The map container.
+     * @param {object} options - JumpToOptions for updating the map view.
+     * @param {any} eventData - Optional event data.
+     */
+    jumpTo: (container, options, eventData) => {
+        mapInstances[container].jumpTo(options, eventData);
+    },
+    /**
+     * Returns true if there is at least one registered listener for a given event type.
+     * @param {string} container - The map container.
+     * @param {string} type - The event type.
+     * @returns {boolean} True if a listener exists for the event type.
+     */
+    listens: (container, type) => {
+        return mapInstances[container].listens(type);
+    },
+    /**
+     * Lists all image IDs available in the map's style.
+     * @param {string} container - The map container.
+     * @returns {string[]} A list of all image IDs.
+     */
+    listImages: (container) => {
+        return mapInstances[container].listImages();
+    },
+    /**
+     * Checks if the map is fully loaded.
+     * @param {string} container - The map container.
+     * @returns {boolean} True if the map is fully loaded.
+     */
+    loaded: (container) => {
+        return mapInstances[container].loaded();
+    },
+    /**
+     * Loads an image from an external URL.
+     * @param {string} container - The map container.
+     * @param {string} url - The URL for the image.
+     * @returns {Promise<*>} A promise resolving when the image is loaded.
+     */
+    loadImage: async (container, url) => {
+        return await mapInstances[container].loadImage(url);
+    },
+    /**
+     * Moves a layer to a different z-position.
+     * @param {string} container - The map container.
+     * @param {string} id - The ID of the layer to move.
+     * @param {string} beforeId - The ID of the target layer to place the moved layer before.
+     */
+    moveLayer: (container, id, beforeId) => {
+        mapInstances[container].moveLayer(id, beforeId);
+    },
+    /**
+     * Pans the map by the specified offset.
+     * @param {string} container - The map container.
+     * @param {Array} offset - The pan offset.
+     * @param {object} options - Pan options.
+     * @param {any} eventData - Optional event data.
+     */
+    panBy: (container, offset, options, eventData) => {
+        mapInstances[container].panBy(offset, options, eventData);
+    },
+    /**
+     * Pans the map to the specified location.
+     * @param {string} container - The map container.
+     * @param {Array<number>} lngLat - The target longitude and latitude.
+     * @param {object} options - Pan animation options.
+     * @param {any} eventData - Optional event data.
+     */
+    panTo: (container, lngLat, options, eventData) => {
+        mapInstances[container].panTo(lngLat, options, eventData);
+    },
+    /**
+     * Projects geographical coordinates to pixel coordinates.
+     * @param {string} container - The map container.
+     * @param {Array<number>} lngLat - Longitude and latitude to project.
+     * @returns {Object} The projected point.
+     */
+    project: (container, lngLat) => {
+        return mapInstances[container].project(lngLat);
+    },
+    /**
+     * Queries rendered features.
+     * @param {string} container - The map container.
+     * @param {object} query - The query options or geometry.
+     * @param {object} options - Rendered features query options.
+     * @returns {Array} Query results.
+     */
+    queryRenderedFeatures: (container, query, options) => {
+        return mapInstances[container].queryRenderedFeatures(query, options);
+    },
+    /**
+     * Queries features from a source.
+     * @param {string} container - The map container.
+     * @param {string} sourceId - The source ID.
+     * @param {object} parameters - Query parameters.
+     * @returns {Array} Query results.
+     */
+    querySourceFeatures: (container, sourceId, parameters) => {
+        return mapInstances[container].querySourceFeatures(sourceId, parameters);
+    },
+    /**
+     * Queries terrain elevation at a given location.
+     * @param {string} container - The map container.
+     * @param {Array<number>} lngLat - Longitude and latitude to query.
+     * @returns {number} Elevation in meters.
+     */
+    queryTerrainElevation: (container, lngLat) => {
+        return mapInstances[container].queryTerrainElevation(lngLat);
+    },
+    /**
+     * Forces a redraw of the map.
+     * @param {string} container - The map container.
+     */
+    redraw: (container) => {
+        mapInstances[container].redraw();
+    },
+    /**
+     * Cleans up internal resources associated with the map.
+     * @param {string} container - The map container.
+     */
+    remove: (container) => {
+        mapInstances[container].remove();
+        delete mapInstances[container];
+    },
+    /**
+     * Removes a control from the map.
+     * @param {string} container - The map container.
+     * @param {IControl} control - The control to remove.
+     */
+    removeControl: (container, control) => {
+        mapInstances[container].removeControl(control);
+    },
+    /**
+     * Removes feature states from the map.
+     * @param {string} container - The map container.
+     * @param {Object} target - The feature or source to remove states.
+     * @param {string} key - Optional key of the state to remove.
+     */
+    removeFeatureState: (container, target, key) => {
+        mapInstances[container].removeFeatureState(target, key);
+    },
+    /**
+     * Removes an image from the map.
+     * @param {string} container - The map container.
+     * @param {string} id - The ID of the image to remove.
+     */
+    removeImage: (container, id) => {
+        mapInstances[container].removeImage(id);
+    },
+    /**
+     * Removes a layer by its ID.
+     * @param {string} container - The map container.
+     * @param {string} id - The ID of the layer to remove.
+     */
+    removeLayer: (container, id) => {
+        mapInstances[container].removeLayer(id);
+    },
+    /**
+     * Removes a source from the map's style.
+     * @param {string} container - The map container.
+     * @param {string} id - The ID of the source to remove.
+     */
+    removeSource: (container, id) => {
+        mapInstances[container].removeSource(id);
+    },
+    /**
+     * Removes the sprite from the map's style.
+     * @param {string} container - The map container.
+     * @param {string} id - The ID of the sprite to remove.
+     */
+    removeSprite: (container, id) => {
+        mapInstances[container].removeSprite(id);
+    },
+    /**
+     * Rotates the map so that north is up.
+     * @param {string} container - The map container.
+     * @param {object} [options] - Animation options.
+     * @param {any} [eventData] - Additional event data.
+     */
+    resetNorth: (container, options, eventData) => {
+        mapInstances[container].resetNorth(options, eventData);
+    },
+    /**
+     * Resets the map's north and pitch angles with an animated transition.
+     * @param {string} container - The map container.
+     * @param {object} [options] - Animation options.
+     * @param {any} [eventData] - Additional event data.
+     */
+    resetNorthPitch: (container, options, eventData) => {
+        mapInstances[container].resetNorthPitch(options, eventData);
+    },
+    /**
+     * Resizes the map according to its container's dimensions.
+     * @param {string} container - The map container.
+     * @param {any} [eventData] - Additional event data.
+     * @param {boolean} [constrainTransform=true] - Transform constraint flag.
+     */
+    resize: (container, eventData, constrainTransform = true) => {
+        mapInstances[container].resize(eventData, constrainTransform);
+    },
+    /**
+     * Rotates the map to the specified bearing.
+     * @param {string} container - The map container.
+     * @param {number} bearing - The target bearing.
+     * @param {object} [options] - Animation options.
+     * @param {any} [eventData] - Additional event data.
+     */
+    rotateTo: (container, bearing, options, eventData) => {
+        mapInstances[container].rotateTo(bearing, options, eventData);
+    },
+    /**
+     * Sets the map's bearing (rotation).
+     * @param {string} container - The map container.
+     * @param {number} bearing - The target bearing.
+     * @param {any} [eventData] - Additional event data.
+     */
+    setBearing: (container, bearing, eventData) => {
+        mapInstances[container].setBearing(bearing, eventData);
+    },
+    /**
+     * Sets the map's geographical center point.
+     * @param {string} container - The map container.
+     * @param {Array<number>} center - The center coordinates [lng, lat].
+     * @param {any} [eventData] - Additional event data.
+     */
+    setCenter: (container, center, eventData) => {
+        mapInstances[container].setCenter(center, eventData);
+    },
+    /**
+     * Sets the map's centerClampedToGround value.
+     * @param {string} container - The map container.
+     * @param {boolean} centerClampedToGround - Clamped to ground flag.
+     */
+    setCenterClampedToGround: (container, centerClampedToGround) => {
+        mapInstances[container].setCenterClampedToGround(centerClampedToGround);
+    },
+    /**
+     * Sets the elevation of the map's center point.
+     * @param {string} container - The map container.
+     * @param {number} elevation - The target elevation in meters.
+     * @param {any} [eventData] - Additional event data.
+     */
+    setCenterElevation: (container, elevation, eventData) => {
+        mapInstances[container].setCenterElevation(elevation, eventData);
+    },
+    /**
+     * Sets the event parent to bubble events to.
+     * @param {string} container - The map container.
+     * @param {Evented} parent - The parent Evented instance.
+     * @param {any} [data] - Additional data.
+     */
+    setEventedParent: (container, parent, data) => {
+        mapInstances[container].setEventedParent(parent, data);
+    },
+    /**
+     * Sets the state of a specific feature.
+     * @param {string} container - The map container.
+     * @param {Object} feature - Feature identifier object.
+     * @param {Object} state - State to apply.
+     */
+    setFeatureState: (container, feature, state) => {
+        mapInstances[container].setFeatureState(feature, state);
+    },
+    /**
+     * Sets a filter for a specified layer.
+     * @param {string} container - The map container.
+     * @param {string} layerId - The layer ID.
+     * @param {object} [filter] - Filter to apply.
+     * @param {object} [options] - Filter options.
+     */
+    setFilter: (container, layerId, filter, options) => {
+        mapInstances[container].setFilter(layerId, filter, options);
+    },
+    /**
+     * Sets the map's glyph source URL.
+     * @param {string} container - The map container.
+     * @param {string} glyphsUrl - The glyph URL.
+     * @param {object} options - Options object.
+     */
+    setGlyphs: (container, glyphsUrl, options) => {
+        mapInstances[container].setGlyphs(glyphsUrl, options);
+    },
+    /**
+     * Updates the map's style.
+     * @param {string} container - The map container.
+     * @param {string | object} style - The new style URL or JSON.
+     * @param {object} [options] - Style options.
+     */
+    setStyle: (container, style, options) => {
+        mapInstances[container].setStyle(style, options);
+    },
+    /**
+     * Loads a 3D terrain mesh using a "raster-dem" source.
+     * @param {string} container - The map container.
+     * @param {object} options - Terrain specification options.
+     */
+    setTerrain: (container, options) => {
+        mapInstances[container].setTerrain(options);
+    },
+    /**
+     * Updates the requestManager's transform request with a new function.
+     * @param {string} container - The map container.
+     * @param {Function} transformRequest - Callback to modify requests.
+     */
+    setTransformRequest: (container, transformRequest) => {
+        mapInstances[container].setTransformRequest(transformRequest);
+    },
+    /**
+     * Sets the map's vertical field of view in degrees.
+     * @param {string} container - The map container.
+     * @param {number} fov - The target vertical field of view (0-180 degrees).
+     * @param {any} [eventData] - Additional event data.
+     */
+    setVerticalFieldOfView: (container, fov, eventData) => {
+        mapInstances[container].setVerticalFieldOfView(fov, eventData);
+    },
+    /**
+     * Sets the map's zoom level.
+     * @param {string} container - The map container.
+     * @param {number} zoom - The desired zoom level (0-20).
+     * @param {any} [eventData] - Additional event data.
+     */
+    setZoom: (container, zoom, eventData) => {
+        mapInstances[container].setZoom(zoom, eventData);
+    },
+    /**
+     * Snaps the map so that north (0° bearing) is up, if the current bearing is close enough.
+     * @param {string} container - The map container.
+     * @param {object} [options] - Animation options.
+     * @param {any} [eventData] - Additional event data.
+     */
+    snapToNorth: (container, options, eventData) => {
+        mapInstances[container].snapToNorth(options, eventData);
+    },
+    /**
+     * Stops any animated transition currently underway.
+     * @param {string} container - The map container.
+     */
+    stop: (container) => {
+        mapInstances[container].stop();
+    },
+    /**
+     * Triggers the rendering of a single frame.
+     * Use this method with custom layers to force rendering updates.
+     * @param {string} container - The map container.
+     */
+    triggerRepaint: (container) => {
+        mapInstances[container].triggerRepaint();
+    },
+    /**
+     * Converts pixel coordinates (x, y) to geographical coordinates (longitude, latitude).
+     * @param {string} container - The map container.
+     * @param {Array<number>} point - The pixel coordinates [x, y].
+     * @returns {Array<number>} Geographical coordinates [lng, lat].
+     */
+    unproject: (container, point) => {
+        return mapInstances[container].unproject(point);
+    },
+    /**
+     * Updates an existing image in the map's sprite.
+     * @param {string} container - The map container.
+     * @param {string} id - The image ID.
+     * @param {ImageBitmap|HTMLImageElement|ImageData|Object} image - The new image data to update.
+     */
+    updateImage: (container, id, image) => {
+        mapInstances[container].updateImage(id, image);
+    },
+    /**
+     * Increases the map's zoom level by 1.
+     * @param {string} container - The map container.
+     * @param {object} [options] - Animation options object.
+     * @param {any} [eventData] - Additional event data.
+     */
+    zoomIn: (container, options, eventData) => {
+        mapInstances[container].zoomIn(options, eventData);
+    },
+    /**
+     * Decreases the map's zoom level by 1.
+     * @param {string} container - The map container.
+     * @param {object} [options] - Animation options object.
+     * @param {any} [eventData] - Additional event data.
+     */
+    zoomOut: (container, options, eventData) => {
+        mapInstances[container].zoomOut(options, eventData);
+    },
+    /**
+     * Zooms the map to a specific zoom level with animation.
+     * @param {string} container - The map container.
+     * @param {number} zoom - The target zoom level.
+     * @param {object} [options] - Options for animation like duration, offset, etc.
+     * @param {any} [eventData] - Additional event data.
+     */
+    zoomTo: (container, zoom, options, eventData) => {
+        mapInstances[container].zoomTo(zoom, options, eventData);
+    }
+
 }
 export { MapInterop };
