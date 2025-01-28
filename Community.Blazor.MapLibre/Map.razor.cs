@@ -365,5 +365,90 @@ public partial class Map : ComponentBase, IAsyncDisposable
     public async ValueTask<LngLat> GetCenter() =>
         await _jsModule.InvokeAsync<LngLat>("MapInterop.getCenter", MapId);
 
+    /// <summary>
+    /// Returns the value of centerClampedToGround.
+    /// If true, the elevation of the center point will automatically be set to the terrain elevation (or zero if
+    /// terrain is not enabled). If false, the elevation of the center point will default to sea level and will not
+    /// automatically update. Defaults to true. Needs to be set to false to keep the camera above ground when pitch > 90 degrees.
+    /// </summary>
+    /// <returns></returns>
+    public async ValueTask<bool> GetCenterClampedToGround() =>
+        await _jsModule.InvokeAsync<bool>("MapInterop.getCenterClampedToGround", MapId);
+
+    /// <summary>
+    /// Returns the elevation of the map's center point.
+    /// </summary>
+    /// <returns></returns>
+    public async ValueTask<double> GetCenterElevation() =>
+        await _jsModule.InvokeAsync<double>("MapInterop.getCenterElevation", MapId);
+
+    /// <summary>
+    /// Returns the map's containing HTML element.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation, resulting in a JavaScript object reference to the container element.</returns>
+    public async ValueTask<IJSObjectReference> GetContainer() =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("MapInterop.getContainer", MapId);
+
+    /// <summary>
+    /// Gets the state of a feature. A feature's state is a set of user-defined key-value pairs that are assigned to a
+    /// feature at runtime. Features are identified by their feature.id attribute, which can be any number or string.
+    /// Note: To access the values in a feature's state object for the purposes of styling the feature, use the feature-state expression.
+    /// </summary>
+    /// <param name="feature">The feature whose state is to be retrieved.</param>
+    /// <returns>A task representing the asynchronous operation, with the result containing the state of the feature as an object.</returns>
+    public async ValueTask<object> GetFeatureState(object feature) =>
+        await _jsModule.InvokeAsync<object>("MapInterop.getFeatureState", MapId, feature);
+
+    /// <summary>
+    /// Returns the filter applied to the specified style layer.
+    /// </summary>
+    /// <param name="layerId"></param>
+    /// <returns></returns>
+    public async ValueTask<string> GetFilter(string layerId) =>
+        await _jsModule.InvokeAsync<string>("MapInterop.getFilter", MapId, layerId);
+
+    /// <summary>
+    /// Returns the value of the style's glyphs URL
+    /// </summary>
+    /// <returns></returns>
+    public async ValueTask<string> GetGlyphs() =>
+        await _jsModule.InvokeAsync<string>("MapInterop.getGlyphs", MapId);
+
+    /// <summary>
+    /// Returns an image, specified by ID, currently available in the map. This includes both images from the style's
+    /// original sprite and any images that have been added at runtime using Map#addImage.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async ValueTask<string> GetImage(string id) =>
+        await _jsModule.InvokeAsync<string>("MapInterop.getImage", MapId, id);
+
+    /// <summary>
+    /// Returns the layer with the specified ID in the map's style.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async ValueTask<object> GetLayer(string id) =>
+        await _jsModule.InvokeAsync<object>("MapInterop.getLayer", MapId, id);
+
+    /// <summary>
+    /// Return the ids of all layers currently in the style, including custom layers, in order.
+    /// </summary>
+    /// <returns></returns>
+    public async ValueTask<string[]> GetLayersOrder() =>
+        await _jsModule.InvokeAsync<string[]>("MapInterop.getLayersOrder", MapId);
+
+    /// <summary>
+    /// Returns the value of a layout property in the specified style layer.
+    /// </summary>
+    /// <param name="layerId"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public async ValueTask<object> GetLayoutProperty(string layerId, string name) =>
+        await _jsModule.InvokeAsync<object>("MapInterop.getLayoutProperty", MapId, layerId, name);
+    
+    
+
+
     #endregion
 }
