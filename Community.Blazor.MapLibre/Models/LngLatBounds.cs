@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Community.Blazor.MapLibre.Models;
 
@@ -11,11 +12,13 @@ public class LngLatBounds
     /// <summary>
     /// The southwest corner of the bounding box.
     /// </summary>
+    [JsonPropertyName("_sw")]
     public required LngLat Southwest { get; set; }
 
     /// <summary>
     /// The northeast corner of the bounding box.
     /// </summary>
+    [JsonPropertyName("_ne")]
     public required LngLat Northeast { get; set; }
 
     /// <summary>
