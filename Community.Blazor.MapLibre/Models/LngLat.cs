@@ -7,7 +7,7 @@ namespace Community.Blazor.MapLibre.Models;
 /// </summary>
 public class LngLat
 {
-    [JsonPropertyName("lon")]
+    [JsonPropertyName("lng")]
     public double Longitude { get; set; }
     [JsonPropertyName("lat")]
     public double Latitude { get; set; }
