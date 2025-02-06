@@ -97,13 +97,13 @@ public class MapOptions
     /// The minimum pitch of the map (0-180).
     /// @defaultValue 0
     /// </summary>
-    public double? MinPitch { get; set; }
+    public double? MinPitch { get; set; } = 0;
 
     /// <summary>
     /// The maximum pitch of the map (0-180).
     /// @defaultValue 60
     /// </summary>
-    public double? MaxPitch { get; set; }
+    public double? MaxPitch { get; set; } = 60;
 
     /// <summary>
     /// If `true`, the "box zoom" interaction is enabled.

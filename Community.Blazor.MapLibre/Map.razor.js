@@ -196,7 +196,10 @@ const MapInterop = {
      * @param {Object} [eventData] - Optional event-related data to be associated with this operation.
      */
     fitBounds: (container, bounds, options, eventData) => {
-        mapInstances[container].fitBounds(bounds, options, eventData);
+        mapInstances[container].fitBounds([
+            [bounds._sw.lng, bounds._sw.lat], // Southwest corner
+            [bounds._ne.lng, bounds._ne.lat]  // Northeast corner
+        ], options, eventData);
     },
     /**
      * Adjusts the map view to fit the given screen coordinates.

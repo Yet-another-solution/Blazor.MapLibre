@@ -1,0 +1,25 @@
+@page "/Examples/FitBounds"
+@using Community.Blazor.MapLibre.Models
+<h3>FitBounds</h3>
+
+<div class="shadow rounded col">
+     <div>
+          <Map @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
+               Height="300px"></Map>
+     </div>
+     <h3 class="p-3">Fit Bounds</h3>
+</div>
+
+@code {
+     private Map _mapListener { get; set; } = new Map();
+     private async Task HandleMapLoadListener(EventArgs args)
+     {
+          var bounds = new LngLatBounds()
+          {
+               Southwest = new LngLat(17.124277, 48.154861),
+               Northeast = new LngLat(21.262986, 49.059367)
+          };
+
+          await _mapListener.FitBounds(bounds);
+     }
+}

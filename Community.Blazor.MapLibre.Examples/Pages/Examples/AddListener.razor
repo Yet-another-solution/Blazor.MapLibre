@@ -1,0 +1,48 @@
+@page "/Examples/AddListener"
+@using System.Text.Json
+<h3>AddListener</h3>
+
+<div class="shadow rounded col">
+    <div>
+        <Map @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
+             Height="300px"></Map>
+    </div>
+    <div class="alert alert-dark mb-0">
+        <code>
+            &lt;Map &#64;ref="_map" OnLoad="HandleMapLoad" &gt;&lt;/Map&gt;
+
+            <pre>
+
+&#64;code
+{
+    private Map _map { get; set; } = new Map();
+    private async Task HandleMapLoad(EventArgs args)
+    {
+        // Add map listeners after it has loaded
+        await _map.AddListener&lt;dynamic&gt;("click", OnClick);
+    }
+
+    public void OnClick(dynamic eventData)
+    {
+        Console.WriteLine(JsonSerializer.Serialize(eventData));
+        Console.WriteLine("Layer has been clicked");
+    }
+}
+</pre>
+
+        </code>
+    </div>
+</div>
+
+@code {
+    private Map _mapListener { get; set; } = new Map();
+    private async Task HandleMapLoadListener(EventArgs args)
+    {
+        await _mapListener.AddListener<dynamic>("click", OnClick);
+    }
+    public void OnClick(dynamic eventData)
+    {
+        Console.WriteLine(JsonSerializer.Serialize(eventData));
+        Console.WriteLine("Layer has been clicked");
+    }
+}

@@ -1,0 +1,38 @@
+<div class="rounded shadow @Class" @onclick="NavigateToPage">
+    <div style="height: 200px">
+        <img class="img-fluid h-100 w-100 rounded-top" src="https://placehold.co/600x200/png"/>
+    </div>
+    <h3 class="p-3">@Title</h3>
+</div>
+
+@code {
+    /// <summary>
+    /// 
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Optional CSS class names. If given, these will be included in the class attribute of the component.
+    /// </summary>
+    [Parameter]
+    public virtual string? Class { get; set; } = null;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Parameter] // Target URL for navigation
+    public string? TargetUrl { get; set; }
+
+    [Inject] // Inject NavigationManager service
+    private NavigationManager NavigationManager { get; set; }
+
+    private void NavigateToPage()
+    {
+        if (!string.IsNullOrEmpty(TargetUrl))
+        {
+            NavigationManager.NavigateTo(TargetUrl); // Navigate to the specified URL
+        }
+    }
+
+}
