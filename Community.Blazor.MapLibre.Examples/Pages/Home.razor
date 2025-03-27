@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using System.Text.Json
 @using Community.Blazor.MapLibre.Models
 
 <h2>Introduction</h2>
@@ -9,7 +8,7 @@
 <div class="d-flex flex-column flex-xl-row gap-3 mb-5">
     <div class="shadow rounded col">
         <div>
-            <Map Class="rounded-top" Height="300px"></Map>
+            <MapLibre Class="rounded-top" Height="300px"></MapLibre>
         </div>
         <h3 class="p-3">Quickstart</h3>
         <div class="alert alert-dark mb-0">
@@ -21,19 +20,19 @@
     
     <div class="shadow rounded col">
         <div>
-            <Map Options="_mapOptions" Class="rounded-top"
-                 Height="300px"></Map>
+            <MapLibre Options="_mapOptions" Class="rounded-top"
+                 Height="300px"></MapLibre>
         </div>
         <h3 class="p-3">Custom options</h3>
         <div class="alert alert-dark mb-0">
             <code>
 <pre>
-&lt;Map Options="_mapOptions" Class="rounded-top"
-     Height="300px"&gt;&lt;/Map&gt;
+&lt;MapLibre Options="_mapOptions" Class="rounded-top"
+     Height="300px"&gt;&lt;/MapLibre&gt;
 
 @@code
 {
-    private readonly MapOptions _mapOptions = new MapOptions()
+    private readonly MapOptions _mapOptions = new()
     {
         Container = "UniqueMapId",
         Center = new LngLat()
@@ -53,7 +52,7 @@
 
 @code
 {
-    private readonly MapOptions _mapOptions = new MapOptions()
+    private readonly MapOptions _mapOptions = new()
     {
         Container = "UniqueMapId",
         Center = new LngLat()

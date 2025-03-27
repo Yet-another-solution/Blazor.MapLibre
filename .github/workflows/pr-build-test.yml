@@ -1,0 +1,30 @@
+name: PR Build and Test
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "release/*"
+
+jobs:
+  pr-build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build projects
+        run: dotnet build --no-restore -c Release
+
+      - name: Test Library
+        run: dotnet test Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release

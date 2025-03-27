@@ -71,7 +71,7 @@ This project should help people working on Blazor projects to use maps more easi
 
 ### Prerequisites
 
-This project is created on .NET 8 so you need to use this or never version to run it.
+This project is created on .NET 9 so you need to use this or never version to run it.
 
 ### Installation
 
@@ -94,7 +94,7 @@ After the package is installed you can use it with simple:
 
 You can customize the map more with options using `MapOptions.cs`:
 ```csharp
-<Map Options="_mapOptions"></Map>
+<MapLibre Options="_mapOptions"></MapLibre>
 
 @code
 {

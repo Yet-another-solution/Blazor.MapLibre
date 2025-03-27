@@ -1,22 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
 
         <PackageId>Community.Blazor.MapLibre</PackageId>
-        <Version>0.3.4</Version>
+        <Version>0.3.5-dev-01</Version>
         <Authors>Yet-Another-Solution</Authors>
         <Description>C# Wrapper around a MapLibre GL JS library</Description>
         <LicenseUrl>https://opensource.org/license/unlicense</LicenseUrl>
         <RepositoryUrl>https://github.com/Yet-another-solution/Blazor.MapLibre</RepositoryUrl>
         <PackageTags>Blazor; MapLibre; Components</PackageTags>
         <PackageIconUrl>https://maplibre.org/img/maplibre-logos/maplibre-logo-square-dark-blue-bg.png</PackageIconUrl>
-
+        <RootNamespace>Community.Blazor.MapLibre</RootNamespace>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
-
 
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
@@ -24,6 +23,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10"/>
+        <PackageReference Include="OneOf" Version="3.0.271" />
     </ItemGroup>
 
     <ItemGroup>

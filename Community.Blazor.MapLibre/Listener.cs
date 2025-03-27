@@ -7,15 +7,8 @@ namespace Community.Blazor.MapLibre;
 /// The Listener class provides a mechanism to manage the lifecycle of event listeners associated with a MapLibre map object.
 /// It ensures that resources tied to the listener, such as JavaScript event handlers, are properly disposed when no longer needed.
 /// </remarks>
-public class Listener : IDisposable
+public class Listener(CallbackHandler action) : IDisposable
 {
-    private readonly CallbackHandler _Action; 
-
-    public Listener(CallbackHandler action)
-    {
-        _Action = action;
-    }
-
     public void Dispose()
     {
         _ = Remove();
@@ -23,6 +16,6 @@ public class Listener : IDisposable
 
     public async Task Remove()
     {
-        await _Action.RemoveAsync();
+        await action.RemoveAsync();
     }
 }

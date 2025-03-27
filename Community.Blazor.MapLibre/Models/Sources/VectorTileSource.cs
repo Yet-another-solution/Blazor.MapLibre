@@ -1,40 +1,51 @@
-namespace Community.Blazor.MapLibre.Models.Source;
+using System.Text.Json.Serialization;
+
+namespace Community.Blazor.MapLibre.Models.Sources;
 
 /// <summary>
 /// Represents a vector tile source. Vector sources provide tiled vector data in Mapbox Vector Tile format.
 /// </summary>
-public class VectorTileSource : SourceBase
+public class VectorTileSource : ISource
 {
     /// <inheritdoc />
-    public override string Type => "vector";
+    [JsonPropertyName("type")]
+    public string Type => "vector";
 
     /// <summary>
     /// URL to a TileJSON resource providing metadata about this source. Optional.
     /// </summary>
+    [JsonPropertyName("url")]
     public string? Url { get; set; }
 
     /// <summary>
     /// An array of URLs to the vector tiles. URL patterns can use placeholders like `{z}`, `{x}`, and `{y}`. Optional.
     /// </summary>
+    [JsonPropertyName("tiles")]
     public List<string>? Tiles { get; set; }
 
     /// <summary>
     /// The bounding box for the source, specified as an array `[sw.lng, sw.lat, ne.lng, ne.lat]`. Optional.
     /// </summary>
+    [JsonPropertyName("bounds")]
     public double[]? Bounds { get; set; }
 
     /// <summary>
     /// The tiling scheme, either `xyz` (standard Slippy map tilenames) or `tms` (OSGeo TMS). Default is `xyz`. Optional.
     /// </summary>
+    [JsonPropertyName("scheme")]
     public string? Scheme { get; set; } = "xyz";
 
     /// <summary>
-    /// A list of layer IDs included in this vector source. Optional.
+    /// Minimum zoom level for which tiles are available, as in the TileJSON spec.
+    /// Default is 0. Optional.
     /// </summary>
-    public List<string>? VectorLayerIds { get; set; }
+    [JsonPropertyName("minzoom")]
+    public float? MinZoom { get; set; }
 
     /// <summary>
-    /// Indicates if tiles should be re-parsed for higher zoom levels rather than just scaling their contents. Optional.
+    /// Maximum zoom level for which tiles are available, as in the TileJSON spec. Data from tiles at the maxzoom are used when displaying the map at higher zoom levels.
+    /// Default is 22. Optional.
     /// </summary>
-    public bool? ReparseOverscaled { get; set; }
+    [JsonPropertyName("maxzoom")]
+    public float? MaxZoom { get; set; }
 }

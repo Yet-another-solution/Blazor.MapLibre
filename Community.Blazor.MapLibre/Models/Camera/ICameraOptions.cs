@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Community.Blazor.MapLibre.Models.Camera;
 
 /// <summary>
@@ -13,13 +15,21 @@ public interface ICameraOptions : ICenterZoomBearing
     /// of looking straight down at the map, while pitch: 60 tilts the user's perspective towards the horizon.
     /// Increasing the pitch value is often used to display 3D objects.
     /// </summary>
+    [JsonPropertyName("pitch")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Pitch { get; set; }
+
     /// <summary>
     /// The desired roll in degrees. The roll is the angle about the camera boresight.
     /// </summary>
+    [JsonPropertyName("roll")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Roll { get; set; }
+
     /// <summary>
     /// The elevation of the center point in meters above sea level.
     /// </summary>
+    [JsonPropertyName("elevation")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Elevation { get; set; }
 }

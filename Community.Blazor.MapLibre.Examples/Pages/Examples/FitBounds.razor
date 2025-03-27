@@ -4,14 +4,14 @@
 
 <div class="shadow rounded col">
      <div>
-          <Map @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
-               Height="300px"></Map>
+          <MapLibre @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
+               Height="300px"></MapLibre>
      </div>
      <h3 class="p-3">Fit Bounds</h3>
 </div>
 
 @code {
-     private Map _mapListener { get; set; } = new Map();
+     private MapLibre _mapListener { get; set; } = new MapLibre();
      private async Task HandleMapLoadListener(EventArgs args)
      {
           var bounds = new LngLatBounds()

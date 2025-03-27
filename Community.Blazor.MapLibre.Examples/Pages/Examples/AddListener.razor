@@ -4,8 +4,8 @@
 
 <div class="shadow rounded col">
     <div>
-        <Map @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
-             Height="300px"></Map>
+        <MapLibre @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
+             Height="300px"></MapLibre>
     </div>
     <div class="alert alert-dark mb-0">
         <code>
@@ -35,7 +35,7 @@
 </div>
 
 @code {
-    private Map _mapListener { get; set; } = new Map();
+    private MapLibre _mapListener { get; set; } = new MapLibre();
     private async Task HandleMapLoadListener(EventArgs args)
     {
         await _mapListener.AddListener<dynamic>("click", OnClick);

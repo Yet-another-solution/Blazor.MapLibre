@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Community.Blazor.MapLibre.Models;
 
 namespace Community.Blazor.MapLibre;
@@ -56,7 +55,7 @@ public class MapOptions
     public string LogoPosition { get; set; } = "bottom-left";
 
     /// <summary>
-    /// Set of WebGLContextAttributes that are applied to the WebGL context of the map. 
+    /// Set of WebGLContextAttributes that are applied to the WebGL context of the map.
     /// See https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext for more details.
     /// `contextType` can be set to `webgl2` or `webgl` to force a WebGL version.
     /// @defaultValue antialias: false, powerPreference: "high-performance", preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: false, desynchronized: false, contextType: "webgl2withfallback"
@@ -79,7 +78,7 @@ public class MapOptions
     /// @defaultValue true
     /// </summary>
     /// <remarks>Can be bool or AroundCenterOptions</remarks>
-    public object ScrollZoom { get; set; } = true; 
+    public object ScrollZoom { get; set; } = true;
 
     /// <summary>
     /// The minimum zoom level of the map (0-24).
@@ -122,7 +121,7 @@ public class MapOptions
     /// @defaultValue true
     /// </summary>
     /// <remarks>Can be bool or DragPanOptions</remarks>
-    public object DragPan { get; set; } = true; 
+    public object DragPan { get; set; } = true;
 
     /// <summary>
     /// If `true`, keyboard shortcuts are enabled.
@@ -160,7 +159,7 @@ public class MapOptions
     /// @defaultValue true
     /// </summary>
     public bool TrackResize { get; set; } = true;
-    
+
     /// <summary>
     /// The initial geographical centerpoint of the map. If `center` is not specified, it defaults to [0, 0].
     /// </summary>
@@ -171,7 +170,7 @@ public class MapOptions
     /// @defaultValue 0
     /// </summary>
     public double Elevation { get; set; } = 0;
-    
+
     /// <summary>
     /// The initial zoom level of the map. Defaults to 0.
     /// @defaultValue 0
@@ -282,7 +281,7 @@ public class MapOptions
     /// @defaultValue 'sans-serif'
     /// </summary>
     public object LocalIdeographFontFamily { get; set; } = "sans-serif";
-    
+
     /// <summary>
     /// The map's MapLibre style. This must be a JSON object or a URL to a JSON object conforming to the MapLibre Style Specification.
     /// </summary>
@@ -314,7 +313,7 @@ public class MapOptions
     public bool ValidateStyle { get; set; } = true;
 
     /// <summary>
-    /// The canvas' maximum `width` and `height` size. 
+    /// The canvas' maximum `width` and `height` size.
     /// The values are provided as an array where the first element is the max width and the second element is the max height.
     /// Ensure this is not set above WebGL `MAX_TEXTURE_SIZE`.
     /// </summary>

@@ -9,6 +9,7 @@ public class LngLat
 {
     [JsonPropertyName("lng")]
     public double Longitude { get; set; }
+
     [JsonPropertyName("lat")]
     public double Latitude { get; set; }
 
