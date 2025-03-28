@@ -1,17 +1,13 @@
 ﻿using System.Text.Json.Serialization;
+using Community.Blazor.MapLibre.Converter;
 
 namespace Community.Blazor.MapLibre.Models.Feature;
 
-[JsonDerivedType(typeof(LineGeometry))]
-[JsonDerivedType(typeof(MultiLineGeometry))]
-[JsonDerivedType(typeof(MultiPointGeometry))]
-[JsonDerivedType(typeof(MultiPolygonGeometry))]
-[JsonDerivedType(typeof(PointGeometry))]
-[JsonDerivedType(typeof(PolygonGeometry))]
+[JsonConverter(typeof(GeometryConverter))]
 public interface IGeometry
 {
     [JsonPropertyName("type")]
-    string Type { get; }
+    GeometryType Type { get; }
 
     /// <summary>
     /// Gets the bounding box of the geometry.

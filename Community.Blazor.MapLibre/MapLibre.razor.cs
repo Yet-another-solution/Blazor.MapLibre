@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
+using Community.Blazor.MapLibre.Models.Event;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Layers;
 using Community.Blazor.MapLibre.Models.Sources;
@@ -25,7 +26,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Represents the JavaScript module reference used to interact with the MapLibre map instance in the Blazor component.
     /// This is dynamically loaded and utilized to invoke JavaScript functions for map initialization and operations.
     /// </summary>
-    private IJSObjectReference _jsModule = null!;
+    private IJSObjectReference? _jsModule;
 
     /// <summary>
     /// Manages a thread-safe dictionary for storing references to .NET object instances
@@ -122,7 +123,18 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             value.Dispose();
         }
 
-        await _jsModule.DisposeAsync();
+        try
+        {
+            if (_jsModule is not null)
+            {
+                await _jsModule.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Ignore
+            // https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-8.0#javascript-interop-calls-without-a-circuit
+        }
     }
 
     #endregion
@@ -144,6 +156,17 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         _references.TryAdd(Guid.NewGuid(), reference);
 
         await _jsModule.InvokeVoidAsync("on", MapId, eventName, reference, layer);
+
+        return new Listener(callback);
+    }
+
+    public async Task<Listener> OnClick(string layerId, Action<MapMouseEvent> handler)
+    {
+        var callback = new CallbackHandler(_jsModule, "click", handler, typeof(MapMouseEvent));
+        var reference = DotNetObjectReference.Create(callback);
+        _references.TryAdd(Guid.NewGuid(), reference);
+
+        await _jsModule.InvokeVoidAsync("onClick", MapId, layerId, reference);
 
         return new Listener(callback);
     }

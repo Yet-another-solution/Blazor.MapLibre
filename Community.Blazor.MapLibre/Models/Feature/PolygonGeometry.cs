@@ -5,7 +5,7 @@ namespace Community.Blazor.MapLibre.Models.Feature;
 public class PolygonGeometry : IGeometry
 {
     [JsonPropertyName("type")]
-    public string Type => "Polygon";
+    public GeometryType Type => GeometryType.Polygon;
 
     /// <summary>
     /// Coordinates of a Polygon are an array of LinearRing coordinate arrays.

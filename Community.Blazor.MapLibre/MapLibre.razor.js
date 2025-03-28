@@ -40,6 +40,14 @@ export function on(container, eventType, dotnetReference, args) {
     }
 }
 
+export function onClick(container, layerId, dotnetReference) {
+    mapInstances[container].on('click', layerId, (e) => {
+        e.target = null; // Remove map to prevent circular references.
+        const result = JSON.stringify(e);
+        dotnetReference.invokeMethodAsync('Invoke', result)
+    });
+}
+
 /**
  * Adds a specified control to the given map container.
  *

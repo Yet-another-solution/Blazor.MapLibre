@@ -5,7 +5,7 @@ namespace Community.Blazor.MapLibre.Models.Feature;
 public class LineGeometry : IGeometry
 {
     [JsonPropertyName("type")]
-    public string Type => "LineString";
+    public GeometryType Type => GeometryType.Line;
 
     public required double[][] Coordinates { get; set; }
 
