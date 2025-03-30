@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Community.Blazor.MapLibre.Models;
 
 namespace Community.Blazor.MapLibre;
@@ -337,5 +338,26 @@ public class MapOptions
     /// keep the camera above ground when pitch \> 90 degrees.
     /// </summary>
     public bool? CenterClampedToGround { get; set; }
+    
+    /// <summary>
+    /// <para>
+    /// Determines whether the library should automatically handle geographic data that
+    /// crosses the antimeridian (180° E or 180° W).
+    /// </para>
+    ///
+    /// <para>
+    /// According to <see href="https://tools.ietf.org/html/rfc7946#section-3.1.9">
+    /// RFC 7946 Section 3.1.9</see>, such objects SHOULD be split into two or more
+    /// objects that do not cross the antimeridian, while preserving equivalence.
+    /// </para>
+    ///
+    /// <para>
+    /// When set to <c>true</c>, all GeoJSON features crossing the antimeridian will be
+    /// automatically split into two parts. The data will be processed using
+    /// <see href="https://gitlab.com/avandesa/geojson-antimeridian-cut">geojson-antimeridian-cut</see>.
+    /// </para>
+    /// </summary>
+    [JsonPropertyName("cutAtAntimeridian")]
+    public bool? CutAtAntimeridian { get; set; }
 }
 

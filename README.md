@@ -109,6 +109,14 @@ You can customize the map more with options using `MapOptions.cs`:
 - ☑️ Partially implemented (missing C# models,...)
 - ❌ Not started
 
+
+| Feature | Status                       |
+|---------|------------------------------|
+| **Map** | **☑️ Partially implemented** |
+
+<details>
+<summary> Map Implementation </summary>
+
 | Feature                                               | Status                       |
 |-------------------------------------------------------|------------------------------|
 | **Map**                                               | **☑️ Partially implemented** |
@@ -211,6 +219,16 @@ You can customize the map more with options using `MapOptions.cs`:
 | - zoomIn()                                            | **☑️ Partially Implemented** |
 | - zoomOut()                                           | **☑️ Partially Implemented** |
 | - zoomTo()                                            | **☑️ Partially Implemented** |
+
+</details>
+
+| Feature     | Status            |
+|-------------|-------------------|
+| **Markers** | **❌ Not started** |
+
+| Feature   | Status            |
+|-----------|-------------------|
+| **Popup** | **❌ Not started** |
 
 
 

@@ -1,4 +1,22 @@
+import splitGeoJSON from './geojson-antimeridian-cut/cut.js'
+
 const mapInstances = {};
+const optionsInstances = {};
+
+/**
+ * Cuts the GeoJSON source at the antimeridian if the option is enabled.
+ *
+ * @param {string} container - The identifier for the map container instance.
+ * @param {Object} data - The GeoJSON data you wish to apply to the source
+ * @returns {Object} - The GeoJSON data with the antimeridian cut if the option is enabled
+ */
+function cutAntiMeridian(container, data) {
+    if (optionsInstances[container]?.cutAtAntimeridian !== true) {
+        return data;
+    }
+
+    return splitGeoJSON(data);
+}
 
 /**
  * Initializes a MapLibre map instance with the given options and connects it to a .NET reference for interop functionality.
@@ -8,7 +26,8 @@ const mapInstances = {};
  */
 export function initializeMap(options, dotnetReference) {
     const map = new maplibregl.Map(options);
-
+    
+    optionsInstances[options.container] = options;
     mapInstances[options.container] = map;
 
     map.on('load', function () {
@@ -114,11 +133,27 @@ export function addLayer(container, layer, beforeId) {
  * @param {Object} source - The source configuration object to be added.
  */
 export function addSource(container, id, source) {
+    if (source.type === 'geojson') {
+        const data = cutAntiMeridian(container, source.data);
+        source.data = data;
+    }
+
     mapInstances[container].addSource(id, source);
 }
 
+/**
+ * Updates the data of a specific GeoJSON source
+ * 
+ * @param {string} container - The identifier for the map container instance.
+ * @param {string} id - The unique identifier for the source you wish to update.
+ * @param {Object} data - The GeoJSON data you wish to apply to the source
+ */
 export function setSourceData(container, id, data) {
+    data = cutAntiMeridian(container, data);
     const source = mapInstances[container].getSource(id);
+    if (source === undefined) {
+        throw new Error(`Could not find source with id ${id}`);
+    }
     source.setData(data);
 }
 
