@@ -47,8 +47,7 @@ public class SymbolLayerLayout
     /// </remarks>
     [JsonPropertyName("symbol-placement")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonConverter(typeof(OneOfJsonConverter<string>))]
-    public OneOf<string, JsonArray>? SymbolPlacement { get; set; }
+    public string? SymbolPlacement { get; set; }
 
     /// <summary>
     /// Defines the distance between two symbol anchors.
@@ -199,8 +198,7 @@ public class SymbolLayerLayout
     /// </remarks>
     [JsonPropertyName("icon-allow-overlap")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonConverter(typeof(OneOfJsonConverter<bool>))]
-    public OneOf<bool, JsonArray>? IconAllowOverlap { get; set; }
+    public bool? IconAllowOverlap { get; set; }
 
     /// <summary>
     /// Gets or sets the behavior for displaying an icon when it overlaps other symbols on the map.
@@ -565,7 +563,7 @@ public class SymbolLayerPaint
 
     [JsonPropertyName("icon-halo-color")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonConverter(typeof(OneOfJsonConverter<double>))]
+    [JsonConverter(typeof(OneOfJsonConverter<string>))]
     public OneOf<string, JsonArray>? IconHaloColor { get; set; }
 
     [JsonPropertyName("icon-halo-width")]

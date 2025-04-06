@@ -41,24 +41,23 @@ export function initializeMap(options, dotnetReference) {
  * @param {string} container - The identifier for the specific map instance.
  * @param {string} eventType - The type of event to listen for (e.g., "click", "zoom").
  * @param {object} dotnetReference - A reference to a .NET object used for invoking asynchronous methods.
- * @param {object} [args] - Optional argument to pass when adding the event listener. If not provided, the event is added without additional arguments.
+ * @param {string | string[]} layerIds - Optional layer to pass when adding the event listener. If not provided, the event is added without a layer.
  */
-export function on(container, eventType, dotnetReference, args) {
-    if (args === undefined || args === null) {
+export function on(container, eventType, dotnetReference, layerIds) {
+    if (layerIds === undefined || layerIds === null) {
         mapInstances[container].on(eventType, function (e) {
             e.target = null; // Remove map to prevent circular references.
             const result = JSON.stringify(e);
             dotnetReference.invokeMethodAsync('Invoke', result)
         })
     } else {
-        mapInstances[container].on(eventType, args, function (e) {
+        mapInstances[container].on(eventType, layerIds, function (e) {
             e.target = null; // Remove map to prevent circular references.
             const result = JSON.stringify(e);
             dotnetReference.invokeMethodAsync('Invoke', result)
         })
     }
 }
-
 /**
  * Adds a specified control to the given map container.
  *

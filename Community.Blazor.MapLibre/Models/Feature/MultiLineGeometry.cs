@@ -5,7 +5,7 @@ namespace Community.Blazor.MapLibre.Models.Feature;
 public class MultiLineGeometry : IGeometry
 {
     [JsonPropertyName("type")]
-    public string Type => "MultiLineString";
+    public GeometryType Type => GeometryType.MultiLine;
 
     /// <summary>
     /// <inheritdoc/>
