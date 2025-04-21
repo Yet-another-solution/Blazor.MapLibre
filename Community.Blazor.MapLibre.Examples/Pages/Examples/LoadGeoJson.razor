@@ -20,6 +20,7 @@
     private Map _mapWithGeoJson { get; set; } = new Map();
     private readonly MapOptions _mapWithGeoJsonOptions = new MapOptions()
     {
+        Style = "https://demotiles.maplibre.org/style.json",
         Center = new LngLat()
         {
             Latitude = 45.188193,
@@ -85,6 +86,7 @@
     private MapLibre _mapWithGeoJson { get; set; } = new MapLibre();
     private readonly MapOptions _mapWithGeoJsonOptions = new MapOptions()
     {
+        Style = "https://demotiles.maplibre.org/style.json",
         Center = new LngLat
         {
             Latitude = 45.188193,

@@ -1,10 +1,11 @@
 @page "/Examples/AddListener"
 @using System.Text.Json
+@using Community.Blazor.MapLibre.Models
 <h3>AddListener</h3>
 
 <div class="shadow rounded col">
     <div>
-        <MapLibre @ref="_mapListener" OnLoad="HandleMapLoadListener" Class="rounded-top"
+        <MapLibre @ref="_mapListener" Options="_mapOptions" OnLoad="HandleMapLoadListener" Class="rounded-top"
              Height="300px"></MapLibre>
     </div>
     <div class="alert alert-dark mb-0">
@@ -16,6 +17,10 @@
 &#64;code
 {
     private Map _map { get; set; } = new Map();
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
     private async Task HandleMapLoad(EventArgs args)
     {
         // Add map listeners after it has loaded
@@ -36,6 +41,10 @@
 
 @code {
     private MapLibre _mapListener { get; set; } = new MapLibre();
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
     private async Task HandleMapLoadListener(EventArgs args)
     {
         await _mapListener.AddListener<dynamic>("click", OnClick);

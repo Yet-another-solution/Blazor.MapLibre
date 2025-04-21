@@ -3,9 +3,12 @@ using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Event;
+using Community.Blazor.MapLibre.Models.Feature;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Layers;
+using Community.Blazor.MapLibre.Models.Padding;
 using Community.Blazor.MapLibre.Models.Sources;
+using Community.Blazor.MapLibre.Models.Sprite;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -103,11 +106,11 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         if (firstRender)
         {
             await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/MapLibre/maplibre-5.3.0.min.js");
+                "./_content/Community.Blazor.MapLibre/maplibre-5.3.0.min.js");
 
             // Import your JavaScript module
             _jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/MapLibre/MapLibre.razor.js");
+                "./_content/Community.Blazor.MapLibre/MapLibre.razor.js");
 
             _dotNetObjectReference = DotNetObjectReference.Create(this);
             // Just making sure the Container is being seeded on Create
@@ -175,14 +178,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="controlType">The type of control to be added to the map.</param>
     /// <param name="options">Optional settings or parameters specific to the control being added.</param>
     /// <returns>A task that represents the asynchronous operation of adding the control.</returns>
-    public async ValueTask AddControl(ControlType controlType, object? options = null)
+    public async ValueTask AddControl(ControlType controlType, ControlPosition? position = null)
     {
         if (_bulkTransaction is not null)
         {
-            _bulkTransaction.Add("addControl", controlType.ToString(), options);
+            _bulkTransaction.Add("addControl", controlType.ToString(), position);
             return;
         }
-        await _jsModule.InvokeVoidAsync("addControl", MapId, controlType.ToString(), options);
+        await _jsModule.InvokeVoidAsync("addControl", MapId, controlType.ToString(), position);
     }
 
     /// <summary>
@@ -251,7 +254,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="url">The URL of the sprite image to be loaded.</param>
     /// <param name="options">Optional parameters to configure the sprite.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public async ValueTask AddSprite(string id, string url, object? options = null)
+    public async ValueTask AddSprite(string id, string url, StyleSetterOptions? options = null)
     {
         if (_bulkTransaction is not null)
         {
@@ -307,7 +310,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="bounds">The geographical bounding box to be fitted.</param>
     /// <param name="options">Optional parameters to customize the calculation.</param>
     /// <returns>A task that represents the asynchronous operation, containing the resulting center, zoom, and bearing.</returns>
-    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, object? options = null) =>
+    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, CameraForBoundsOptions? options = null) =>
         await _jsModule.InvokeAsync<CenterZoomBearing>("cameraForBounds", MapId, bounds, options);
 
     /// <summary>
@@ -471,7 +474,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </summary>
     /// <param name="feature">The feature whose state is to be retrieved.</param>
     /// <returns>A task representing the asynchronous operation, with the result containing the state of the feature as an object.</returns>
-    public async ValueTask<object> GetFeatureState(object feature) =>
+    public async ValueTask<object> GetFeatureState(FeatureIdentifier feature) =>
         await _jsModule.InvokeAsync<object>("getFeatureState", MapId, feature);
 
     /// <summary>
@@ -533,8 +536,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Retrieves the maximum geographical bounds the map is constrained to.
     /// </summary>
     /// <returns>An object representing the map's maximum bounds or null if not set.</returns>
-    public async ValueTask<object?> GetMaxBounds() =>
-        await _jsModule.InvokeAsync<object?>("getMaxBounds", MapId);
+    public async ValueTask<LngLatBounds?> GetMaxBounds() =>
+        await _jsModule.InvokeAsync<LngLatBounds?>("getMaxBounds", MapId);
 
     /// <summary>
     /// Retrieves the map's maximum allowable pitch.
@@ -568,8 +571,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Retrieves the current padding applied to the map's viewport.
     /// </summary>
     /// <returns>An object representing padding options applied to the map.</returns>
-    public async ValueTask<object> GetPadding() =>
-        await _jsModule.InvokeAsync<object>("getPadding", MapId);
+    public async ValueTask<PaddingOptions> GetPadding() =>
+        await _jsModule.InvokeAsync<PaddingOptions>("getPadding", MapId);
 
     /// <summary>
     /// Retrieves the value of a specific paint property of a specified layer.
@@ -627,8 +630,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </summary>
     /// <param name="id">The ID of the source to retrieve.</param>
     /// <returns>The source object if found, or null if not found.</returns>
-    public async ValueTask<object?> GetSource(string id) =>
-        await _jsModule.InvokeAsync<object?>("getSource", MapId, id);
+    public async ValueTask<ISource?> GetSource(string id) =>
+        await _jsModule.InvokeAsync<ISource?>("getSource", MapId, id);
 
     /// <summary>
     /// Retrieves the style's sprite as a list of objects.

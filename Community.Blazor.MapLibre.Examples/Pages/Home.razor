@@ -8,22 +8,10 @@
 <div class="d-flex flex-column flex-xl-row gap-3 mb-5">
     <div class="shadow rounded col">
         <div>
-            <MapLibre Class="rounded-top" Height="300px"></MapLibre>
-        </div>
-        <h3 class="p-3">Quickstart</h3>
-        <div class="alert alert-dark mb-0">
-            <code>
-                &lt;Map&gt;&lt;/Map&gt;
-            </code>
-        </div>
-    </div>
-    
-    <div class="shadow rounded col">
-        <div>
             <MapLibre Options="_mapOptions" Class="rounded-top"
                  Height="300px"></MapLibre>
         </div>
-        <h3 class="p-3">Custom options</h3>
+        <h3 class="p-3">Basic map</h3>
         <div class="alert alert-dark mb-0">
             <code>
 <pre>
@@ -35,6 +23,7 @@
     private readonly MapOptions _mapOptions = new()
     {
         Container = "UniqueMapId",
+        Style = "https://demotiles.maplibre.org/style.json",
         Center = new LngLat()
         {
             Latitude = -2.320679,
@@ -55,6 +44,7 @@
     private readonly MapOptions _mapOptions = new()
     {
         Container = "UniqueMapId",
+        Style = "https://demotiles.maplibre.org/style.json",
         Center = new LngLat()
         {
             Latitude = -2.320679, 

@@ -66,11 +66,11 @@ export function on(container, eventType, dotnetReference, layerIds) {
  *                               "AttributionControl", "FullscreenControl", "GeolocateControl",
  *                               "GlobeControl", "LogoControl", "NavigationControl", "ScaleControl",
  *                               and "TerrainControl".
- * @param {Object} options - Configuration options for the control instance being added.
+ * @param {string} position - position on the map to which the control will be added. Valid values are 'top-left', 'top-right', 'bottom-left', and 'bottom-right'. Defaults to 'top-right'.
  *
  * @throws {Error} Logs a warning if the specified control type is not supported.
  */
-export function addControl(container, controlType, options) {
+export function addControl(container, controlType, position) {
     const map = mapInstances[container];
     const controlsMap = {
         AttributionControl: maplibregl.AttributionControl,
@@ -85,7 +85,7 @@ export function addControl(container, controlType, options) {
 
     const ControlClass = controlsMap[controlType];
     if (ControlClass) {
-        const control = new ControlClass(options);
+        const control = new ControlClass(position);
         map.addControl(control);
     } else {
         console.warn(`Control type '${controlType}' is not supported.`);
