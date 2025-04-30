@@ -1,0 +1,18 @@
+﻿@page "/Examples/CreatePopup"
+@using Community.Blazor.MapLibre.Models
+@using Community.Blazor.MapLibre.Models.Event
+
+<h3>Create Popup</h3>
+
+<MapLibre @ref="_map"
+          Options="_mapOptions"
+          OnLoad="OnMapLoad"
+          Class="rounded-top"
+          Width="600px"
+          Height="300px">
+</MapLibre>
+
+@code
+{
+    private MapLibre? _map { get; set; }
+}

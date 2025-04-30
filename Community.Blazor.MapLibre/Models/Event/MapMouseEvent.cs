@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Community.Blazor.MapLibre.Models.Feature;
 
 namespace Community.Blazor.MapLibre.Models.Event;
@@ -33,5 +34,5 @@ public class SimpleFeature
     public required IGeometry Geometry { get; set; }
 
     [JsonPropertyName("properties")]
-    public Dictionary<string, object> Properties { get; set; } = [];
+    public Dictionary<string, JsonElement> Properties { get; set; } = [];
 }

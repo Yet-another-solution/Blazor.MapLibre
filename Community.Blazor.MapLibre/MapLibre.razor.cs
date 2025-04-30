@@ -176,7 +176,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Adds a control to the map instance based on the specified control type and options.
     /// </summary>
     /// <param name="controlType">The type of control to be added to the map.</param>
-    /// <param name="options">Optional settings or parameters specific to the control being added.</param>
+    /// <param name="position">Optional settings or parameters specific to the control being added.</param>
     /// <returns>A task that represents the asynchronous operation of adding the control.</returns>
     public async ValueTask AddControl(ControlType controlType, ControlPosition? position = null)
     {
@@ -185,6 +185,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("addControl", controlType.ToString(), position);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("addControl", MapId, controlType.ToString(), position);
     }
 
@@ -1058,6 +1059,11 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public async ValueTask ZoomTo(double zoom, object? options = null, object? eventData = null)
     {
         await _jsModule.InvokeVoidAsync("zoomTo", MapId, zoom, options, eventData);
+    }
+
+    public async Task CreatePopup(Popup popup, PopupOptions options)
+    {
+        await _jsModule.InvokeVoidAsync("createPopup", MapId, popup, options);
     }
 
     #endregion

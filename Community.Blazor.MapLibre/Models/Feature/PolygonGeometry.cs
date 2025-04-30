@@ -35,6 +35,7 @@ public class PolygonGeometry : IGeometry
     /// </code>
     /// </example>
     /// </summary>
+    [JsonPropertyName("coordinates")]
     public required double[][][] Coordinates { get; set; }
 
     /// <summary>

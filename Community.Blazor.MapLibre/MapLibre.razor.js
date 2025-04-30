@@ -26,7 +26,7 @@ function cutAntiMeridian(container, data) {
  */
 export function initializeMap(options, dotnetReference) {
     const map = new maplibregl.Map(options);
-    
+
     optionsInstances[options.container] = options;
     mapInstances[options.container] = map;
 
@@ -142,7 +142,7 @@ export function addSource(container, id, source) {
 
 /**
  * Updates the data of a specific GeoJSON source
- * 
+ *
  * @param {string} container - The identifier for the map container instance.
  * @param {string} id - The unique identifier for the source you wish to update.
  * @param {Object} data - The GeoJSON data you wish to apply to the source
@@ -1149,6 +1149,13 @@ export function zoomOut(container, options, eventData) {
  */
 export function zoomTo(container, zoom, options, eventData) {
     mapInstances[container].zoomTo(zoom, options, eventData);
+}
+
+export function createPopup(container, settings, options) {
+    new maplibregl.Popup(options)
+        .setLngLat([settings.lngLat.lng, settings.lngLat.lat])
+        .setHTML(settings.content)
+        .addTo(mapInstances[container]);
 }
 
 /**

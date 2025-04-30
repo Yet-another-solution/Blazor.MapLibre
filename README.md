@@ -89,7 +89,7 @@ dotnet add package Community.Blazor.MapLibre
 
 After the package is installed you can use it with simple:
 ```csharp
-<Map />
+<MapLibre />
 ```
 
 You can customize the map more with options using `MapOptions.cs`:
@@ -226,9 +226,9 @@ You can customize the map more with options using `MapOptions.cs`:
 |-------------|-------------------|
 | **Markers** | **❌ Not started** |
 
-| Feature   | Status            |
-|-----------|-------------------|
-| **Popup** | **❌ Not started** |
+| Feature   | Status           |
+|-----------|------------------|
+| **Popup** | **✅ Complete**  |
 
 
 

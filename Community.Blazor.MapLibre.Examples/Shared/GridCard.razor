@@ -1,3 +1,5 @@
+@inject NavigationManager NavigationManager
+
 <div class="rounded shadow @Class" @onclick="NavigateToPage">
     <div style="height: 200px">
         <img class="img-fluid h-100 w-100 rounded-top" src="https://placehold.co/600x200/png"/>
@@ -6,11 +8,12 @@
 </div>
 
 @code {
+
     /// <summary>
-    /// 
+    /// The title to be displayed in the card.
     /// </summary>
     [Parameter]
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Optional CSS class names. If given, these will be included in the class attribute of the component.
@@ -19,14 +22,14 @@
     public virtual string? Class { get; set; } = null;
 
     /// <summary>
-    /// 
+    /// The target URL for navigation when the card is clicked.
     /// </summary>
-    [Parameter] // Target URL for navigation
+    [Parameter]
     public string? TargetUrl { get; set; }
 
-    [Inject] // Inject NavigationManager service
-    private NavigationManager NavigationManager { get; set; }
-
+    /// <summary>
+    /// Handles the click event on the card and navigates to the specified TargetUrl if it is not null or empty.
+    /// </summary>
     private void NavigateToPage()
     {
         if (!string.IsNullOrEmpty(TargetUrl))

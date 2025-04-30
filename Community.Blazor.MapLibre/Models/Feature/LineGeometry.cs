@@ -7,6 +7,7 @@ public class LineGeometry : IGeometry
     [JsonPropertyName("type")]
     public GeometryType Type => GeometryType.Line;
 
+    [JsonPropertyName("coordinates")]
     public required double[][] Coordinates { get; set; }
 
     /// <summary>

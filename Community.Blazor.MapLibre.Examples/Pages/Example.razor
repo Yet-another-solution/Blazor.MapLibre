@@ -5,7 +5,7 @@
 <p>
     This is list of few example usages of the Blazor.MapLibre
 </p>
-<div class="d-flex flex-column flex-xl-row gap-3 mb-5">
+<div class="d-flex flex-wrap flex-column flex-xl-row gap-3 mb-5">
 
     @foreach (var item in _samplesList)
     {
@@ -21,7 +21,8 @@
     {
         new MapSampleItem { Title = "Load GeoJSON", Url = "/Examples/LoadGeoJson" },
         new MapSampleItem { Title = "Add Listener", Url = "/Examples/AddListener" },
-        new MapSampleItem { Title = "Fit Bounds", Url = "/Examples/FitBounds" }
+        new MapSampleItem { Title = "Fit Bounds", Url = "/Examples/FitBounds" },
+        new MapSampleItem { Title = "Create Popup", Url = "/Examples/CreatePopup" },
     };
 
     // ExampleItem class to store information
