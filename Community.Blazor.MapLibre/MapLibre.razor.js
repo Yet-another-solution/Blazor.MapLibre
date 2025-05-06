@@ -30,6 +30,10 @@ export function initializeMap(options, dotnetReference) {
     optionsInstances[options.container] = options;
     mapInstances[options.container] = map;
 
+    map.on('style.load', () => {
+        dotnetReference.invokeMethodAsync("OnStyleLoadCallback")
+    });
+
     map.on('load', function () {
         dotnetReference.invokeMethodAsync("OnLoadCallback")
     });
@@ -771,12 +775,12 @@ export function moveLayer(container, id, beforeId) {
 /**
  * Pans the map by the specified offset.
  * @param {string} container - The map container.
- * @param {object} offset - The pan offset.
+ * @param {Array} offset - The pan offset.
  * @param {object} options - Pan options.
  * @param {any} eventData - Optional event data.
  */
 export function panBy(container, offset, options, eventData) {
-    mapInstances[container].panBy([offset.x, offset.y], options, eventData);
+    mapInstances[container].panBy(offset, options, eventData);
 }
 
 /**
@@ -1064,6 +1068,15 @@ export function setVerticalFieldOfView(container, fov, eventData) {
 }
 
 /**
+ * Sets the map's projection.
+ * @param {string} container - The map container.
+ * @param {object} projection - The projection object.
+ */
+export function setProjection(container, projection) {
+    mapInstances[container].setProjection(projection);
+}
+
+/**
  * Sets the map's zoom level.
  * @param {string} container - The map container.
  * @param {number} zoom - The desired zoom level (0-20).
@@ -1107,7 +1120,7 @@ export function triggerRepaint(container) {
  * @returns {Array<number>} Geographical coordinates [lng, lat].
  */
 export function unproject(container, point) {
-    return mapInstances[container].unproject([point.x, point.y]);
+    return mapInstances[container].unproject(point);
 }
 
 /**

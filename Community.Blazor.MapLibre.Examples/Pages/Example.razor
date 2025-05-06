@@ -9,7 +9,9 @@
 
     @foreach (var item in _samplesList)
     {
-        <GridCard Title="@item.Title" TargetUrl="@item.Url" Class="@($"col-3 {item.Class}")" />
+        <GridCard Title="@item.Title"
+                  TargetUrl="@item.Url"
+                  Class="@($"col-3 {item.Class}")"/>
     }
 
 </div>
@@ -17,18 +19,19 @@
 
 @code
 {
-    private List<MapSampleItem> _samplesList = new()
-    {
-        new MapSampleItem { Title = "Load GeoJSON", Url = "/Examples/LoadGeoJson" },
-        new MapSampleItem { Title = "Add Listener", Url = "/Examples/AddListener" },
-        new MapSampleItem { Title = "Fit Bounds", Url = "/Examples/FitBounds" },
-        new MapSampleItem { Title = "Create Popup", Url = "/Examples/CreatePopup" },
-    };
+    private readonly List<MapSampleItem> _samplesList =
+    [
+        new() { Title = "Load GeoJSON", Url = "/Examples/LoadGeoJson" },
+        new() { Title = "Add Listener", Url = "/Examples/AddListener" },
+        new() { Title = "Fit Bounds", Url = "/Examples/FitBounds" },
+        new() { Title = "Create Popup", Url = "/Examples/CreatePopup" },
+        new() { Title = "Render Globe", Url = "/Examples/RenderGlobe" }
+    ];
 
     // ExampleItem class to store information
     private class MapSampleItem
     {
-        public string Title { get; set; } = string.Empty; 
+        public string Title { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
         public string? Class { get; set; }
     }
