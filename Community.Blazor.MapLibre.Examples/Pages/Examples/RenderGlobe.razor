@@ -1,0 +1,36 @@
+﻿@page "/Examples/RenderGlobe"
+@using Community.Blazor.MapLibre.Models
+
+<h3>Render Globe</h3>
+
+<div class="shadow rounded col">
+    <div>
+        <MapLibre @ref="_mapListener"
+                  Options="_mapOptions"
+                  OnStyleLoad="OnStyleLoad"
+                  Class="rounded-top"
+                  Height="600px">
+        </MapLibre>
+    </div>
+</div>
+
+
+
+@code {
+    private MapLibre _mapListener { get; set; } = new MapLibre();
+
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
+
+    
+    private async Task OnStyleLoad(EventArgs args)
+    {
+        await _mapListener.SetProjection(new ProjectionSpecification()
+        {
+            Type = "globe"
+        });
+    }
+
+}

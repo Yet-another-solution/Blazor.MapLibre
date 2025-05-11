@@ -10,12 +10,14 @@ public class FeatureIdentifier
     [JsonPropertyName("id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Id { get; set; }
+
     /// <summary>
     /// The id of the vector or GeoJSON source for the feature.
     /// </summary>
     [JsonPropertyName("source")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Source { get; set; }
+
     /// <summary>
     /// For vector tile sources, sourceLayer is required.
     /// </summary>

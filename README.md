@@ -182,43 +182,43 @@ You can customize the map more with options using `MapOptions.cs`:
 | - isSourceLoaded()                                    | **✅ Complete**               |
 | - isStyleLoaded()                                     | **✅ Complete**               |
 | - isZooming()                                         | **✅ Complete**               |
-| - jumpTo()                                            | **☑️ Partially Implemented** |
+| - jumpTo()                                            | **✅ Complete**               |
 | - listens()                                           | **✅ Complete**               |
 | - listImages()                                        | **✅ Complete**               |
 | - loaded()                                            | **✅ Complete**               |
 | - loadImage()                                         | **☑️ Partially Implemented** |
 | - moveLayer()                                         | **✅ Complete**               |
-| - panBy()                                             | **☑️ Partially Implemented** |
-| - panTo()                                             | **☑️ Partially Implemented** |
-| - project()                                           | **☑️ Partially Implemented** |
+| - panBy()                                             | **✅ Complete**               |
+| - panTo()                                             | **✅ Complete**               |
+| - project()                                           | **✅ Complete**               |
 | - queryRenderedFeatures()                             | **☑️ Partially Implemented** |
-| - querySourceFeatures()                               | **☑️ Partially Implemented** |
-| - queryTerrainElevation()                             | **☑️ Partially Implemented** |
+| - querySourceFeatures()                               | **✅ Complete**               |
+| - queryTerrainElevation()                             | **✅ Complete**               |
 | - redraw()                                            | **✅ Complete**               |
 | - remove()                                            | **✅ Complete**               |
 | - removeControl()                                     | **☑️ Partially Implemented** |
-| - removeFeatureState()                                | **☑️ Partially Implemented** |
+| - removeFeatureState()                                | **✅ Complete**               |
 | - removeImage()                                       | **✅ Complete**               |
 | - removeLayer()                                       | **✅ Complete**               |
 | - removeSource()                                      | **✅ Complete**               |
 | - removeSprite()                                      | **✅ Complete**               |
-| - resetNorth()                                        | **☑️ Partially Implemented** |
-| - resetNorthPitch()                                   | **☑️ Partially Implemented** |
-| - resize()                                            | **☑️ Partially Implemented** |
-| - rotateTo()                                          | **☑️ Partially Implemented** |
+| - resetNorth()                                        | **✅ Complete**               |
+| - resetNorthPitch()                                   | **✅ Complete**               |
+| - resize()                                            | **✅ Complete**               |
+| - rotateTo()                                          | **✅ Complete**               |
 | - setBearing()                                        | **✅ Complete**               |
-| - setCenter()                                         | **☑️ Partially Implemented** |
+| - setCenter()                                         | **✅ Complete**               |
 | - setCenterClampedToGround()                          | **✅ Complete**               |
 | - setCenterElevation()                                | **✅ Complete**               |
-| - setFeatureState()                                   | **☑️ Partially Implemented** |
+| - setFeatureState()                                   | **✅ Complete**               |
 | - setZoom()                                           | **✅ Complete**               |
 | - setStyle()                                          | **☑️ Partially Implemented** |
 | - stop()                                              | **✅ Complete**               |
-| - unproject()                                         | **☑️ Partially Implemented** |
+| - unproject()                                         | **✅ Complete**               |
 | - updateImage()                                       | **☑️ Partially Implemented** |
-| - zoomIn()                                            | **☑️ Partially Implemented** |
-| - zoomOut()                                           | **☑️ Partially Implemented** |
-| - zoomTo()                                            | **☑️ Partially Implemented** |
+| - zoomIn()                                            | **✅ Complete**               |
+| - zoomOut()                                           | **✅ Complete**               |
+| - zoomTo()                                            | **✅ Complete**               |
 
 </details>
 

@@ -30,6 +30,10 @@ export function initializeMap(options, dotnetReference) {
     optionsInstances[options.container] = options;
     mapInstances[options.container] = map;
 
+    map.on('style.load', () => {
+        dotnetReference.invokeMethodAsync("OnStyleLoadCallback")
+    });
+
     map.on('load', function () {
         dotnetReference.invokeMethodAsync("OnLoadCallback")
     });
@@ -1061,6 +1065,15 @@ export function setTransformRequest(container, transformRequest) {
  */
 export function setVerticalFieldOfView(container, fov, eventData) {
     mapInstances[container].setVerticalFieldOfView(fov, eventData);
+}
+
+/**
+ * Sets the map's projection.
+ * @param {string} container - The map container.
+ * @param {object} projection - The projection object.
+ */
+export function setProjection(container, projection) {
+    mapInstances[container].setProjection(projection);
 }
 
 /**

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Community.Blazor.MapLibre.Models;
 
 /// <summary>
@@ -6,7 +8,10 @@ namespace Community.Blazor.MapLibre.Models;
 /// </summary>
 public class PointLike(double x, double y)
 {
+    [JsonPropertyName("x")]
     public double X { get; set; } = x;
+
+    [JsonPropertyName("y")]
     public double Y { get; set; } = y;
 
     public static PointLike FromArray(double[] coordinates)

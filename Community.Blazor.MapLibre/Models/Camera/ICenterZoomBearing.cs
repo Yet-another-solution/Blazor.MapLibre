@@ -9,10 +9,12 @@ public interface ICenterZoomBearing
     /// The desired center.
     /// </summary>
     public LngLat? Center { get; set; }
+
     /// <summary>
     /// The desired mercator zoom level.
     /// </summary>
     public double? Zoom { get; set; }
+
     /// <summary>
     /// The desired bearing in degrees. The bearing is the compass direction that
     ///  is "up". For example, `bearing: 90` orients the map so that east is up.
