@@ -1,0 +1,91 @@
+name: Feature Request
+description: Suggest an idea for Community.Blazor.MapLibre
+title: "[FEATURE]: "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature!
+        
+        Please provide as much detail as possible to help us understand your idea.
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Is your feature request related to a problem?
+      description: |
+        A clear and concise description of what the problem is.
+      placeholder: |
+        I'm always frustrated when [...] or I need a way to [...]
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution-description
+    attributes:
+      label: Describe the solution you'd like
+      description: |
+        A clear and concise description of what you want to happen.
+        
+        If you know of similar implementations in other libraries or languages, please reference them.
+      placeholder: |
+        I would like to be able to [...] so that [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: |
+        Have you considered any alternative solutions or workarounds?
+      placeholder: |
+        I've tried implementing this with [...] but it doesn't work well because [...]
+    validations:
+      required: false
+
+  - type: textarea
+    id: maplibre-js-reference
+    attributes:
+      label: MapLibre JS Reference
+      description: |
+        If this feature exists in MapLibre JS, please provide links to the relevant documentation or examples.
+      placeholder: |
+        This feature corresponds to [method/property] in MapLibre JS: [link to documentation]
+    validations:
+      required: false
+
+  - type: textarea
+    id: example-usage
+    attributes:
+      label: Example Usage
+      description: |
+        If possible, provide an example of how you envision using this feature in code.
+      placeholder: |
+        ```csharp
+        // Example of how the feature might be used
+        var map = new MapLibre();
+        map.NewFeature(...);
+        ```
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: |
+        Add any other context, screenshots, diagrams or references about the feature request here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to contribute this feature?
+      options:
+        - label: I'm interested in implementing this feature with guidance

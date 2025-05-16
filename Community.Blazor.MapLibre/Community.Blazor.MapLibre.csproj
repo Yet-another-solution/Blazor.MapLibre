@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <PackageId>Community.Blazor.MapLibre</PackageId>
-        <Version>0.3.7</Version>
+        <Version>5.3.0-beta.1</Version>
         <Authors>Yet-Another-Solution</Authors>
         <Description>C# Wrapper around a MapLibre GL JS library</Description>
         <LicenseUrl>https://opensource.org/license/unlicense</LicenseUrl>

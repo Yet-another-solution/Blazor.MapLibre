@@ -6,6 +6,7 @@ using Community.Blazor.MapLibre.Models.Event;
 using Community.Blazor.MapLibre.Models.Feature;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Layers;
+using Community.Blazor.MapLibre.Models.Marker;
 using Community.Blazor.MapLibre.Models.Padding;
 using Community.Blazor.MapLibre.Models.Sources;
 using Community.Blazor.MapLibre.Models.Sprite;
@@ -1177,6 +1178,13 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     {
         await _jsModule.InvokeVoidAsync("createPopup", MapId, popup, options);
     }
+
+    #endregion
+
+    #region Marker
+
+    public async Task AddMarker(MarkerOptions options, LngLat position) 
+        => await _jsModule.InvokeAsync<CenterZoomBearing>("createMarker", MapId, options, position);
 
     #endregion
 

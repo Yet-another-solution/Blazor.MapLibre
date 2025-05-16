@@ -1171,6 +1171,12 @@ export function createPopup(container, settings, options) {
         .addTo(mapInstances[container]);
 }
 
+export function createMarker(container, options, position) {
+    new maplibregl.Marker(options)
+        .setLngLat([position.lng, position.lat])
+        .addTo(mapInstances[container]);
+}
+
 /**
  * Perform all applied bulk transactions.
  * The only purpose of bulk transaction send multiple transactions in one message, reducing the roundtrip time.

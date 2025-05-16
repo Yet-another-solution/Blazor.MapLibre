@@ -1,0 +1,107 @@
+name: Bug Report
+description: File a bug report for Community.Blazor.MapLibre
+title: "[BUG]: "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report!
+        
+        Please provide as much detail as possible to help us understand and reproduce the issue.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Before submitting a bug report, please confirm the following
+      options:
+        - label: I have checked that this issue has not already been reported
+          required: true
+        - label: I have tried clearing browser cache and restarting my application
+          required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package Version
+      description: What version of Community.Blazor.MapLibre are you using?
+      placeholder: "e.g., 5.3.0-beta.1"
+    validations:
+      required: true
+
+  - type: input
+    id: dotnet-version
+    attributes:
+      label: .NET Version
+      description: Which .NET version are you using?
+      placeholder: "e.g., .NET 9.0"
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using (if applicable)?
+      placeholder: "e.g., Chrome 123, Firefox 102, etc."
+    validations:
+      required: false
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: |
+        Please describe the bug in detail.
+        
+        Include any error messages or stack traces if available.
+      placeholder: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: |
+        How can we reproduce this issue? Provide a step-by-step guide or a minimal code sample.
+      placeholder: |
+        1. Add MapLibre to the page with '...'
+        2. Configure options '...'
+        3. Call method '...'
+        4. See error
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-sample
+    attributes:
+      label: Code Sample
+      description: |
+        Please provide a code sample that demonstrates the issue.
+        This will be automatically formatted into code, so no need for backticks.
+      render: csharp
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: |
+        Add any other context about the problem here.
+        Screenshots, logs, or references to related issues are helpful.
+    validations:
+      required: false
