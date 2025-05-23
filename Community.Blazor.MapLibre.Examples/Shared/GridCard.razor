@@ -1,8 +1,8 @@
 @inject NavigationManager NavigationManager
 
 <div class="rounded shadow @Class" @onclick="NavigateToPage">
-    <div style="height: 200px">
-        <img class="img-fluid h-100 w-100 rounded-top" src="https://placehold.co/600x200/png"/>
+    <div style="height: 200px; overflow: hidden;">
+        <img class="rounded-top w-100 h-100" style="object-fit: cover;" src="@ImageUrl"/>
     </div>
     <h3 class="p-3">@Title</h3>
 </div>
@@ -20,6 +20,9 @@
     /// </summary>
     [Parameter]
     public virtual string? Class { get; set; } = null;
+
+    [Parameter] 
+    public string ImageUrl { get; set; } = "https://placehold.co/600x200/png";
 
     /// <summary>
     /// The target URL for navigation when the card is clicked.

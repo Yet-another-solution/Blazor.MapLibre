@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <PackageId>Community.Blazor.MapLibre</PackageId>
-        <Version>5.3.0-beta.1</Version>
+        <Version>1.0.0</Version>
         <Authors>Yet-Another-Solution</Authors>
         <Description>C# Wrapper around a MapLibre GL JS library</Description>
         <LicenseUrl>https://opensource.org/license/unlicense</LicenseUrl>
@@ -15,6 +15,10 @@
         <PackageIconUrl>https://maplibre.org/img/maplibre-logos/maplibre-logo-square-dark-blue-bg.png</PackageIconUrl>
         <RootNamespace>Community.Blazor.MapLibre</RootNamespace>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        
+        <!-- Generate XML documentation file -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591</NoWarn> <!-- Suppresses missing XML comment warnings -->
     </PropertyGroup>
 
     <ItemGroup>

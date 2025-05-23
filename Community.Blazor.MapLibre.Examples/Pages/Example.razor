@@ -11,6 +11,7 @@
     {
         <GridCard Title="@item.Title"
                   TargetUrl="@item.Url"
+                  ImageUrl="@item.ImageUrl"
                   Class="@($"col-3 {item.Class}")"/>
     }
 
@@ -21,11 +22,11 @@
 {
     private readonly List<MapSampleItem> _samplesList =
     [
-        new() { Title = "Load GeoJSON", Url = "Examples/LoadGeoJson" },
-        new() { Title = "Add Listener", Url = "Examples/AddListener" },
-        new() { Title = "Fit Bounds", Url = "Examples/FitBounds" },
-        new() { Title = "Create Popup", Url = "Examples/CreatePopup" },
-        new() { Title = "Render Globe", Url = "Examples/RenderGlobe" }
+        new() { Title = "Load GeoJSON", Url = "Examples/LoadGeoJson", ImageUrl = "/img/examples/geojson.png"},
+        new() { Title = "Add Listener", Url = "Examples/AddListener", ImageUrl = "/img/examples/listener.png" },
+        new() { Title = "Fit Bounds", Url = "Examples/FitBounds", ImageUrl = "/img/examples/fitbounds.png" },
+        new() { Title = "Create Popup", Url = "Examples/CreatePopup", ImageUrl = "/img/examples/popup.png" },
+        new() { Title = "Render Globe", Url = "Examples/RenderGlobe", ImageUrl = "/img/examples/globe.png" }
     ];
 
     // ExampleItem class to store information
@@ -33,6 +34,7 @@
     {
         public string Title { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
         public string? Class { get; set; }
     }
 

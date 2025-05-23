@@ -16,4 +16,8 @@
       <ProjectReference Include="..\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\img\examples\" />
+    </ItemGroup>
+
 </Project>

@@ -416,11 +416,12 @@ public class MapOptions
 
     /// <summary>
     /// The MapLibre style, either as a JSON URL or a full style object.
-    /// When not specified, Map#setStyle must be called before rendering.
+    /// When not specified, it will use the same style as on the demo maps.
+    /// This can be overwritten with <see cref="MapLibre.SetStyle"/> before rendering.
     /// </summary>
     [JsonPropertyName("style")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object? Style { get; set; }
+    public object? Style { get; set; } = "https://demotiles.maplibre.org/style.json";
 
     /// <summary>
     /// Enables \"drag to pitch\" interaction, or provides options for pitch behavior.
