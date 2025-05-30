@@ -1093,6 +1093,29 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         await _jsModule.InvokeVoidAsync("setFeatureState", MapId, feature, state);
 
     /// <summary>
+    /// Sets the filter for the specified style layer.
+    /// </summary>
+    /// <remarks>
+    /// Filters control which features a style layer renders from its source. 
+    /// Any feature for which the filter expression evaluates to <c>true</c> will be rendered on the map. 
+    /// Those that are <c>false</c> will be hidden.
+    /// Use <c>SetFilter</c> to show a subset of your source data.
+    /// To clear the filter, pass <c>null</c> or omit the second parameter.
+    /// </remarks>
+    /// <param name="layerId">
+    /// The ID of the layer to apply the filter to.
+    /// </param>
+    /// <param name="filter">
+    /// The filter, conforming to the MapLibre Style Specification's filter definition. 
+    /// If <c>null</c> is provided, the function removes any existing filter from the layer.
+    /// </param>
+    /// <param name="options">
+    /// Optional. An options object for configuring style setting behavior.
+    /// </param>
+    public async ValueTask SetFilter(string layerId, object filter, StyleSetterOptions options) =>
+        await _jsModule.InvokeVoidAsync("setFilter", MapId, layerId, filter, options);
+    
+    /// <summary>
     /// Sets the map's projection configuration, which determines how geographic coordinates are projected to the screen.
     /// </summary>
     /// <param name="projection">
