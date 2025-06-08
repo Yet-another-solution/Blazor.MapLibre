@@ -1,0 +1,192 @@
+@page "/Examples/MapboxGlDraw"
+@using Community.Blazor.MapLibre.Models.Feature
+
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.css" type="text/css">
+
+<h3>Mapbox GL Draw</h3>
+
+<script src="https://unpkg.com/@@turf/turf@6/turf.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.js"></script>
+
+<div class="shadow rounded col">
+    <div>
+        <MapLibre @ref="_mapListener"
+                  OnDrawUpdate="Callback"
+                  Options="_mapOptions"
+                  OnLoad="OnLoad"
+                  Class="rounded-top"
+                  Height="600px">
+        </MapLibre>
+    </div>
+</div>
+
+<div>
+    Size: @size m²
+</div>
+
+
+
+@code {
+    private MapLibre _mapListener { get; set; } = new MapLibre();
+
+    private readonly MapOptions _mapOptions = new();
+
+    public decimal size { get; set; } = 0m;
+    private async Task OnLoad(EventArgs args)
+    {
+        Console.WriteLine("Map loaded successfully.");
+        try
+        {
+            await _mapListener.AddDrawControl(new
+            {
+                displayControlsDefault = false,
+                // Select which mapbox-gl-draw control buttons to add to the map.
+                controls = new
+                {
+                    point = true,
+                    polygon = true,
+                    trash = true
+                },
+                // Set mapbox-gl-draw to draw by default.
+                // The user does not have to click the polygon control button first.
+                defaultMode = "draw_polygon"
+            });
+
+            await _mapListener.AddFeatureToDraw(new FeatureFeature()
+            {
+                Geometry = new PolygonGeometry()
+                {
+                    Coordinates =
+                    [
+                        [
+                            [-67.13734351262877, 45.137451890638886],
+                            [-66.96466, 44.8097],
+                            [-68.03252, 44.3252],
+                            [-69.06, 43.98],
+                            [-70.11617, 43.68405],
+                            [-70.64573401557249, 43.090083319667144],
+                            [-70.75102474636725, 43.08003225358635],
+                            [-70.79761105007827, 43.21973948828747],
+                            [-70.98176001655037, 43.36789581966826],
+                            [-70.94416541205806, 43.46633942318431],
+                            [-71.08482, 45.3052400000002],
+                            [-70.6600225491012, 45.46022288673396],
+                            [-70.30495378282376, 45.914794623389355],
+                            [-70.00014034695016, 46.69317088478567],
+                            [-69.23708614772835, 47.44777598732787],
+                            [-68.90478084987546, 47.184794623394396],
+                            [-68.23430497910454, 47.35462921812177],
+                            [-67.79035274928509, 47.066248887716995],
+                            [-67.79141211614706, 45.702585354182816],
+                            [-67.13734351262877, 45.137451890638886],
+                        ]
+                    ]
+                }
+            });
+
+            Console.WriteLine("Control added successfully.");
+        }catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding control: {ex.Message}");
+        }
+    }
+
+    private void Callback((FeatureCollection featureCollection, string mapStatus) obj)
+    {
+        try
+        {
+            var featureCollection = obj.featureCollection;
+
+            if (featureCollection.Features.Count > 0)
+            {
+                decimal totalArea = 0;
+                
+                foreach (var feature in featureCollection.Features)
+                {
+                    if (feature is FeatureFeature featureFeature)
+                    {
+                        if (featureFeature.Geometry is PolygonGeometry polygonGeometry)
+                        {
+                            decimal area = (decimal)PolygonAreaCalculator.CalculateArea(polygonGeometry);
+                            totalArea += area;
+                        }
+                    }
+                }
+                
+                size = Math.Round(totalArea, 2);
+            }
+            else
+            {
+                size = 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing feature data: {ex.Message}");
+            size = 0;
+        }
+        
+        // Trigger UI update
+        StateHasChanged();
+    }
+
+    // Polygon area calculator
+    public static class PolygonAreaCalculator
+    {
+        private const double EARTH_RADIUS = 6378137.0; // Earth radius in meters
+
+        /// <summary>
+        /// Calculates the area of a polygon in square meters
+        /// </summary>
+        /// <param name="polygonGeometry">The polygon geometry</param>
+        /// <returns>Area in square meters</returns>
+        public static double CalculateArea(PolygonGeometry polygonGeometry)
+        {
+            if (polygonGeometry?.Coordinates == null || polygonGeometry.Coordinates.Length == 0)
+                return 0;
+
+            // Calculate area of outer ring (first ring)
+            double area = Math.Abs(CalculateRingArea(polygonGeometry.Coordinates[0]));
+
+            // Subtract area of holes (inner rings)
+            for (int i = 1; i < polygonGeometry.Coordinates.Length; i++)
+            {
+                area -= Math.Abs(CalculateRingArea(polygonGeometry.Coordinates[i]));
+            }
+
+            return area;
+        }
+
+        /// <summary>
+        /// Calculates the area of a single ring using the Shoelace formula and converts to square meters
+        /// </summary>
+        private static double CalculateRingArea(double[][] coordinates)
+        {
+            int vertexCount = coordinates.Length;
+            if (vertexCount < 3)
+                return 0;
+
+            double area = 0;
+            
+            // Convert coordinates to radians
+            var rad = new List<(double lon, double lat)>();
+            foreach (var coord in coordinates)
+            {
+                rad.Add((
+                    coord[0] * Math.PI / 180,
+                    coord[1] * Math.PI / 180
+                ));
+            }
+
+            // Calculate the geodesic area using spherical math
+            for (int i = 0; i < vertexCount; i++)
+            {
+                int j = (i + 1) % vertexCount;
+                area += (rad[j].lon - rad[i].lon) * Math.Sin(rad[i].lat);
+            }
+
+            area = Math.Abs(area * EARTH_RADIUS * EARTH_RADIUS / 2.0);
+            return area;
+        }
+    }
+}

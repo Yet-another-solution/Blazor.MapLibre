@@ -10,7 +10,7 @@ public class EaseToOptions : IAnimationOptions, ICameraOptions
     /// <summary>
     /// If `zoom` is specified, `around` determines the point around which the zoom is centered.
     /// </summary>
-    [JsonPropertyName("animate")]
+    [JsonPropertyName("around")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public LngLat? Around { get; set; }
     
