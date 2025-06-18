@@ -1244,8 +1244,28 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
     #region Marker
 
-    public async Task AddMarker(MarkerOptions options, LngLat position) 
-        => await _jsModule.InvokeAsync<CenterZoomBearing>("createMarker", MapId, options, position);
+    /// <summary>
+    /// Adds a new marker to the map at the specified position with the provided options.
+    /// </summary>
+    /// <param name="options">The options that define the appearance and behavior of the marker.</param>
+    /// <param name="position">The geographic coordinates where the marker will be placed.</param>
+    /// <param name="markerId">An optional identifier for the marker. If not provided, a new GUID will be generated.</param>
+    /// <returns>The unique identifier of the added marker.</returns>
+    public async Task<Guid> AddMarker(MarkerOptions options, LngLat position, Guid? markerId = null)
+    {
+        var id = markerId ?? Guid.NewGuid();
+        await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
+
+        return id;
+    }
+
+    /// <summary>
+    /// Removes a marker from the map by its unique identifier.
+    /// </summary>
+    /// <param name="markerId">The unique identifier of the marker to be removed.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    public async Task RemoveMarker(Guid markerId)
+        => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
 
     #endregion
 
