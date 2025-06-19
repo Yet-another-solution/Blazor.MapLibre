@@ -1266,6 +1266,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task RemoveMarker(Guid markerId)
         => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
+    
+    public async Task MoveMarkerAsync(Guid markerId, LngLat position)
+        => await _jsModule.InvokeVoidAsync("moveMarker", markerId, position);
 
     #endregion
 

@@ -1218,10 +1218,25 @@ export function createMarker(container, markerId, options, position) {
         .addTo(mapInstances[container]);
 }
 
+/**
+ * Removes a marker by its ID.
+ * @param {string} markerId - The marker ID.
+ */
 export function removeMarker(markerId){
     const marker = markerInstances[markerId];
 
     marker.remove();
+}
+
+/**
+ * Moves a marker to the specified coordinates
+ * @param {string} markerId - The marker ID.
+ * @param {object} position - Options for animation like duration, offset, etc.
+ */
+export function moveMarker(markerId, position) {
+    const marker = markerInstances[markerId];
+    
+    marker.setLngLat([position.lng, position.lat]);
 }
 
 /**
