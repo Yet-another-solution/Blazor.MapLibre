@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" />
       <ProjectReference Include="..\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" />
     </ItemGroup>
 
