@@ -1,0 +1,18 @@
+﻿<Solution>
+  <Folder Name="/examples/">
+    <Project Path="examples\Community.Blazor.MapLibre.Examples\Community.Blazor.MapLibre.Examples.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/items/">
+    <File Path="global.json" />
+    <File Path="README.md" />
+    <File Path="UNLICENSE" />
+  </Folder>
+  <Folder Name="/items/workflows/">
+    <File Path=".github\workflows\build-deploy-publish.yml" />
+    <File Path=".github\workflows\pr-build-test.yml" />
+    <File Path=".github\workflows\codeql.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" Type="Classic C#" />
+  </Folder>
+</Solution>
