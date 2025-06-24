@@ -34,12 +34,12 @@ jobs:
 
       # Step 5: Test the Library Project (Optional If You Only Want to Test Library)
       - name: Test Library
-        run: dotnet test Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release
+        run: dotnet test src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release
 
       # Step 6: Pack the Library for NuGet
       - name: Pack NuGet Library
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
-        run: dotnet pack Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj -c Release --no-build --output nuget
+        run: dotnet pack src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj -c Release --no-build --output nuget
         # Only pack `Community.Blazor.MapLibre.csproj` for NuGet, not the examples
 
       # Step 7: Upload NuGet packages as artifact
@@ -53,7 +53,7 @@ jobs:
       # Step 8: Prepare Blazor examples for deployment
       - name: Publish Blazor Examples
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'main'))
-        run: dotnet publish Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj -c Release -o blazor_build_output
+        run: dotnet publish examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj -c Release -o blazor_build_output
 
       # Step 9: Upload Blazor artifacts for deployment
       - name: Upload Blazor Deployment Artifact
