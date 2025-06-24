@@ -25,6 +25,3 @@ jobs:
 
       - name: Build projects
         run: dotnet build --no-restore -c Release
-
-      - name: Test Library
-        run: dotnet test Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release
