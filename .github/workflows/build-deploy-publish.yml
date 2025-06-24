@@ -26,15 +26,11 @@ jobs:
 
       # Step 3: Restore dependencies
       - name: Restore dependencies
-        run: |
-          dotnet restore src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj
-          dotnet restore examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj
+        run: dotnet restore
 
       # Step 4: Build both projects
       - name: Build Library and Examples
-        run: |
-          dotnet build src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --no-restore -c Release /p:ContinuousIntegrationBuild=true
-          dotnet build examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj --no-restore -c Release /p:ContinuousIntegrationBuild=true
+        run: dotnet build --no-restore -c Release /p:ContinuousIntegrationBuild=true
 
       # Step 5: Test the Library Project (Optional If You Only Want to Test Library)
       - name: Test Library

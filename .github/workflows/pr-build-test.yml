@@ -21,11 +21,7 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Restore dependencies
-        run: |
-          dotnet restore src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj
-          dotnet restore examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj
+        run: dotnet restore
 
       - name: Build projects
-        run: |
-          dotnet build src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --no-restore -c Release
-          dotnet build examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj --no-restore -c Release
+        run: dotnet build --no-restore -c Release
