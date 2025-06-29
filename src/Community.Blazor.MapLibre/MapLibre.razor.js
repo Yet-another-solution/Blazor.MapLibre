@@ -1193,6 +1193,19 @@ export function createMarker(container, markerId, options, position) {
         .addTo(mapInstances[container]);
 }
 
+export function createMarkerWithImage(container, markerId, options, position, url, classes) {
+    const div = document.createElement('div');
+    if (classes.length > 0) {
+        div.classList.add(...classes);
+    }
+    
+    div.style.backgroundImage = `url(${url})`;
+
+    markerInstances[markerId] = new maplibregl.Marker({options: options, element: div})
+        .setLngLat([position.lng, position.lat])
+        .addTo(mapInstances[container]);
+}
+
 /**
  * Removes a marker by its ID.
  * @param {string} markerId - The marker ID.

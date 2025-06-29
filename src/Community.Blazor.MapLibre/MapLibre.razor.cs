@@ -1256,6 +1256,15 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         return id;
     }
 
+    public async Task<Guid> AddMarkerWithImage(MarkerOptions options, LngLat position, string url, IEnumerable<string>? classes = null, Guid? markerId = null)
+    {
+        var id = markerId ?? Guid.NewGuid();
+        
+        await _jsModule.InvokeVoidAsync("createMarkerWithImage", MapId, id, options, position, url, classes ?? []);
+
+        return id;
+    }
+
     /// <summary>
     /// Removes a marker from the map by its unique identifier.
     /// </summary>
