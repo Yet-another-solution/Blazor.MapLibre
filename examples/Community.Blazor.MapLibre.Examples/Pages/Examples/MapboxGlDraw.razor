@@ -1,17 +1,14 @@
 @page "/Examples/MapboxGlDraw"
+@using Community.Blazor.MapLibre.Examples.MapboxGlPlugin
 @using Community.Blazor.MapLibre.Models.Feature
 
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.css" type="text/css">
 
 <h3>Mapbox GL Draw</h3>
 
-<script src="https://unpkg.com/@@turf/turf@6/turf.min.js"></script>
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.js"></script>
-
 <div class="shadow rounded col">
     <div>
         <MapLibre @ref="_mapListener"
-                  OnDrawUpdate="Callback"
                   Options="_mapOptions"
                   OnLoad="OnLoad"
                   Class="rounded-top"
@@ -28,16 +25,27 @@
 
 @code {
     private MapLibre _mapListener { get; set; } = new MapLibre();
+    private MapboxGlDrawPlugin _mapboxGlPlugin = new MapboxGlDrawPlugin();
 
     private readonly MapOptions _mapOptions = new();
 
     public decimal size { get; set; } = 0m;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _mapboxGlPlugin.OnDrawUpdate = OnDrawUpdateCallback;
+        if (firstRender)
+        {
+            _mapListener.RegisterPlugin(_mapboxGlPlugin);
+        }
+    }
+    
     private async Task OnLoad(EventArgs args)
     {
         Console.WriteLine("Map loaded successfully.");
         try
         {
-            await _mapListener.AddDrawControl(new
+            await _mapboxGlPlugin.AddControl(new
             {
                 displayControlsDefault = false,
                 // Select which mapbox-gl-draw control buttons to add to the map.
@@ -52,7 +60,7 @@
                 defaultMode = "draw_polygon"
             });
 
-            await _mapListener.AddFeatureToDraw(new FeatureFeature()
+            await _mapboxGlPlugin.AddFeature(new FeatureFeature()
             {
                 Geometry = new PolygonGeometry()
                 {
@@ -91,7 +99,7 @@
         }
     }
 
-    private void Callback((FeatureCollection featureCollection, string mapStatus) obj)
+    private Task OnDrawUpdateCallback((FeatureCollection featureCollection, string mapStatus) obj)
     {
         try
         {
@@ -128,6 +136,7 @@
         
         // Trigger UI update
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
     // Polygon area calculator

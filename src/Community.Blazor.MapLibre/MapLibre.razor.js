@@ -2,7 +2,6 @@ import splitGeoJSON from './geojson-antimeridian-cut/cut.js'
 
 const mapInstances = {};
 const optionsInstances = {};
-const drawInstances = {};
 const markerInstances = {};
 
 /**
@@ -39,6 +38,8 @@ export function initializeMap(options, dotnetReference) {
     map.on('load', function () {
         dotnetReference.invokeMethodAsync("OnLoadCallback")
     });
+    
+    return map;
 }
 
 /**
@@ -96,45 +97,6 @@ export function addControl(container, controlType, position) {
     } else {
         console.warn(`Control type '${controlType}' is not supported.`);
     }
-}
-
-export function addDrawControl(container, drawOptions, dotnetReference) {
-    MapboxDraw.constants.classes.CANVAS  = 'maplibregl-canvas';
-    MapboxDraw.constants.classes.CONTROL_BASE  = 'maplibregl-ctrl';
-    MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';
-    MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';
-    MapboxDraw.constants.classes.ATTRIBUTION = 'maplibregl-ctrl-attrib';
-
-    const map = mapInstances[container];
-
-    const draw = new MapboxDraw(drawOptions)
-    drawInstances[container] = draw;
-    map.addControl(draw);
-
-    map.on('draw.create', updateArea);
-    map.on('draw.delete', updateArea);
-    map.on('draw.update', updateArea);
-
-    function updateArea(e) {
-        const data = draw.getAll();
-
-        // Current JavaScript call
-        dotnetReference.invokeMethodAsync("OnDrawUpdateCallback", data, e.type);
-        console.log(data);
-    }
-}
-
-/**
- * Adds a feature to the draw instance associated with the specified container.
- *
- * @param {string} container - The identifier for the container associated with a draw instance.
- * @param {Object} feature - The feature object to be added to the draw instance.
- * @return {void} No return value.
- */
-export function addFeatureToDraw(container, feature) {
-    const draw = drawInstances[container];
-
-    draw.add(feature);
 }
 
 /**
@@ -294,6 +256,19 @@ export function fitBounds(container, bounds, options, eventData) {
         [bounds._sw.lng, bounds._sw.lat], // Southwest corner
         [bounds._ne.lng, bounds._ne.lat]  // Northeast corner
     ], options, eventData);
+}
+
+/**
+ * Sets or clears the map's geographical bounds.
+ *
+ * @param {string} container - The identifier for the map container that needs to fit the bounds.
+ * @param {Object} bounds - The maximum bounds to set. If null or undefined is provided, the function removes the map's maximum bounds.
+ */
+export function setMaxBounds(container, bounds) {
+    mapInstances[container].setMaxBounds([
+        [bounds._sw.lng, bounds._sw.lat], // Southwest corner
+        [bounds._ne.lng, bounds._ne.lat]  // Northeast corner
+    ]);
 }
 
 /**
@@ -1216,6 +1191,14 @@ export function createMarker(container, markerId, options, position) {
     markerInstances[markerId] = new maplibregl.Marker(options)
         .setLngLat([position.lng, position.lat])
         .addTo(mapInstances[container]);
+    
+    if (options.extensions) {
+        const extensions = options.extensions;
+        
+        if (extensions.htmlContent.length > 0) {
+            markerInstances[markerId].getElement().innerHTML = extensions.htmlContent;
+        }
+    }
 }
 
 /**

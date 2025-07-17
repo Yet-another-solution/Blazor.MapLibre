@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" />
+      <ProjectReference Include="..\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" />
     </ItemGroup>
 
     <ItemGroup>

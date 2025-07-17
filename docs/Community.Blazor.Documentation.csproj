@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <RootNamespace>Community.Blazor.MapLibre</RootNamespace>
+    </PropertyGroup>
+
+    <Target Name="ClearBuildArtifacts" AfterTargets="Clean">
+        <RemoveDir Directories="dist"/>
+        <RemoveDir Directories="api"/>
+        <RemoveDir Directories="obj"/>
+        <RemoveDir Directories="bin"/>
+    </Target>
+
+    <Target Name="IntallTools" AfterTargets="AfterBuild">
+        <Exec Command="dotnet tool restore"/>
+    </Target>
+
+    <Target Name="BuildTableOfContents" AfterTargets="AfterBuild">
+        <Exec Command="dotnet DocFxTocGenerator --docfolder ./content/getting-started --outfolder ./content/getting-started --sequence --override"/>
+        <Exec Command="dotnet DocFxTocGenerator --docfolder ./content/api --outfolder ./content/api --sequence --override"/>
+    </Target>
+
+    <Target Name="BuildSite" AfterTargets="AfterBuild">
+        <Exec Command="dotnet docfx docfx.json"/>
+    </Target>
+
+</Project>

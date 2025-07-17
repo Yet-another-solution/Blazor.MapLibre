@@ -17,7 +17,7 @@ public class MarkerOptions
     public MarkerAnchor? Anchor { get; set; }
 
     /// <summary>
-    /// Space-separated CSS class names to add to marker element.
+    /// Space-separated CSS class names to add to a marker element.
     /// </summary>
     [JsonPropertyName("className")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -114,4 +114,11 @@ public class MarkerOptions
     [JsonPropertyName("subpixelPositioning")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SubpixelPositioning { get; set; }
+
+    /// <summary>
+    /// An object representing additional, non-standard extensions for marker configuration.
+    /// Extensions can include properties or functionality not directly supported by the default MarkerOptions, allowing for enhanced customization.
+    /// </summary>
+    [JsonPropertyName("extensions")]
+    public MarkerOptionsExtensions? Extensions { get; set; }
 }

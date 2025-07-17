@@ -1,0 +1,7 @@
+# Ignore build output and intermediate folders
+bin/
+obj/
+dist/
+
+# Ignore toc.yml files that are 2 or more folders deep
+*/*/**/toc.yml

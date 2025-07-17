@@ -46,6 +46,16 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Used to facilitate communication between JavaScript and the .NET component.
     /// </summary>
     private DotNetObjectReference<MapLibre> _dotNetObjectReference = null!;
+    
+    /// <summary>
+    /// A collection of custom plugins that extend the functionality of the MapLibre map.
+    /// </summary>
+    private readonly List<IMapLibrePlugin> _plugins = new();
+
+    /// <summary>
+    /// Represents the MapLibre map object instance that is created and managed by this component.
+    /// </summary>
+    private IJSObjectReference _mapObject = null!;
 
     #region Parameters
 
@@ -97,14 +107,6 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     [Parameter]
     public EventCallback<EventArgs> OnStyleLoad { get; set; }
 
-    /// <summary>
-    /// Triggered when a draw-related update occurs on the map.
-    /// Allows the user to respond to changes or updates related to drawing features on the map,
-    /// such as modifications to drawn shapes or geographic feature data updates.
-    /// </summary>
-    [Parameter]
-    public EventCallback<(FeatureCollection featureData, string mapStatus)> OnDrawUpdate { get; set; }
-
     #endregion
 
     /// <summary>
@@ -114,13 +116,6 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public async Task OnStyleLoadCallback()
     {
         await OnStyleLoad.InvokeAsync(EventArgs.Empty);
-    }
-
-    [JSInvokable]
-    public async Task OnDrawUpdateCallback(JsFeatureCollection jsFeatureCollection, string mapStatus)
-    {
-        var featureCollection = jsFeatureCollection.ToFeatureCollection();
-        await OnDrawUpdate.InvokeAsync((featureCollection, mapStatus));
     }
 
 
@@ -153,8 +148,21 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             Options.Container = MapId;
 
             // Initialize the MapLibre map
-            await _jsModule.InvokeVoidAsync("initializeMap", Options, _dotNetObjectReference);
+            _mapObject = await _jsModule.InvokeAsync<IJSObjectReference>("initializeMap", Options, _dotNetObjectReference);
+            
+            // Load the plugins after the map has been initialized
+            foreach (var plugin in _plugins)
+            {
+                await plugin.Initialize(_mapObject, JsRuntime);
+            }
         }
+    }
+    
+    public void RegisterPlugin(IMapLibrePlugin plugin)
+    {
+        ArgumentNullException.ThrowIfNull(plugin, nameof(plugin));
+
+        _plugins.Add(plugin);
     }
 
     public async ValueTask DisposeAsync()
@@ -225,26 +233,6 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
         await _jsModule.InvokeVoidAsync("addControl", MapId, controlType.ToString(), position);
     }
-
-    /// <summary>
-    /// Adds a control to the map instance based on the specified control type and options.
-    /// </summary>
-    /// <param name="drawControl">The type of control to be added to the map.</param>
-    /// <returns>A task that represents the asynchronous operation of adding the control.</returns>
-    public async ValueTask AddDrawControl(object drawControl)
-    {
-        var reference = DotNetObjectReference.Create(this);
-
-        await _jsModule.InvokeVoidAsync("addDrawControl", MapId, drawControl, reference);
-    }
-
-    /// <summary>
-    /// Adds a feature to the map's draw control.
-    /// </summary>
-    /// <param name="feature">The feature to be added to the draw control.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public async ValueTask AddFeatureToDraw(FeatureFeature feature) =>
-        await _jsModule.InvokeVoidAsync("addFeatureToDraw", MapId, feature);
 
     /// <summary>
     /// Adds an image to the map for use in styling or layer configuration.
@@ -398,6 +386,15 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask FitBounds(LngLatBounds bounds, FitBoundOptions? options = null, object? eventData = null) =>
         await _jsModule.InvokeVoidAsync("fitBounds", MapId, bounds, options, eventData);
+
+    /// <summary>
+    /// Sets or clears the map's geographical bounds.
+    /// </summary>
+    /// <param name="bounds">The maximum bounds to set. If null or undefined is provided, the function removes the map's maximum bounds.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <see href="https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#setmaxbounds">setMaxBounds</see>
+    public async ValueTask SetMaxBounds(LngLatBounds bounds) =>
+        await _jsModule.InvokeVoidAsync("setMaxBounds", MapId, bounds);
 
     /// <summary>
     /// Pans, rotates, and zooms the map to fit the bounding box formed by two given screen points
@@ -1255,10 +1252,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     {
         var id = markerId ?? Guid.NewGuid();
         await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
-
         return id;
     }
-
+    
     /// <summary>
     /// Removes a marker from the map by its unique identifier.
     /// </summary>
@@ -1267,6 +1263,11 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public async Task RemoveMarker(Guid markerId)
         => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
     
+    /// <summary>
+    /// Moves a marker on the map.
+    /// </summary>
+    /// <param name="markerId">The uniqued identifier of the marker that will be moved.</param>
+    /// <param name="position">The new position to which the marker will be moved.</param>
     public async Task MoveMarker(Guid markerId, LngLat position)
         => await _jsModule.InvokeVoidAsync("moveMarker", markerId, position);
 

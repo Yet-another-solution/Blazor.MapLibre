@@ -1,0 +1,39 @@
+﻿@page "/Examples/marker"
+@using Community.Blazor.MapLibre.Models
+@using Community.Blazor.MapLibre.Models.Marker
+
+<h3>Render Globe</h3>
+
+<div class="shadow rounded col">
+    <div>
+        <MapLibre @ref="_mapListener"
+                  Options="_mapOptions"
+                  Class="rounded-top"
+                  Height="600px">
+        </MapLibre>
+    </div>
+</div>
+<button @onclick="AddMarkerAsync">Button !</button>
+
+
+@code {
+    private MapLibre _mapListener { get; set; } = new MapLibre();
+
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
+    
+    private async Task AddMarkerAsync()
+    {
+        var options = new MarkerOptions
+        {
+            Extensions = new MarkerOptionsExtensions
+            {
+                HtmlContent = "<div><img src='https://i.pravatar.cc/300' width='50' height='50' class='border border-white border-3 rounded-circle shadow-lg'/></div>"
+            }
+        };
+        
+        await _mapListener.AddMarker(options, new LngLat(Random.Shared.NextDouble() * 180 - 90, Random.Shared.NextDouble() * 360 - 180));
+    }
+}

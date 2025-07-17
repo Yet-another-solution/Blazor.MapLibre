@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <StaticWebAssetBasePath>_content/MapboxGlDrawPlugin</StaticWebAssetBasePath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="wwwroot\**\*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" />
+    </ItemGroup>
+
+</Project>
