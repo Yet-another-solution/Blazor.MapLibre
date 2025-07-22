@@ -81,7 +81,7 @@ Install the package:
 dotnet add package Community.Blazor.MapLibre
 ```
 
-For Blazor Server and Blazor Web App, add this to head of your file to load the css of the maps.
+Add this to head of your file to load the css for the maps.
 ```html
 <link href="_content/Community.Blazor.MapLibre/maplibre-5.3.0.min.css" rel="stylesheet" />
 ```
