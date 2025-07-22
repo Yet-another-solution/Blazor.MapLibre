@@ -29,7 +29,7 @@ public interface ISource
     /// The id for the source. Must not be used by any existing source.
     /// </summary>
     [JsonPropertyName("id")]
-    string Id { get; set; }
+    string? Id { get; set; }
 
     /// <summary>
     /// `false` if tiles can be drawn outside their boundaries, `true` if they cannot.
@@ -41,13 +41,13 @@ public interface ISource
     /// The maximum zoom level for the source.
     /// </summary>
     [JsonPropertyName("maxzoom")]
-    int MaxZoom { get; set; }
+    float? MaxZoom { get; set; }
 
     /// <summary>
     /// The minimum zoom level for the source.
     /// </summary>
     [JsonPropertyName("minzoom")]
-    int MinZoom { get; set; }
+    float? MinZoom { get; set; }
 
     /// <summary>
     /// `true` if tiles should be sent back to the worker for each overzoomed zoom level, `false` if not.
@@ -71,7 +71,7 @@ public interface ISource
     /// The tile size for the source.
     /// </summary>
     [JsonPropertyName("tileSize")]
-    int TileSize { get; set; }
+    float? TileSize { get; set; }
 
     /// <summary>
     /// The vector layer IDs for the source.

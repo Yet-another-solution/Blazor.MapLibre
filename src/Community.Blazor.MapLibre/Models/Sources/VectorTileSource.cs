@@ -10,6 +10,36 @@ public class VectorTileSource : ISource
     /// <inheritdoc />
     [JsonPropertyName("type")]
     public string Type => "vector";
+    /// <inheritdoc />
+    [JsonPropertyName("attribution")]
+    public string? Attribution { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("isTileClipped")]
+    public bool? IsTileClipped { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("maxzoom")]
+    public float? MaxZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("minzoom")]
+    public float? MinZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("reparseOverscaled")]
+    public bool? ReparseOverscaled { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("roundZoom")]
+    public bool? RoundZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileID")]
+    public string? TileID { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileSize")]
+    public float? TileSize { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("vectorLayerIds")]
+    public string[]? VectorLayerIds { get; set; }
 
     /// <summary>
     /// URL to a TileJSON resource providing metadata about this source. Optional.
@@ -34,18 +64,4 @@ public class VectorTileSource : ISource
     /// </summary>
     [JsonPropertyName("scheme")]
     public string? Scheme { get; set; } = "xyz";
-
-    /// <summary>
-    /// Minimum zoom level for which tiles are available, as in the TileJSON spec.
-    /// Default is 0. Optional.
-    /// </summary>
-    [JsonPropertyName("minzoom")]
-    public float? MinZoom { get; set; }
-
-    /// <summary>
-    /// Maximum zoom level for which tiles are available, as in the TileJSON spec. Data from tiles at the maxzoom are used when displaying the map at higher zoom levels.
-    /// Default is 22. Optional.
-    /// </summary>
-    [JsonPropertyName("maxzoom")]
-    public float? MaxZoom { get; set; }
 }

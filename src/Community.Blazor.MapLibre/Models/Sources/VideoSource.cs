@@ -10,6 +10,36 @@ public class VideoSource : ISource
     /// <inheritdoc />
     [JsonPropertyName("type")]
     public string Type => "video";
+    /// <inheritdoc />
+    [JsonPropertyName("attribution")]
+    public string? Attribution { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("id")]
+    public string Id { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("isTileClipped")]
+    public bool? IsTileClipped { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("maxzoom")]
+    public float? MaxZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("minzoom")]
+    public float? MinZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("reparseOverscaled")]
+    public bool? ReparseOverscaled { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("roundZoom")]
+    public bool? RoundZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileID")]
+    public string? TileID { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileSize")]
+    public float? TileSize { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("vectorLayerIds")]
+    public string[]? VectorLayerIds { get; set; }
 
     /// <summary>
     /// URLs to the video content. Multiple URLs should be provided for format compatibility across browsers. Required.
