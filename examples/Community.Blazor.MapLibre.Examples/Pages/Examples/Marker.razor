@@ -26,11 +26,13 @@
     
     private async Task AddMarkerAsync()
     {
+        
         var options = new MarkerOptions
         {
             Extensions = new MarkerOptionsExtensions
             {
-                HtmlContent = "<div><img src='https://i.pravatar.cc/300' width='50' height='50' class='border border-white border-3 rounded-circle shadow-lg'/></div>"
+                HtmlContent = "<div><img src='https://i.pravatar.cc/300' width='50' height='50' class='border border-white border-3 rounded-circle shadow-lg'/></div>",
+                PopupHtmlContent = "<div><h6>Hello world!</h6></div>",
             }
         };
         

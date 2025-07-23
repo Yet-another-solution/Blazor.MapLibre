@@ -1198,6 +1198,13 @@ export function createMarker(container, markerId, options, position) {
         if (extensions.htmlContent.length > 0) {
             markerInstances[markerId].getElement().innerHTML = extensions.htmlContent;
         }
+        
+        if (extensions.popupHtmlContent.length > 0) {
+            markerInstances[markerId].setPopup(
+                new maplibregl.Popup({ offset: 25 })
+                    .setHTML(extensions.popupHtmlContent)
+            );
+        }
     }
 }
 
