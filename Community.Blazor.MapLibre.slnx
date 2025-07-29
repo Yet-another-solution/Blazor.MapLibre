@@ -3,6 +3,7 @@
     <Project Path="docs\Community.Blazor.Documentation.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/examples/">
+    <Project Path="examples\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" Type="Classic C#" />
     <Project Path="examples\Community.Blazor.MapLibre.Examples\Community.Blazor.MapLibre.Examples.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/items/">

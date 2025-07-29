@@ -1,0 +1,80 @@
+﻿@page "/Examples/multiple-maps"
+@implements IAsyncDisposable
+
+<h3>Multiple maps</h3>
+
+<div class="alert alert-info" role="alert">
+    <h5 class="alert-heading">⚠️ WebGL Context Limitations</h5>
+    <p class="mb-2">
+        Multiple map components can be added to a page, but browsers have specific limitations on how many WebGL contexts can co-exist simultaneously.
+    </p>
+    <p class="mb-2">
+        <strong>Example:</strong> Chrome has a limit of 16 WebGL contexts. Any maps added beyond this limit will result in the oldest map losing its WebGL context and ceasing to work.
+    </p>
+    <p class="mb-0">
+        <strong>Note:</strong> Map components will properly dispose of their reserved WebGL context when they are destroyed, freeing up resources for new maps.
+    </p>
+</div>
+
+<div class="mb-3">
+    <label for="mapCountInput" class="form-label">Number of map components on the page</label>
+    <div class="input-group" style="max-width: 200px;">
+        <button class="btn btn-outline-secondary" @onclick="DecreaseMapCount">-</button>
+        <input id="mapCountInput" type="number" class="form-control" min="0" value="@_mapCount"
+               @oninput="OnMapCountChange" style="max-width: 75px;"/>
+        <button class="btn btn-outline-secondary" @onclick="IncreaseMapCount">+</button>
+    </div>
+</div>
+
+<div class="map-grid">
+    @for (var i = 0; i < _mapCount; i++)
+    {
+        <div class="map-cell">
+            <MapLibre Options="_mapOptions" Class="rounded-top" Height="400px"/>
+        </div>
+    }
+</div>
+
+@code {
+    private int _mapCount = 1;
+
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+    private IJSObjectReference _jsModule = null!;
+
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./_content/Community.Blazor.MapLibre/MapLibre.razor.js");
+        }
+    }
+
+    private void IncreaseMapCount()
+    {
+        _mapCount++;
+        StateHasChanged();
+    }
+
+    private void DecreaseMapCount()
+    {
+        if (_mapCount <= 0) return;
+        _mapCount--;
+        StateHasChanged();
+    }
+
+    private void OnMapCountChange(ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var value) || value <= 0) return;
+        _mapCount = value;
+        StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync() => await _jsModule.DisposeAsync();
+
+}

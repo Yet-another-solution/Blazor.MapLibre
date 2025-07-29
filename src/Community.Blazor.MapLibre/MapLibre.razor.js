@@ -865,8 +865,16 @@ export function redraw(container) {
  * @param {string} container - The map container.
  */
 export function remove(container) {
-    mapInstances[container].remove();
-    delete mapInstances[container];
+    if (mapInstances[container]) {
+        mapInstances[container].remove();
+        delete mapInstances[container];
+    }
+    if (optionsInstances[container]) {
+        delete optionsInstances[container];
+    }
+    if (markerInstances[container]) {
+        delete markerInstances[container];
+    }
 }
 
 /**
@@ -1197,6 +1205,13 @@ export function createMarker(container, markerId, options, position) {
         
         if (extensions.htmlContent.length > 0) {
             markerInstances[markerId].getElement().innerHTML = extensions.htmlContent;
+        }
+        
+        if (extensions.popupHtmlContent.length > 0) {
+            markerInstances[markerId].setPopup(
+                new maplibregl.Popup({ offset: 25 })
+                    .setHTML(extensions.popupHtmlContent)
+            );
         }
     }
 }
