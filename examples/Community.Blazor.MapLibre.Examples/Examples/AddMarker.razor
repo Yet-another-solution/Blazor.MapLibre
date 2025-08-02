@@ -1,20 +1,14 @@
-﻿@page "/Examples/marker"
-@using Community.Blazor.MapLibre.Models
+﻿@page "/examples/add-marker"
+
 @using Community.Blazor.MapLibre.Models.Marker
 
-<h3>Render Globe</h3>
+<MapLibre @ref="_mapListener"
+          Options="_mapOptions"
+          Class="rounded-top"
+          Height="600px">
+</MapLibre>
 
-<div class="shadow rounded col">
-    <div>
-        <MapLibre @ref="_mapListener"
-                  Options="_mapOptions"
-                  Class="rounded-top"
-                  Height="600px">
-        </MapLibre>
-    </div>
-</div>
-<button @onclick="AddMarkerAsync">Button !</button>
-
+<button @onclick="AddMarkerAsync" style="margin-top: 10px;">Add a random marker</button>
 
 @code {
     private MapLibre _mapListener { get; set; } = new MapLibre();
@@ -23,10 +17,9 @@
     {
         Style = "https://demotiles.maplibre.org/style.json"
     };
-    
+
     private async Task AddMarkerAsync()
     {
-        
         var options = new MarkerOptions
         {
             Extensions = new MarkerOptionsExtensions
@@ -35,7 +28,8 @@
                 PopupHtmlContent = "<div><h6>Hello world!</h6></div>",
             }
         };
-        
-        await _mapListener.AddMarker(options, new LngLat(Random.Shared.NextDouble() * 180 - 90, Random.Shared.NextDouble() * 360 - 180));
+
+        await _mapListener.AddMarker(options, new LngLat(Random.Shared.NextDouble() * 180 - 90, Random.Shared.Next(-90, 90)));
     }
+
 }

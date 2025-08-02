@@ -1,24 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Community.Blazor.MapLibre.Examples.WebAssembly</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.4" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" PrivateAssets="all"/>
     </ItemGroup>
 
+    <!-- Reference the Blazor web component projects -->
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" />
-      <ProjectReference Include="..\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" />
+        <ProjectReference Include="..\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="wwwroot\img\examples\" />
-    </ItemGroup>
+    <!-- This is required to copy the Blazor build output to the publish location -->
+    <Target Name="MoveContent" AfterTargets="Publish">
+        <ItemGroup>
+            <FilesToMove Include="$(PublishDir)wwwroot\**\*"/>
+        </ItemGroup>
+        <Move SourceFiles="@(FilesToMove)" DestinationFolder="$(PublishDir)\%(RecursiveDir)"/>
+        <RemoveDir Directories="$(PublishDir)wwwroot"/>
+    </Target>
 
 </Project>

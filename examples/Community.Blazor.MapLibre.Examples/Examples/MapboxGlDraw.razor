@@ -1,27 +1,17 @@
-@page "/Examples/MapboxGlDraw"
+@page "/examples/mapbox-gl-draw"
+
 @using Community.Blazor.MapLibre.Examples.MapboxGlPlugin
 @using Community.Blazor.MapLibre.Models.Feature
 
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.css" type="text/css">
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.5.0/mapbox-gl-draw.css"
+      type="text/css">
 
-<h3>Mapbox GL Draw</h3>
-
-<div class="shadow rounded col">
-    <div>
-        <MapLibre @ref="_mapListener"
-                  Options="_mapOptions"
-                  OnLoad="OnLoad"
-                  Class="rounded-top"
-                  Height="600px">
-        </MapLibre>
-    </div>
-</div>
-
-<div>
-    Size: @size m²
-</div>
-
-
+<MapLibre @ref="_mapListener"
+          Options="_mapOptions"
+          OnLoad="OnLoad"
+          Class="rounded-top"
+          Height="600px">
+</MapLibre>
 
 @code {
     private MapLibre _mapListener { get; set; } = new MapLibre();
@@ -30,7 +20,7 @@
     private readonly MapOptions _mapOptions = new();
 
     public decimal size { get; set; } = 0m;
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _mapboxGlPlugin.OnDrawUpdate = OnDrawUpdateCallback;
@@ -39,7 +29,7 @@
             _mapListener.RegisterPlugin(_mapboxGlPlugin);
         }
     }
-    
+
     private async Task OnLoad(EventArgs args)
     {
         Console.WriteLine("Map loaded successfully.");
@@ -93,7 +83,8 @@
             });
 
             Console.WriteLine("Control added successfully.");
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine($"Error adding control: {ex.Message}");
         }
@@ -108,7 +99,7 @@
             if (featureCollection.Features.Count > 0)
             {
                 decimal totalArea = 0;
-                
+
                 foreach (var feature in featureCollection.Features)
                 {
                     if (feature is FeatureFeature featureFeature)
@@ -120,7 +111,7 @@
                         }
                     }
                 }
-                
+
                 size = Math.Round(totalArea, 2);
             }
             else
@@ -133,7 +124,7 @@
             Console.WriteLine($"Error processing feature data: {ex.Message}");
             size = 0;
         }
-        
+
         // Trigger UI update
         StateHasChanged();
         return Task.CompletedTask;
@@ -176,7 +167,7 @@
                 return 0;
 
             double area = 0;
-            
+
             // Convert coordinates to radians
             var rad = new List<(double lon, double lat)>();
             foreach (var coord in coordinates)
@@ -198,4 +189,5 @@
             return area;
         }
     }
+
 }

@@ -1,6 +1,6 @@
 ﻿<Solution>
   <Folder Name="/docs/">
-    <Project Path="docs\Community.Blazor.Documentation.csproj" Type="Classic C#" />
+    <Project Path="docs\Community.Blazor.MapLibre.Documentation.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/examples/">
     <Project Path="examples\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" Type="Classic C#" />
