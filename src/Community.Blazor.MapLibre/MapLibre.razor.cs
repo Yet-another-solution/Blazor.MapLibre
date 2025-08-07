@@ -175,9 +175,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         try
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            await Remove();
             if (_jsModule is not null)
             {
+                await Remove();
                 await _jsModule.DisposeAsync();
             }
         }
