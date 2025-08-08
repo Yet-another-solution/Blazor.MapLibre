@@ -4,5 +4,8 @@
 - name: Getting started
   href: getting-started/toc.yml
 
+- name: Examples
+  href: examples/toc.yml
+
 - name: API
   href: api/toc.yml

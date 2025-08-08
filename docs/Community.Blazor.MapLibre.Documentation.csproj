@@ -20,11 +20,17 @@
 
     <Target Name="BuildTableOfContents" AfterTargets="AfterBuild">
         <Exec Command="dotnet DocFxTocGenerator --docfolder ./content/getting-started --outfolder ./content/getting-started --sequence --override"/>
+        <Exec Command="dotnet DocFxTocGenerator --docfolder ./content/examples --outfolder ./content/examples --sequence --override"/>
         <Exec Command="dotnet DocFxTocGenerator --docfolder ./content/api --outfolder ./content/api --sequence --override"/>
     </Target>
 
     <Target Name="BuildSite" AfterTargets="AfterBuild">
-        <Exec Command="dotnet docfx docfx.json"/>
+        <Exec Command="dotnet docfx docfx.json --output $(OutputPath)dist"/>
+    </Target>
+
+    <Target Name="PublishExampleComponentsToDocsSite" BeforeTargets="AfterBuild">
+        <Message Text="Publishing BlazorComponents for development..." Importance="high" />
+        <Exec Command="dotnet publish $(MSBuildThisFileDirectory)..\examples\Community.Blazor.MapLibre.Examples\Community.Blazor.MapLibre.Examples.csproj -c $(Configuration) -o $(OutputPath)dist" />
     </Target>
 
 </Project>

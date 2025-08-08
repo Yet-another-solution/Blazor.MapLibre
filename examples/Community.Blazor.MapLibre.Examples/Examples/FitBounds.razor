@@ -1,21 +1,20 @@
-@page "/Examples/FitBounds"
-@using Community.Blazor.MapLibre.Models
-<h3>FitBounds</h3>
+@page "/examples/fit-bounds"
 
-<div class="shadow rounded col">
-     <div>
-          <MapLibre @ref="_mapListener" Options="_mapOptions" OnLoad="HandleMapLoadListener" Class="rounded-top"
-               Height="300px"></MapLibre>
-     </div>
-     <h3 class="p-3">Fit Bounds</h3>
-</div>
+<MapLibre @ref="_mapListener"
+          Options="_mapOptions"
+          OnLoad="HandleMapLoadListener"
+          Class="rounded-top"
+          Height="600px">
+</MapLibre>
 
 @code {
      private MapLibre _mapListener { get; set; } = new MapLibre();
+
      private readonly MapOptions _mapOptions = new()
      {
           Style = "https://demotiles.maplibre.org/style.json"
      };
+
      private async Task HandleMapLoadListener(EventArgs args)
      {
           var bounds = new LngLatBounds()
@@ -26,4 +25,5 @@
 
           await _mapListener.FitBounds(bounds);
      }
+
 }
