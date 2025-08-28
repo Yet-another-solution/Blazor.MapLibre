@@ -1054,6 +1054,18 @@ export function setGlyphs(container, glyphsUrl, options) {
 }
 
 /**
+ * Sets the value of a layout property in the specified style layer.
+ * @param {string} container - The map container.
+ * @param {string} layerId - The layer ID.
+ * @param {string} name - The name of the layout property to set.
+ * @param {object} [value] - The value of the layout property.
+ * @param {object} [options] - Options object.
+ */
+export function setLayoutProperty(container, layerId, name, value, options) {
+    mapInstances[container].setLayoutProperty(layerId, name, value, options);
+}
+
+/**
  * Updates the map's style.
  * @param {string} container - The map container.
  * @param {string | object} style - The new style URL or JSON.
