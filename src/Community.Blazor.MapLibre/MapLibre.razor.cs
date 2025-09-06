@@ -1,11 +1,8 @@
-using System.Collections.Concurrent;
-using System.Text.Json;
 using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Event;
 using Community.Blazor.MapLibre.Models.Feature;
-using Community.Blazor.MapLibre.Models.Feature.Dto;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Layers;
 using Community.Blazor.MapLibre.Models.Marker;
@@ -14,6 +11,7 @@ using Community.Blazor.MapLibre.Models.Sources;
 using Community.Blazor.MapLibre.Models.Sprite;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Collections.Concurrent;
 
 namespace Community.Blazor.MapLibre;
 
@@ -46,7 +44,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Used to facilitate communication between JavaScript and the .NET component.
     /// </summary>
     private DotNetObjectReference<MapLibre> _dotNetObjectReference = null!;
-    
+
     /// <summary>
     /// A collection of custom plugins that extend the functionality of the MapLibre map.
     /// </summary>
@@ -149,7 +147,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
             // Initialize the MapLibre map
             _mapObject = await _jsModule.InvokeAsync<IJSObjectReference>("initializeMap", Options, _dotNetObjectReference);
-            
+
             // Load the plugins after the map has been initialized
             foreach (var plugin in _plugins)
             {
@@ -157,7 +155,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             }
         }
     }
-    
+
     public void RegisterPlugin(IMapLibrePlugin plugin)
     {
         ArgumentNullException.ThrowIfNull(plugin, nameof(plugin));
@@ -1150,7 +1148,21 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </param>
     public async ValueTask SetFilter(string layerId, object filter, StyleSetterOptions options) =>
         await _jsModule.InvokeVoidAsync("setFilter", MapId, layerId, filter, options);
-    
+
+    /// <summary>
+    /// Sets the value of a layout property in the specified style layer.
+    /// </summary>
+    /// <param name="layerId">
+    /// The ID of the layer to set the layout property in.</param>
+    /// <param name="name">
+    /// The name of the layout property to set.</param>
+    /// <param name="value">
+    /// The value of the layout property. Must be of a type appropriate for the property, as defined in the MapLibre Style Specification.</param>
+    /// <param name="options"></param>
+    /// Optional. An options object for configuring style setting behavior.
+    public async ValueTask SetLayoutProperty(string layerId, string name, object value, StyleSetterOptions options) =>
+        await _jsModule.InvokeVoidAsync("setLayoutProperty", MapId, layerId, name, value, options);
+
     /// <summary>
     /// Sets the map's projection configuration, which determines how geographic coordinates are projected to the screen.
     /// </summary>
@@ -1160,7 +1172,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </param>
     public async ValueTask SetProjection(ProjectionSpecification projection) =>
         await _jsModule.InvokeVoidAsync("setProjection", MapId, projection);
-    
+
     /// <summary>
     /// Sets a zoom level for the map.
     /// </summary>
@@ -1255,7 +1267,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
         return id;
     }
-    
+
     /// <summary>
     /// Removes a marker from the map by its unique identifier.
     /// </summary>
@@ -1263,7 +1275,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task RemoveMarker(Guid markerId)
         => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
-    
+
     /// <summary>
     /// Moves a marker on the map.
     /// </summary>
