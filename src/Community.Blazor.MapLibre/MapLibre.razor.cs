@@ -566,6 +566,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         await _jsModule.InvokeAsync<object>("getLayer", MapId, id);
 
     /// <summary>
+    /// Checks if a layer exists in the map's style by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the layer to check.</param>
+    /// <returns>True if the layer exists, false otherwise.</returns>
+    public async ValueTask<bool> HasLayer(string id) =>
+        await _jsModule.InvokeAsync<bool>("hasLayer", MapId, id);
+
+    /// <summary>
     /// Return the ids of all layers currently in the style, including custom layers, in order.
     /// </summary>
     /// <returns></returns>
@@ -688,6 +696,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>The source object if found, or null if not found.</returns>
     public async ValueTask<ISource?> GetSource(string id) =>
         await _jsModule.InvokeAsync<ISource?>("getSource", MapId, id);
+
+    /// <summary>
+    /// Checks if a source exists in the map's style by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the source to check.</param>
+    /// <returns>True if the source exists, false otherwise.</returns>
+    public async ValueTask<bool> HasSource(string id) =>
+        await _jsModule.InvokeAsync<bool>("hasSource", MapId, id);
 
     /// <summary>
     /// Retrieves the style's sprite as a list of objects.
