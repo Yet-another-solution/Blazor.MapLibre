@@ -1,0 +1,34 @@
+@page "/examples/add-listener"
+
+@using System.Text.Json
+
+<MapLibre @ref="_mapListener"
+          Options="_mapOptions"
+          OnLoad="HandleMapLoadListener"
+          Class="rounded-top"
+          Height="600px">
+</MapLibre>
+
+<textarea @bind="eventDataText" rows="10" style="width: 100%; height: 300px; margin-top: 10px;" readonly></textarea>
+
+@code {
+    private MapLibre _mapListener { get; set; } = new MapLibre();
+    private string eventDataText = "";
+
+    private readonly MapOptions _mapOptions = new()
+    {
+        Style = "https://demotiles.maplibre.org/style.json"
+    };
+
+    private async Task HandleMapLoadListener(EventArgs args)
+    {
+        await _mapListener.AddListener<dynamic>("click", OnClick);
+    }
+
+    public void OnClick(dynamic eventData)
+    {
+        eventDataText = JsonSerializer.Serialize(eventData, new JsonSerializerOptions { WriteIndented = true });
+        StateHasChanged();
+    }
+
+}

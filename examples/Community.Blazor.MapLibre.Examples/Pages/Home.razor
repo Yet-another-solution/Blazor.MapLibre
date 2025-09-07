@@ -1,56 +1,66 @@
-﻿@page "/"
-@using Community.Blazor.MapLibre.Models
+@page "/"
+@inject NavigationManager NavigationManager
 
-<h2>Introduction</h2>
-<p class="mb-3">
-    Community.Blazor.Maplibre is a wrapper around <a href="https://maplibre.org/">MapLibre-GL-JS library</a>
-</p>
-<div class="d-flex flex-column flex-xl-row gap-3 mb-5">
-    <div class="shadow rounded col">
-        <div>
-            <MapLibre Options="_mapOptions" Class="rounded-top"
-                 Height="300px"></MapLibre>
-        </div>
-        <h3 class="p-3">Basic map</h3>
-        <div class="alert alert-dark mb-0">
-            <code>
-<pre>
-&lt;MapLibre Options="_mapOptions" Class="rounded-top"
-     Height="300px"&gt;&lt;/MapLibre&gt;
+<div class="container my-4">
+    <div class="text-center mb-4">
+        <h2 class="display-5 fw-bold"><code style="font-size: xxx-large">Blazor.MapLibre</code> Examples</h2>
+        <p class="lead">
+            Explore various examples demonstrating the capabilities of Blazor.MapLibre
+        </p>
+    </div>
 
-@@code
-{
-    private readonly MapOptions _mapOptions = new()
-    {
-        Container = "UniqueMapId",
-        Style = "https://demotiles.maplibre.org/style.json",
-        Center = new LngLat()
-        {
-            Latitude = -2.320679,
-            Longitude = 112.772537
-        },
-        Zoom = 3
-    };
-}
-</pre>
-            </code>
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+                @foreach (var item in _samplesList)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm @item.Class" style="cursor: pointer;" @onclick="() => NavigateToPage(item.Url)">
+                            <div style="height: 200px; overflow: hidden;">
+                                <img class="card-img-top w-100 h-100" style="object-fit: cover;" src="@item.ImageUrl" alt="@item.Title"/>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
 
-
 @code
 {
-    private readonly MapOptions _mapOptions = new()
+    private readonly List<MapSampleItem> _samplesList =
+    [
+        new() { Title = "Load GeoJSON", Url = "examples/load-geojson", ImageUrl = "img/examples/load-geojson.png" },
+        new() { Title = "Add Listener", Url = "examples/add-listener", ImageUrl = "img/examples/add-listener.png" },
+        new() { Title = "Fit Bounds", Url = "examples/fit-bounds", ImageUrl = "img/examples/fit-bounds.png" },
+        new() { Title = "Create Popup", Url = "examples/add-popup", ImageUrl = "img/examples/add-popup.png" },
+        new() { Title = "Render Globe", Url = "examples/render-globe", ImageUrl = "img/examples/render-globe.png" },
+        new() { Title = "Mapbox Draw GLJS", Url = "examples/mapbox-gl-draw", ImageUrl = "img/examples/mapbox-gl-draw.png" },
+        new() { Title = "Add Marker", Url = "examples/add-marker", ImageUrl = "img/examples/add-marker.png" },
+        new() { Title = "Multiple Maps", Url = "examples/multiple-maps", ImageUrl = "img/examples/multiple-maps.png" },
+    ];
+
+    // ExampleItem class to store information
+    private class MapSampleItem
     {
-        Container = "UniqueMapId",
-        Style = "https://demotiles.maplibre.org/style.json",
-        Center = new LngLat()
+        public string Title { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string? Class { get; set; }
+    }
+
+    /// <summary>
+    /// Handles the click event on the card and navigates to the specified URL if it is not null or empty.
+    /// </summary>
+    private void NavigateToPage(string? targetUrl)
+    {
+        if (!string.IsNullOrEmpty(targetUrl))
         {
-            Latitude = -2.320679, 
-            Longitude = 112.772537
-        },
-        Zoom = 3
-    };
-    
+            NavigationManager.NavigateTo(targetUrl);
+        }
+    }
 }

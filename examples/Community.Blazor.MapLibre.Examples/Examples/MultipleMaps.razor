@@ -1,18 +1,20 @@
-﻿@page "/Examples/multiple-maps"
+﻿@page "/examples/multiple-maps"
+
 @implements IAsyncDisposable
 
-<h3>Multiple maps</h3>
-
 <div class="alert alert-info" role="alert">
-    <h5 class="alert-heading">⚠️ WebGL Context Limitations</h5>
+    <h5 class="alert-heading">WebGL Context Limitations</h5>
     <p class="mb-2">
-        Multiple map components can be added to a page, but browsers have specific limitations on how many WebGL contexts can co-exist simultaneously.
+        Multiple map components can be added to a page, but browsers have specific limitations on how many WebGL
+        contexts can co-exist simultaneously.
     </p>
     <p class="mb-2">
-        <strong>Example:</strong> Chrome has a limit of 16 WebGL contexts. Any maps added beyond this limit will result in the oldest map losing its WebGL context and ceasing to work.
+        <strong>Example:</strong> Chrome has a limit of 16 WebGL contexts. Any maps added beyond this limit will result
+        in the oldest map losing its WebGL context and ceasing to work.
     </p>
     <p class="mb-0">
-        <strong>Note:</strong> Map components will properly dispose of their reserved WebGL context when they are destroyed, freeing up resources for new maps.
+        <strong>Note:</strong> Map components will properly dispose of their reserved WebGL context when they are
+        destroyed, freeing up resources for new maps.
     </p>
 </div>
 
@@ -26,14 +28,12 @@
     </div>
 </div>
 
-<div class="map-grid">
-    @for (var i = 0; i < _mapCount; i++)
-    {
-        <div class="map-cell">
-            <MapLibre Options="_mapOptions" Class="rounded-top" Height="400px"/>
-        </div>
-    }
-</div>
+@for (var i = 0; i < _mapCount; i++)
+{
+    <div class="map-cell" style="margin-top: 10px">
+        <MapLibre Options="_mapOptions" Class="rounded-top" Height="200px"/>
+    </div>
+}
 
 @code {
     private int _mapCount = 1;

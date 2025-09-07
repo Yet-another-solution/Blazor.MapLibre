@@ -1,10 +1,18 @@
-﻿using Community.Blazor.MapLibre.Models;
-using Community.Blazor.MapLibre.Models.Event;
+﻿@page "/examples/add-popup"
 
-namespace Community.Blazor.MapLibre.Examples.WebAssembly.Pages.Examples;
+@using Community.Blazor.MapLibre.Models.Event
 
-public partial class CreatePopup
+<MapLibre @ref="_map"
+          Options="_mapOptions"
+          OnLoad="OnMapLoad"
+          Class="rounded-top"
+          Height="600px">
+</MapLibre>
+
+@code
 {
+    private MapLibre? _map { get; set; }
+    
     private readonly MapOptions _mapOptions = new()
     {
         Style = "https://demotiles.maplibre.org/style.json"
@@ -23,12 +31,12 @@ public partial class CreatePopup
         {
             await _map.CreatePopup(new Popup
             {
-                Content = $"""
+                Content = $@"
                            <div>
                                <h3>Map clicked</h3>
                                <p>You clicked the map at <code>{evnt.LngLat.Latitude} {evnt.LngLat.Longitude}</code></p>
                            </div>
-                           """,
+                           ",
                 Coordinates = evnt.LngLat
             }, new PopupOptions
             {
