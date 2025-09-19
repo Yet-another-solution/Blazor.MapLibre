@@ -191,14 +191,28 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     #region Events
 
     /// <summary>
-    /// Registers an event listener for a specified event on the map, optionally scoped to a specific layer.
+    /// Registers a synchronous event listener for a specified event on the map, optionally scoped to a specific layer.
     /// </summary>
     /// <typeparam name="T">The type of the event payload.</typeparam>
     /// <param name="eventName">The name of the event to listen for (e.g., "click", "mousemove").</param>
-    /// <param name="handler">The callback action to execute when the event occurs.</param>
+    /// <param name="handler">The synchronous callback action to execute when the event occurs.</param>
     /// <param name="layer">The optional layer ID where the event listener should be applied.</param>
     /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
-    public async Task<Listener> AddListener<T>(string eventName, Action<T> handler, object? layer = null)
+    public Task<Listener> AddListener<T>(string eventName, Action<T> handler, object? layer = null) =>
+        AddListenerInternal<T>(eventName, handler, layer);
+
+    /// <summary>
+    /// Registers an asynchronous event listener for a specified event on the map, optionally scoped to a specific layer.
+    /// </summary>
+    /// <typeparam name="T">The type of the event payload.</typeparam>
+    /// <param name="eventName">The name of the event to listen for (e.g., "click", "mousemove").</param>
+    /// <param name="handler">The asynchronous callback action to execute when the event occurs.</param>
+    /// <param name="layer">The optional layer ID where the event listener should be applied.</param>
+    /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
+    public Task<Listener> AddAsyncListener<T>(string eventName, Func<T, Task> handler, object? layer = null) =>
+        AddListenerInternal<T>(eventName, handler, layer);
+
+    private async Task<Listener> AddListenerInternal<T>(string eventName, Delegate handler, object? layer = null)
     {
         var callback = new CallbackHandler(_jsModule, eventName, handler, typeof(T));
         var reference = DotNetObjectReference.Create(callback);
@@ -209,8 +223,23 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         return new Listener(callback);
     }
 
-    public async Task<Listener> OnClick(string? layerId, Action<MapMouseEvent> handler) =>
-        await AddListener("click", handler, layerId);
+    /// <summary>
+    /// Registers a synchronous click event listener for the map or a specific layer.
+    /// </summary>
+    /// <param name="layerId">The optional layer ID.</param>
+    /// <param name="handler">The synchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnClick(string? layerId, Action<MapMouseEvent> handler) =>
+        AddListener("click", handler, layerId);
+
+    /// <summary>
+    /// Registers an asynchronous click event listener for the map or a specific layer.
+    /// </summary>
+    /// <param name="layerId">The optional layer ID.</param>
+    /// <param name="handler">The asynchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnClick(string? layerId, Func<MapMouseEvent, Task> handler) =>
+         AddAsyncListener("click", handler, layerId);
 
     #endregion
 
@@ -1146,8 +1175,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Sets the filter for the specified style layer.
     /// </summary>
     /// <remarks>
-    /// Filters control which features a style layer renders from its source. 
-    /// Any feature for which the filter expression evaluates to <c>true</c> will be rendered on the map. 
+    /// Filters control which features a style layer renders from its source.
+    /// Any feature for which the filter expression evaluates to <c>true</c> will be rendered on the map.
     /// Those that are <c>false</c> will be hidden.
     /// Use <c>SetFilter</c> to show a subset of your source data.
     /// To clear the filter, pass <c>null</c> or omit the second parameter.
@@ -1156,7 +1185,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// The ID of the layer to apply the filter to.
     /// </param>
     /// <param name="filter">
-    /// The filter, conforming to the MapLibre Style Specification's filter definition. 
+    /// The filter, conforming to the MapLibre Style Specification's filter definition.
     /// If <c>null</c> is provided, the function removes any existing filter from the layer.
     /// </param>
     /// <param name="options">
