@@ -17,9 +17,9 @@ public partial class CreatePopup
             return;
         }
 
-        await _map.OnClick(null, e => AddPopup(e));
+        await _map.OnClick(null, AddPopup);
 
-        async void AddPopup(MapMouseEvent evnt)
+        async Task AddPopup(MapMouseEvent evnt)
         {
             await _map.CreatePopup(new Popup
             {
