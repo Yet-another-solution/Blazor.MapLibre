@@ -54,11 +54,16 @@ public class CallbackHandler
     /// </summary>
     /// <param name="args">Serialized JSON arguments from JavaScript.</param>
     [JSInvokable]
-    public void Invoke(string args)
+    public async ValueTask Invoke(string args)
     {
         if (string.IsNullOrWhiteSpace(args) || _argumentType is null)
         {
-            _callbackDelegate.DynamicInvoke(); // Invoke delegate without arguments.
+            var returnObject = _callbackDelegate.DynamicInvoke(); // Invoke delegate without arguments.
+
+            if (returnObject is Task task)
+            {
+                await task; // Await if the return type is a Task.
+            }
             return;
         }
 
@@ -66,6 +71,10 @@ public class CallbackHandler
         var deserializedArgs = JsonSerializer.Deserialize(args, _argumentType);
 
         // Invoke delegate with deserialized arguments.
-        _callbackDelegate.DynamicInvoke(deserializedArgs);
+        var returnObjectWithArgs = _callbackDelegate.DynamicInvoke(deserializedArgs);
+        if (returnObjectWithArgs is Task callbackTaskWithArgs)
+        {
+            await callbackTaskWithArgs; // Await if the return type is a Task.
+        }
     }
 }
