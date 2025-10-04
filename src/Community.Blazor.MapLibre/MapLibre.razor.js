@@ -458,6 +458,16 @@ export function getLayer(container, id) {
 }
 
 /**
+ * Checks if a layer exists in the map's style by its ID.
+ * @param {string} container - The identifier of the map container.
+ * @param {string} id - The ID of the layer to check.
+ * @returns {boolean} True if the layer exists, false otherwise.
+ */
+export function hasLayer(container, id) {
+    return !!mapInstances[container]?.getLayer(id);
+}
+
+/**
  * Retrieves the order of layers within a specific map container.
  *
  * @param {string} container - The identifier for the map container whose layer order is to be retrieved.
@@ -617,6 +627,16 @@ export function getSky(container) {
  */
 export function getSource(container, id) {
     return mapInstances[container].getSource(id);
+}
+
+/**
+ * Checks if a source exists in the map's style by its ID.
+ * @param {string} container - The identifier of the map container.
+ * @param {string} id - The ID of the source to check.
+ * @returns {boolean} True if the source exists, false otherwise.
+ */
+export function hasSource(container, id) {
+    return !!mapInstances[container]?.getSource(id);
 }
 
 /**
@@ -1051,6 +1071,18 @@ export function setFilter(container, layerId, filter, options) {
  */
 export function setGlyphs(container, glyphsUrl, options) {
     mapInstances[container].setGlyphs(glyphsUrl, options);
+}
+
+/**
+ * Sets the value of a layout property in the specified style layer.
+ * @param {string} container - The map container.
+ * @param {string} layerId - The layer ID.
+ * @param {string} name - The name of the layout property to set.
+ * @param {object} [value] - The value of the layout property.
+ * @param {object} [options] - Options object.
+ */
+export function setLayoutProperty(container, layerId, name, value, options) {
+    mapInstances[container].setLayoutProperty(layerId, name, value, options);
 }
 
 /**

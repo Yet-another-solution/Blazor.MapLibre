@@ -1,11 +1,8 @@
-using System.Collections.Concurrent;
-using System.Text.Json;
 using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Camera;
 using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Event;
 using Community.Blazor.MapLibre.Models.Feature;
-using Community.Blazor.MapLibre.Models.Feature.Dto;
 using Community.Blazor.MapLibre.Models.Image;
 using Community.Blazor.MapLibre.Models.Layers;
 using Community.Blazor.MapLibre.Models.Marker;
@@ -14,6 +11,7 @@ using Community.Blazor.MapLibre.Models.Sources;
 using Community.Blazor.MapLibre.Models.Sprite;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Collections.Concurrent;
 
 namespace Community.Blazor.MapLibre;
 
@@ -46,7 +44,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Used to facilitate communication between JavaScript and the .NET component.
     /// </summary>
     private DotNetObjectReference<MapLibre> _dotNetObjectReference = null!;
-    
+
     /// <summary>
     /// A collection of custom plugins that extend the functionality of the MapLibre map.
     /// </summary>
@@ -149,7 +147,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
             // Initialize the MapLibre map
             _mapObject = await _jsModule.InvokeAsync<IJSObjectReference>("initializeMap", Options, _dotNetObjectReference);
-            
+
             // Load the plugins after the map has been initialized
             foreach (var plugin in _plugins)
             {
@@ -157,7 +155,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             }
         }
     }
-    
+
     public void RegisterPlugin(IMapLibrePlugin plugin)
     {
         ArgumentNullException.ThrowIfNull(plugin, nameof(plugin));
@@ -175,9 +173,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         try
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            await Remove();
             if (_jsModule is not null)
             {
+                await Remove();
                 await _jsModule.DisposeAsync();
             }
         }
@@ -193,14 +191,28 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     #region Events
 
     /// <summary>
-    /// Registers an event listener for a specified event on the map, optionally scoped to a specific layer.
+    /// Registers a synchronous event listener for a specified event on the map, optionally scoped to a specific layer.
     /// </summary>
     /// <typeparam name="T">The type of the event payload.</typeparam>
     /// <param name="eventName">The name of the event to listen for (e.g., "click", "mousemove").</param>
-    /// <param name="handler">The callback action to execute when the event occurs.</param>
+    /// <param name="handler">The synchronous callback action to execute when the event occurs.</param>
     /// <param name="layer">The optional layer ID where the event listener should be applied.</param>
     /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
-    public async Task<Listener> AddListener<T>(string eventName, Action<T> handler, object? layer = null)
+    public Task<Listener> AddListener<T>(string eventName, Action<T> handler, object? layer = null) =>
+        AddListenerInternal<T>(eventName, handler, layer);
+
+    /// <summary>
+    /// Registers an asynchronous event listener for a specified event on the map, optionally scoped to a specific layer.
+    /// </summary>
+    /// <typeparam name="T">The type of the event payload.</typeparam>
+    /// <param name="eventName">The name of the event to listen for (e.g., "click", "mousemove").</param>
+    /// <param name="handler">The asynchronous callback action to execute when the event occurs.</param>
+    /// <param name="layer">The optional layer ID where the event listener should be applied.</param>
+    /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
+    public Task<Listener> AddAsyncListener<T>(string eventName, Func<T, Task> handler, object? layer = null) =>
+        AddListenerInternal<T>(eventName, handler, layer);
+
+    private async Task<Listener> AddListenerInternal<T>(string eventName, Delegate handler, object? layer = null)
     {
         var callback = new CallbackHandler(_jsModule, eventName, handler, typeof(T));
         var reference = DotNetObjectReference.Create(callback);
@@ -211,8 +223,23 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         return new Listener(callback);
     }
 
-    public async Task<Listener> OnClick(string? layerId, Action<MapMouseEvent> handler) =>
-        await AddListener("click", handler, layerId);
+    /// <summary>
+    /// Registers a synchronous click event listener for the map or a specific layer.
+    /// </summary>
+    /// <param name="layerId">The optional layer ID.</param>
+    /// <param name="handler">The synchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnClick(string? layerId, Action<MapMouseEvent> handler) =>
+        AddListener("click", handler, layerId);
+
+    /// <summary>
+    /// Registers an asynchronous click event listener for the map or a specific layer.
+    /// </summary>
+    /// <param name="layerId">The optional layer ID.</param>
+    /// <param name="handler">The asynchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnClick(string? layerId, Func<MapMouseEvent, Task> handler) =>
+         AddAsyncListener("click", handler, layerId);
 
     #endregion
 
@@ -566,6 +593,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         await _jsModule.InvokeAsync<object>("getLayer", MapId, id);
 
     /// <summary>
+    /// Checks if a layer exists in the map's style by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the layer to check.</param>
+    /// <returns>True if the layer exists, false otherwise.</returns>
+    public async ValueTask<bool> HasLayer(string id) =>
+        await _jsModule.InvokeAsync<bool>("hasLayer", MapId, id);
+
+    /// <summary>
     /// Return the ids of all layers currently in the style, including custom layers, in order.
     /// </summary>
     /// <returns></returns>
@@ -688,6 +723,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>The source object if found, or null if not found.</returns>
     public async ValueTask<ISource?> GetSource(string id) =>
         await _jsModule.InvokeAsync<ISource?>("getSource", MapId, id);
+
+    /// <summary>
+    /// Checks if a source exists in the map's style by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the source to check.</param>
+    /// <returns>True if the source exists, false otherwise.</returns>
+    public async ValueTask<bool> HasSource(string id) =>
+        await _jsModule.InvokeAsync<bool>("hasSource", MapId, id);
 
     /// <summary>
     /// Retrieves the style's sprite as a list of objects.
@@ -1132,8 +1175,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Sets the filter for the specified style layer.
     /// </summary>
     /// <remarks>
-    /// Filters control which features a style layer renders from its source. 
-    /// Any feature for which the filter expression evaluates to <c>true</c> will be rendered on the map. 
+    /// Filters control which features a style layer renders from its source.
+    /// Any feature for which the filter expression evaluates to <c>true</c> will be rendered on the map.
     /// Those that are <c>false</c> will be hidden.
     /// Use <c>SetFilter</c> to show a subset of your source data.
     /// To clear the filter, pass <c>null</c> or omit the second parameter.
@@ -1142,7 +1185,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// The ID of the layer to apply the filter to.
     /// </param>
     /// <param name="filter">
-    /// The filter, conforming to the MapLibre Style Specification's filter definition. 
+    /// The filter, conforming to the MapLibre Style Specification's filter definition.
     /// If <c>null</c> is provided, the function removes any existing filter from the layer.
     /// </param>
     /// <param name="options">
@@ -1150,7 +1193,21 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </param>
     public async ValueTask SetFilter(string layerId, object filter, StyleSetterOptions options) =>
         await _jsModule.InvokeVoidAsync("setFilter", MapId, layerId, filter, options);
-    
+
+    /// <summary>
+    /// Sets the value of a layout property in the specified style layer.
+    /// </summary>
+    /// <param name="layerId">
+    /// The ID of the layer to set the layout property in.</param>
+    /// <param name="name">
+    /// The name of the layout property to set.</param>
+    /// <param name="value">
+    /// The value of the layout property. Must be of a type appropriate for the property, as defined in the MapLibre Style Specification.</param>
+    /// <param name="options"></param>
+    /// Optional. An options object for configuring style setting behavior.
+    public async ValueTask SetLayoutProperty(string layerId, string name, object value, StyleSetterOptions options) =>
+        await _jsModule.InvokeVoidAsync("setLayoutProperty", MapId, layerId, name, value, options);
+
     /// <summary>
     /// Sets the map's projection configuration, which determines how geographic coordinates are projected to the screen.
     /// </summary>
@@ -1160,7 +1217,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </param>
     public async ValueTask SetProjection(ProjectionSpecification projection) =>
         await _jsModule.InvokeVoidAsync("setProjection", MapId, projection);
-    
+
     /// <summary>
     /// Sets a zoom level for the map.
     /// </summary>
@@ -1255,7 +1312,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
         await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
         return id;
     }
-    
+
     /// <summary>
     /// Removes a marker from the map by its unique identifier.
     /// </summary>
@@ -1263,7 +1320,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task RemoveMarker(Guid markerId)
         => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
-    
+
     /// <summary>
     /// Moves a marker on the map.
     /// </summary>
