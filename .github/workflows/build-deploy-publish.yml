@@ -30,11 +30,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      # Step 4: Build both projects
+      # Step 4: Build the Library
       - name: Build Library and Examples
-        run: dotnet build --no-restore -c Release /p:ContinuousIntegrationBuild=true
+        run: dotnet build src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --no-restore -c Release /p:ContinuousIntegrationBuild=true
 
-      # Step 5: Test the Library Project (Optional If You Only Want to Test Library)
+      # Step 5: Test the Library
       - name: Test Library
         run: dotnet test src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release
 
@@ -52,17 +52,17 @@ jobs:
           name: nuget
           path: nuget/
 
-      # Step 8: Prepare Blazor examples for deployment
+      # Step 8: Build the documentation site
       - name: Publish Blazor Examples
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'main'))
-        run: dotnet publish examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj -c Release -o blazor_build_output
+        run: dotnet build docs/Community.Blazor.MapLibre.Documentation.csproj -c Release -o blazor_build_output
 
-      # Step 9: Upload Blazor artifacts for deployment
+      # Step 9: Upload the documentation site as an artifact
       - name: Upload Blazor Deployment Artifact
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'main'))
         uses: actions/upload-pages-artifact@v3
         with:
-          path: blazor_build_output/wwwroot
+          path: blazor_build_output/dist
 
   # Job 2: Publish NuGet Package
   publish:
