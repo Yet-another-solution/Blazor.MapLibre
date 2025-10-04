@@ -25,12 +25,12 @@
     </Target>
 
     <Target Name="BuildSite" AfterTargets="AfterBuild">
-        <Exec Command="dotnet docfx docfx.json --output $(OutputPath)dist"/>
+        <Exec Command="dotnet docfx docfx.json --output $(OutputPath)/dist"/>
     </Target>
 
     <Target Name="PublishExampleComponentsToDocsSite" BeforeTargets="AfterBuild">
         <Message Text="Publishing BlazorComponents for development..." Importance="high" />
-        <Exec Command="dotnet publish $(MSBuildThisFileDirectory)..\examples\Community.Blazor.MapLibre.Examples\Community.Blazor.MapLibre.Examples.csproj -c $(Configuration) -o $(OutputPath)dist" />
+        <Exec Command="dotnet publish $(MSBuildThisFileDirectory)..\examples\Community.Blazor.MapLibre.Examples\Community.Blazor.MapLibre.Examples.csproj -c $(Configuration) -o $(OutputPath)/dist" />
     </Target>
 
 </Project>
