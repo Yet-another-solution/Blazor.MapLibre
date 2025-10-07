@@ -21,7 +21,8 @@
     "output": "dist",
     "template": [
       "default",
-      "modern"
+      "modern",
+      "template"
     ],
     "globalMetadata": {
       "_appTitle": "Blazor MapLibre",

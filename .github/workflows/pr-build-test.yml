@@ -10,6 +10,13 @@ jobs:
   pr-build:
     name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj
+          - docs/Community.Blazor.MapLibre.Documentation.csproj
+          - examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj
+          - examples/Community.Blazor.MapLibre.Examples.MapboxGlPlugin/Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj
 
     steps:
       - name: Checkout repository
@@ -22,8 +29,8 @@ jobs:
             8.0.x
             9.0.x
 
-      - name: Restore dependencies
+      - name: Restore all project dependencies
         run: dotnet restore
 
-      - name: Build projects
-        run: dotnet build --no-restore -c Release
+      - name: Build ${{ matrix.project }}
+        run: dotnet build ${{ matrix.project }} --no-restore -c Release
