@@ -10,6 +10,36 @@ public class ImageSource : ISource
     /// <inheritdoc />
     [JsonPropertyName("type")]
     public string Type => "image";
+    /// <inheritdoc />
+    [JsonPropertyName("attribution")]
+    public string? Attribution { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("isTileClipped")]
+    public bool? IsTileClipped { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("maxzoom")]
+    public float? MaxZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("minzoom")]
+    public float? MinZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("reparseOverscaled")]
+    public bool? ReparseOverscaled { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("roundZoom")]
+    public bool? RoundZoom { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileID")]
+    public string? TileID { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("tileSize")]
+    public float? TileSize { get; set; }
+    /// <inheritdoc />
+    [JsonPropertyName("vectorLayerIds")]
+    public string[]? VectorLayerIds { get; set; }
 
     /// <summary>
     /// The URL to the image. This is used to load the image to be displayed on the map. Required.
