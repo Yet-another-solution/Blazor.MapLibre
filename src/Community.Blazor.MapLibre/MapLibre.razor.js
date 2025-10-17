@@ -399,7 +399,7 @@ export function getCenterElevation(container) {
  * @param {string} container - The identifier for the desired container.
  * @returns {*} The container instance associated with the specified container identifier.
  */
-export function etContainer(container) {
+export function getContainer(container) {
     return mapInstances[container].getContainer();
 }
 
