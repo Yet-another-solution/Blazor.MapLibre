@@ -25,6 +25,7 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       # Step 3: Restore dependencies
       - name: Restore dependencies
@@ -34,17 +35,21 @@ jobs:
       - name: Build Library and Examples
         run: dotnet build src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --no-restore -c Release /p:ContinuousIntegrationBuild=true
 
-      # Step 5: Test the Library
-      - name: Test Library
-        run: dotnet test src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj --verbosity normal -c Release
+      # Step 5: Build the Test Project
+      - name: Build Test Project
+        run: dotnet build tests/Community.Blazor.MapLibre.Tests/Community.Blazor.MapLibre.Tests.csproj --no-restore -c Release
 
-      # Step 6: Pack the Library for NuGet
+      # Step 6: Run Tests
+      - name: Run Tests
+        run: dotnet test tests/Community.Blazor.MapLibre.Tests/Community.Blazor.MapLibre.Tests.csproj --no-build -c Release --verbosity normal
+
+      # Step 7: Pack the Library for NuGet
       - name: Pack NuGet Library
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
         run: dotnet pack src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj -c Release --no-build --output nuget
         # Only pack `Community.Blazor.MapLibre.csproj` for NuGet, not the examples
 
-      # Step 7: Upload NuGet packages as artifact
+      # Step 8: Upload NuGet packages as artifact
       - name: Upload NuGet Artifact
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
         uses: actions/upload-artifact@v4
@@ -52,12 +57,12 @@ jobs:
           name: nuget
           path: nuget/
 
-      # Step 8: Build the documentation site
+      # Step 9: Build the documentation site
       - name: Publish Blazor Examples
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'main'))
         run: dotnet build docs/Community.Blazor.MapLibre.Documentation.csproj -c Release -o blazor_build_output
 
-      # Step 9: Upload the documentation site as an artifact
+      # Step 10: Upload the documentation site as an artifact
       - name: Upload Blazor Deployment Artifact
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'main'))
         uses: actions/upload-pages-artifact@v3
@@ -85,7 +90,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       # Step 3: Publish the library to NuGet (using GitHub token or API key)
       - name: Publish to NuGet
