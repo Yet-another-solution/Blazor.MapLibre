@@ -6,8 +6,10 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// <summary>
 /// Represents the base class for all map data sources. Each source type (e.g., vector, raster, geojson) will inherit from this class.
 /// </summary>
+[JsonDerivedType(typeof(CanvasSource))]
 [JsonDerivedType(typeof(GeoJsonSource))]
 [JsonDerivedType(typeof(ImageSource))]
+[JsonDerivedType(typeof(RasterDEMTileSource))]
 [JsonDerivedType(typeof(RasterTileSource))]
 [JsonDerivedType(typeof(VectorTileSource))]
 [JsonDerivedType(typeof(VideoSource))]
