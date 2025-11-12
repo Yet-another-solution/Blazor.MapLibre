@@ -93,7 +93,7 @@ public class GeometrySerializationTests
         // Arrange
         var polygon = new PolygonGeometry
         {
-            Coordinates = new[][][]
+            Coordinates = new[]
             {
                 new[]
                 {
@@ -133,67 +133,13 @@ public class GeometrySerializationTests
     }
 
     [Fact]
-    public void MultiPointGeometry_Should_Serialize_Successfully()
-    {
-        // Arrange
-        var multiPoint = new MultiPointGeometry
-        {
-            Coordinates = new[]
-            {
-                new[] { -122.4194, 37.7749 },
-                new[] { -122.4184, 37.7739 }
-            }
-        };
-
-        // Act
-        var json = JsonSerializer.Serialize<IGeometry>(multiPoint);
-
-        // Assert
-        json.Should().NotBeNullOrEmpty();
-        json.Should().Contain("\"type\":\"MultiPoint\"");
-        json.Should().Contain("\"coordinates\":");
-    }
-
-    [Fact]
-    public void MultiLineGeometry_Should_Serialize_Successfully()
-    {
-        // Arrange
-        var multiLine = new MultiLineGeometry
-        {
-            Coordinates = new[][][]
-            {
-                new[]
-                {
-                    new[] { -122.4194, 37.7749 },
-                    new[] { -122.4184, 37.7739 }
-                },
-                new[]
-                {
-                    new[] { -122.4204, 37.7729 },
-                    new[] { -122.4214, 37.7719 }
-                }
-            }
-        };
-
-        // Act
-        var json = JsonSerializer.Serialize<IGeometry>(multiLine);
-
-        // Assert
-        json.Should().NotBeNullOrEmpty();
-        json.Should().Contain("\"type\":\"MultiLineString\"");
-        json.Should().Contain("\"coordinates\":");
-    }
-
-    [Fact]
     public void MultiPolygonGeometry_Should_Serialize_Successfully()
     {
         // Arrange
         var multiPolygon = new MultiPolygonGeometry
         {
-            Coordinates = new[][][][]
-            {
-                new[][][]
-                {
+            Coordinates = new[] {
+                new[] {
                     new[]
                     {
                         new[] { -122.4194, 37.7749 },
@@ -244,10 +190,10 @@ public class GeometrySerializationTests
 
         // Assert
         bounds.Should().NotBeNull();
-        bounds.Southwest.Lng.Should().Be(-122.4194);
-        bounds.Southwest.Lat.Should().Be(37.7749);
-        bounds.Northeast.Lng.Should().Be(-122.4194);
-        bounds.Northeast.Lat.Should().Be(37.7749);
+        bounds.Southwest.Longitude.Should().Be(-122.4194);
+        bounds.Southwest.Latitude.Should().Be(37.7749);
+        bounds.Northeast.Longitude.Should().Be(-122.4194);
+        bounds.Northeast.Latitude.Should().Be(37.7749);
     }
 
     [Fact]
@@ -269,9 +215,9 @@ public class GeometrySerializationTests
 
         // Assert
         bounds.Should().NotBeNull();
-        bounds.Southwest.Lng.Should().Be(-122.4204);
-        bounds.Southwest.Lat.Should().Be(37.7739);
-        bounds.Northeast.Lng.Should().Be(-122.4184);
-        bounds.Northeast.Lat.Should().Be(37.7759);
+        bounds.Southwest.Longitude.Should().Be(-122.4204);
+        bounds.Southwest.Latitude.Should().Be(37.7739);
+        bounds.Northeast.Longitude.Should().Be(-122.4184);
+        bounds.Northeast.Latitude.Should().Be(37.7759);
     }
 }

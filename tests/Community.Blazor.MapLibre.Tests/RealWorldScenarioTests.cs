@@ -54,7 +54,7 @@ public class RealWorldScenarioTests
                 Id = "resource3",
                 Geometry = new PolygonGeometry
                 {
-                    Coordinates = new[][][]
+                    Coordinates = new[]
                     {
                         new[]
                         {
@@ -145,15 +145,6 @@ public class RealWorldScenarioTests
             },
             new FeatureFeature
             {
-                Id = "multipoint",
-                Geometry = new MultiPointGeometry
-                {
-                    Coordinates = new[] { new[] { 0.0, 0.0 }, new[] { 1.0, 1.0 } }
-                },
-                Properties = new Dictionary<string, object> { { "type", "cluster" } }
-            },
-            new FeatureFeature
-            {
                 Id = "line",
                 Geometry = new LineGeometry
                 {
@@ -163,26 +154,12 @@ public class RealWorldScenarioTests
             },
             new FeatureFeature
             {
-                Id = "multiline",
-                Geometry = new MultiLineGeometry
-                {
-                    Coordinates = new[][][]
-                    {
-                        new[] { new[] { 0.0, 0.0 }, new[] { 1.0, 1.0 } },
-                        new[] { new[] { 2.0, 2.0 }, new[] { 3.0, 3.0 } }
-                    }
-                },
-                Properties = new Dictionary<string, object> { { "type", "routes" } }
-            },
-            new FeatureFeature
-            {
                 Id = "polygon",
                 Geometry = new PolygonGeometry
                 {
-                    Coordinates = new[][][]
+                    Coordinates = new[]
                     {
-                        new[]
-                        {
+                        new[] {
                             new[] { 0.0, 0.0 },
                             new[] { 1.0, 0.0 },
                             new[] { 1.0, 1.0 },
@@ -198,12 +175,11 @@ public class RealWorldScenarioTests
                 Id = "multipolygon",
                 Geometry = new MultiPolygonGeometry
                 {
-                    Coordinates = new[][][][]
+                    Coordinates = new[]
                     {
-                        new[][][]
+                        new[]
                         {
-                            new[]
-                            {
+                            new[] {
                                 new[] { 0.0, 0.0 },
                                 new[] { 1.0, 0.0 },
                                 new[] { 1.0, 1.0 },

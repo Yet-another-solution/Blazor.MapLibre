@@ -259,8 +259,8 @@ public class FeatureSerializationTests
 
         // Assert
         bounds.Should().NotBeNull();
-        bounds.Southwest.Lng.Should().Be(-122.4194);
-        bounds.Southwest.Lat.Should().Be(37.7749);
+        bounds.Southwest.Longitude.Should().Be(-122.4194);
+        bounds.Southwest.Latitude.Should().Be(37.7749);
     }
 
     [Fact]
@@ -293,8 +293,8 @@ public class FeatureSerializationTests
 
         // Assert
         bounds.Should().NotBeNull();
-        bounds.Southwest.Lng.Should().BeLessThanOrEqualTo(-122.4184);
-        bounds.Southwest.Lat.Should().BeLessThanOrEqualTo(37.7749);
+        bounds.Southwest.Longitude.Should().BeLessThanOrEqualTo(-122.4184);
+        bounds.Southwest.Latitude.Should().BeLessThanOrEqualTo(37.7749);
     }
 
     [Fact]
@@ -323,7 +323,7 @@ public class FeatureSerializationTests
                     Id = "polygon",
                     Geometry = new PolygonGeometry
                     {
-                        Coordinates = new[][][]
+                        Coordinates = new[]
                         {
                             new[]
                             {
