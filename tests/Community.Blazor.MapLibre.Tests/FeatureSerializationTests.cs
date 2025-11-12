@@ -46,21 +46,19 @@ public class FeatureSerializationTests
     public void FeatureFeature_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = """
-        {
-            "$type":"Feature",
-            "id":"feature1",
-            "type":"Feature",
-            "geometry":{
-                "$type":"Point",
-                "type":"Point",
-                "coordinates":[-122.4194,37.7749]
+        var json = @"{
+            ""$type"":""Feature"",
+            ""id"":""feature1"",
+            ""type"":""Feature"",
+            ""geometry"":{
+                ""$type"":""Point"",
+                ""type"":""Point"",
+                ""coordinates"":[-122.4194,37.7749]
             },
-            "properties":{
-                "name":"San Francisco"
+            ""properties"":{
+                ""name"":""San Francisco""
             }
-        }
-        """;
+        }";
 
         // Act
         var feature = JsonSerializer.Deserialize<IFeature>(json);
@@ -129,27 +127,25 @@ public class FeatureSerializationTests
     public void FeatureCollection_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = """
-        {
-            "$type":"FeatureCollection",
-            "type":"FeatureCollection",
-            "features":[
+        var json = @"{
+            ""$type"":""FeatureCollection"",
+            ""type"":""FeatureCollection"",
+            ""features"":[
                 {
-                    "$type":"Feature",
-                    "id":"point1",
-                    "type":"Feature",
-                    "geometry":{
-                        "$type":"Point",
-                        "type":"Point",
-                        "coordinates":[-122.4194,37.7749]
+                    ""$type"":""Feature"",
+                    ""id"":""point1"",
+                    ""type"":""Feature"",
+                    ""geometry"":{
+                        ""$type"":""Point"",
+                        ""type"":""Point"",
+                        ""coordinates"":[-122.4194,37.7749]
                     },
-                    "properties":{
-                        "name":"San Francisco"
+                    ""properties"":{
+                        ""name"":""San Francisco""
                     }
                 }
             ]
-        }
-        """;
+        }";
 
         // Act
         var feature = JsonSerializer.Deserialize<IFeature>(json);

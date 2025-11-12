@@ -33,7 +33,7 @@ public class GeometrySerializationTests
     public void PointGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = """{"$type":"Point","type":"Point","coordinates":[-122.4194,37.7749]}""";
+        var json = "{\"$type\":\"Point\",\"type\":\"Point\",\"coordinates\":[-122.4194,37.7749]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
@@ -74,7 +74,7 @@ public class GeometrySerializationTests
     public void LineGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = """{"$type":"LineString","type":"LineString","coordinates":[[-122.4194,37.7749],[-122.4184,37.7739]]}""";
+        var json = "{\"$type\":\"LineString\",\"type\":\"LineString\",\"coordinates\":[[-122.4194,37.7749],[-122.4184,37.7739]]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
@@ -118,7 +118,7 @@ public class GeometrySerializationTests
     public void PolygonGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = """{"$type":"Polygon","type":"Polygon","coordinates":[[[-122.4194,37.7749],[-122.4184,37.7739],[-122.4204,37.7729],[-122.4194,37.7749]]]}""";
+        var json = "{\"$type\":\"Polygon\",\"type\":\"Polygon\",\"coordinates\":[[[-122.4194,37.7749],[-122.4184,37.7739],[-122.4204,37.7729],[-122.4194,37.7749]]]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
