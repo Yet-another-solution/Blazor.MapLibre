@@ -3,13 +3,14 @@ using System.Text.Json.Serialization;
 namespace Community.Blazor.MapLibre.Models.Sources;
 
 /// <summary>
-/// Represents a raster tile source. Raster sources provide tiled raster image data, typically used for basemaps.
+/// Represents a raster DEM (Digital Elevation Model) tile source. Raster DEM sources provide tiled raster elevation data
+/// for use with hillshading and 3D terrain rendering.
 /// </summary>
-public class RasterTileSource : ISource
+public class RasterDEMTileSource : ISource
 {
     /// <inheritdoc />
     [JsonPropertyName("type")]
-    public string Type => "raster";
+    public string Type => "raster-dem";
 
     /// <summary>
     /// URL to a TileJSON resource providing metadata about this source. Optional.
@@ -19,7 +20,7 @@ public class RasterTileSource : ISource
     public string? Url { get; set; }
 
     /// <summary>
-    /// An array of URLs to the raster tiles. URL patterns can use placeholders like `{z}`, `{x}`, and `{y}`. Optional.
+    /// An array of URLs to the raster DEM tiles. URL patterns can use placeholders like `{z}`, `{x}`, and `{y}`. Optional.
     /// </summary>
     [JsonPropertyName("tiles")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -68,4 +69,40 @@ public class RasterTileSource : ISource
     [JsonPropertyName("attribution")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Attribution { get; set; }
+
+    /// <summary>
+    /// The encoding used by the raster DEM tiles. Supported values are "mapbox" (Mapbox Terrain RGB) and "terrarium" (Mapzen Terrarium).
+    /// Default is "mapbox". Optional.
+    /// </summary>
+    [JsonPropertyName("encoding")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Encoding { get; set; } = "mapbox";
+
+    /// <summary>
+    /// The red channel multiplier for decoding elevation values. Optional.
+    /// </summary>
+    [JsonPropertyName("redFactor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public float? RedFactor { get; set; }
+
+    /// <summary>
+    /// The green channel multiplier for decoding elevation values. Optional.
+    /// </summary>
+    [JsonPropertyName("greenFactor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public float? GreenFactor { get; set; }
+
+    /// <summary>
+    /// The blue channel multiplier for decoding elevation values. Optional.
+    /// </summary>
+    [JsonPropertyName("blueFactor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public float? BlueFactor { get; set; }
+
+    /// <summary>
+    /// The base shift value for decoding elevation values. Optional.
+    /// </summary>
+    [JsonPropertyName("baseShift")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public float? BaseShift { get; set; }
 }

@@ -54,4 +54,32 @@ public class VectorTileSource : ISource
     [JsonPropertyName("maxzoom")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public float? MaxZoom { get; set; }
+
+    /// <summary>
+    /// Contains an attribution to be displayed when the map is shown to a user. Optional.
+    /// </summary>
+    [JsonPropertyName("attribution")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Attribution { get; set; }
+
+    /// <summary>
+    /// The size of the tiles in pixels. Default is 512. Optional.
+    /// </summary>
+    [JsonPropertyName("tileSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? TileSize { get; set; }
+
+    /// <summary>
+    /// A property to use as a feature id (for feature state). Either a property name, or an object of the form {"{layer}": "{property}"}. Optional.
+    /// </summary>
+    [JsonPropertyName("promoteId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? PromoteId { get; set; }
+
+    /// <summary>
+    /// Tile encoding format. Optional.
+    /// </summary>
+    [JsonPropertyName("encoding")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Encoding { get; set; }
 }
