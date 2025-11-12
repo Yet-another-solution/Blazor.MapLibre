@@ -347,4 +347,88 @@ public class FeatureSerializationTests
         json.Should().Contain("\"LineString\"");
         json.Should().Contain("\"Polygon\"");
     }
+
+    [Fact]
+    public void GeoJsonSource_With_URL_String_Should_Serialize_Successfully()
+    {
+        // Arrange - This is the exact scenario from GitHub issue #118
+        var geoJsonSource = new GeoJsonSource
+        {
+            Data = "https://apigeoportal.rcpod.space/api/Torches"
+        };
+
+        // Act
+        var json = JsonSerializer.Serialize(geoJsonSource);
+
+        // Assert
+        json.Should().NotBeNullOrEmpty();
+        json.Should().Contain("\"type\":\"geojson\"");
+        json.Should().Contain("\"data\":\"https://apigeoportal.rcpod.space/api/Torches\"");
+    }
+
+    [Fact]
+    public void GeoJsonSource_With_Inline_Feature_Should_Serialize_Successfully()
+    {
+        // Arrange
+        var geoJsonSource = new GeoJsonSource
+        {
+            Data = new FeatureFeature
+            {
+                Id = "test-feature",
+                Geometry = new PointGeometry
+                {
+                    Coordinates = new[] { -122.4194, 37.7749 }
+                },
+                Properties = new Dictionary<string, object>
+                {
+                    { "name", "Test Point" }
+                }
+            }
+        };
+
+        // Act
+        var json = JsonSerializer.Serialize(geoJsonSource);
+
+        // Assert
+        json.Should().NotBeNullOrEmpty();
+        json.Should().Contain("\"type\":\"geojson\"");
+        json.Should().Contain("\"type\":\"Feature\"");
+        json.Should().Contain("\"name\":\"Test Point\"");
+    }
+
+    [Fact]
+    public void GeoJsonSource_With_URL_Should_Be_Assignable_From_String()
+    {
+        // Arrange & Act - OneOf should support implicit conversion from string
+        var source = new GeoJsonSource
+        {
+            Data = "https://example.com/data.geojson"
+        };
+
+        // Assert
+        source.Should().NotBeNull();
+        source.Data.IsT1.Should().BeTrue("Data should be recognized as the second type (string)");
+        source.Data.AsT1.Should().Be("https://example.com/data.geojson");
+    }
+
+    [Fact]
+    public void GeoJsonSource_With_Feature_Should_Be_Assignable_From_IFeature()
+    {
+        // Arrange
+        var feature = new FeatureFeature
+        {
+            Geometry = new PointGeometry { Coordinates = new[] { 0.0, 0.0 } }
+        };
+
+        // Act - OneOf should support implicit conversion from IFeature
+        var source = new GeoJsonSource
+        {
+            Data = feature
+        };
+
+        // Assert
+        source.Should().NotBeNull();
+        source.Data.IsT0.Should().BeTrue("Data should be recognized as the first type (IFeature)");
+        source.Data.AsT0.Should().Be(feature);
+    }
 }
