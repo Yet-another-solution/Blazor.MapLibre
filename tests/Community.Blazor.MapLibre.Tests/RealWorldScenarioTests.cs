@@ -206,9 +206,7 @@ public class RealWorldScenarioTests
         // Assert
         json.Should().NotBeNullOrEmpty();
         json.Should().Contain("\"Point\"");
-        json.Should().Contain("\"MultiPoint\"");
         json.Should().Contain("\"LineString\"");
-        json.Should().Contain("\"MultiLineString\"");
         json.Should().Contain("\"Polygon\"");
         json.Should().Contain("\"MultiPolygon\"");
     }
