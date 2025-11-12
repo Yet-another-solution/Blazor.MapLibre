@@ -1,6 +1,6 @@
 ﻿<Solution>
   <Folder Name="/docs/">
-    <Project Path="docs\Community.Blazor.Documentation.csproj" Type="Classic C#" />
+    <Project Path="docs\Community.Blazor.MapLibre.Documentation.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/examples/">
     <Project Path="examples\Community.Blazor.MapLibre.Examples.MapboxGlPlugin\Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj" Type="Classic C#" />
@@ -18,5 +18,8 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src\Community.Blazor.MapLibre\Community.Blazor.MapLibre.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\Community.Blazor.MapLibre.Tests\Community.Blazor.MapLibre.Tests.csproj" Type="Classic C#" />
   </Folder>
 </Solution>

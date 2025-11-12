@@ -15,24 +15,28 @@ public class VectorTileSource : ISource
     /// URL to a TileJSON resource providing metadata about this source. Optional.
     /// </summary>
     [JsonPropertyName("url")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
 
     /// <summary>
     /// An array of URLs to the vector tiles. URL patterns can use placeholders like `{z}`, `{x}`, and `{y}`. Optional.
     /// </summary>
     [JsonPropertyName("tiles")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? Tiles { get; set; }
 
     /// <summary>
     /// The bounding box for the source, specified as an array `[sw.lng, sw.lat, ne.lng, ne.lat]`. Optional.
     /// </summary>
     [JsonPropertyName("bounds")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double[]? Bounds { get; set; }
 
     /// <summary>
     /// The tiling scheme, either `xyz` (standard Slippy map tilenames) or `tms` (OSGeo TMS). Default is `xyz`. Optional.
     /// </summary>
     [JsonPropertyName("scheme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Scheme { get; set; } = "xyz";
 
     /// <summary>
@@ -40,6 +44,7 @@ public class VectorTileSource : ISource
     /// Default is 0. Optional.
     /// </summary>
     [JsonPropertyName("minzoom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public float? MinZoom { get; set; }
 
     /// <summary>
@@ -47,5 +52,34 @@ public class VectorTileSource : ISource
     /// Default is 22. Optional.
     /// </summary>
     [JsonPropertyName("maxzoom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public float? MaxZoom { get; set; }
+
+    /// <summary>
+    /// Contains an attribution to be displayed when the map is shown to a user. Optional.
+    /// </summary>
+    [JsonPropertyName("attribution")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Attribution { get; set; }
+
+    /// <summary>
+    /// The size of the tiles in pixels. Default is 512. Optional.
+    /// </summary>
+    [JsonPropertyName("tileSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? TileSize { get; set; }
+
+    /// <summary>
+    /// A property to use as a feature id (for feature state). Either a property name, or an object of the form {"{layer}": "{property}"}. Optional.
+    /// </summary>
+    [JsonPropertyName("promoteId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? PromoteId { get; set; }
+
+    /// <summary>
+    /// Tile encoding format. Optional.
+    /// </summary>
+    [JsonPropertyName("encoding")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Encoding { get; set; }
 }

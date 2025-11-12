@@ -2,7 +2,7 @@
 
 namespace Community.Blazor.MapLibre.Models.Feature;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(LineGeometry), typeDiscriminator: "LineString")]
 [JsonDerivedType(typeof(MultiLineGeometry), typeDiscriminator: "MultiLineString")]
 [JsonDerivedType(typeof(MultiPointGeometry), typeDiscriminator: "MultiPoint")]

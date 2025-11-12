@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-end m-3">
+    <a href="@($"https://github.com/Yet-another-solution/Blazor.MapLibre/blob/main/{FilePath}")" 
+       target="_blank" 
+       class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-github"></i> View on GitHub
+    </a>
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string FilePath {  get; set;  } = string.Empty;
+}

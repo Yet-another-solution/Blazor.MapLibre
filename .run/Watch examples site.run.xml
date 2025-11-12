@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Watch examples site" type="RunDotNetWatch" factoryName="RunDotNetWatch">
+    <option name="exePath" value="$USER_HOME$/.nuget/packages/microsoft.aspnetcore.components.webassembly.devserver/9.0.6/tools/blazor-devserver.dll" />
+    <option name="programParameters" value="" />
+    <option name="projectFilePath" value="$PROJECT_DIR$/examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj" />
+    <option name="projectTfm" value="net9.0" />
+    <option name="watchParameters" value="" />
+    <option name="workingDirectory" value="$PROJECT_DIR$/examples/Community.Blazor.MapLibre.Examples" />
+    <method v="2" />
+  </configuration>
+</component>

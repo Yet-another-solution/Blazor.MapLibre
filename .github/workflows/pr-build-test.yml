@@ -8,8 +8,15 @@ on:
 
 jobs:
   pr-build:
-    name: Build and Test
+    name: Build Projects
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj
+          - docs/Community.Blazor.MapLibre.Documentation.csproj
+          - examples/Community.Blazor.MapLibre.Examples/Community.Blazor.MapLibre.Examples.csproj
+          - examples/Community.Blazor.MapLibre.Examples.MapboxGlPlugin/Community.Blazor.MapLibre.Examples.MapboxGlPlugin.csproj
 
     steps:
       - name: Checkout repository
@@ -21,9 +28,36 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
+
+      - name: Restore all project dependencies
+        run: dotnet restore
+
+      - name: Build ${{ matrix.project }}
+        run: dotnet build ${{ matrix.project }} --no-restore -c Release
+
+  pr-test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: pr-build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
 
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build projects
-        run: dotnet build --no-restore -c Release
+      - name: Build test project
+        run: dotnet build tests/Community.Blazor.MapLibre.Tests/Community.Blazor.MapLibre.Tests.csproj --no-restore -c Release
+
+      - name: Run tests
+        run: dotnet test tests/Community.Blazor.MapLibre.Tests/Community.Blazor.MapLibre.Tests.csproj --no-build -c Release --verbosity normal
