@@ -15,24 +15,28 @@ public class VectorTileSource : ISource
     /// URL to a TileJSON resource providing metadata about this source. Optional.
     /// </summary>
     [JsonPropertyName("url")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
 
     /// <summary>
     /// An array of URLs to the vector tiles. URL patterns can use placeholders like `{z}`, `{x}`, and `{y}`. Optional.
     /// </summary>
     [JsonPropertyName("tiles")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<string>? Tiles { get; set; }
 
     /// <summary>
     /// The bounding box for the source, specified as an array `[sw.lng, sw.lat, ne.lng, ne.lat]`. Optional.
     /// </summary>
     [JsonPropertyName("bounds")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double[]? Bounds { get; set; }
 
     /// <summary>
     /// The tiling scheme, either `xyz` (standard Slippy map tilenames) or `tms` (OSGeo TMS). Default is `xyz`. Optional.
     /// </summary>
     [JsonPropertyName("scheme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Scheme { get; set; } = "xyz";
 
     /// <summary>
@@ -40,6 +44,7 @@ public class VectorTileSource : ISource
     /// Default is 0. Optional.
     /// </summary>
     [JsonPropertyName("minzoom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public float? MinZoom { get; set; }
 
     /// <summary>
@@ -47,5 +52,6 @@ public class VectorTileSource : ISource
     /// Default is 22. Optional.
     /// </summary>
     [JsonPropertyName("maxzoom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public float? MaxZoom { get; set; }
 }
