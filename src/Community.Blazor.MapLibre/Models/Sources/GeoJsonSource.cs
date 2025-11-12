@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
+using Community.Blazor.MapLibre.Converter;
 using Community.Blazor.MapLibre.Models.Feature;
+using OneOf;
 
 namespace Community.Blazor.MapLibre.Models.Sources;
 
@@ -14,8 +16,10 @@ public class GeoJsonSource : ISource
     public string Type => "geojson";
 
     /// <summary>
-    /// The GeoJSON data, either as an inline object or a URL to an external GeoJSON file. Required.
+    /// The GeoJSON data, either as an inline GeoJSON object or a URL string to an external GeoJSON file. Required.
+    /// Use <see cref="IFeature"/> for inline GeoJSON data or <see cref="string"/> for a URL.
     /// </summary>
     [JsonPropertyName("data")]
-    public required IFeature Data { get; set; }
+    [JsonConverter(typeof(GeoJsonDataConverter))]
+    public required OneOf<IFeature, string> Data { get; set; }
 }

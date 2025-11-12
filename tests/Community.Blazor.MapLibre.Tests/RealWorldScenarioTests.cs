@@ -244,9 +244,9 @@ public class RealWorldScenarioTests
         // Assert
         deserialized.Should().NotBeNull();
         deserialized!.Type.Should().Be("geojson");
-        deserialized.Data.Should().BeOfType<FeatureCollection>();
+        deserialized.Data.AsT0.Should().BeOfType<FeatureCollection>();
 
-        var featureCollection = (FeatureCollection)deserialized.Data;
+        var featureCollection = (FeatureCollection)deserialized.Data.AsT0;
         featureCollection.Features.Should().HaveCount(1);
         featureCollection.Features[0].Should().BeOfType<FeatureFeature>();
 
