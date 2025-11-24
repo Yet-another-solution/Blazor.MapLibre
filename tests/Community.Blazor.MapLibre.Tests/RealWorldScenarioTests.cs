@@ -332,4 +332,65 @@ public class RealWorldScenarioTests
             json.Should().Contain($"feature{i}");
         }
     }
+
+    [Fact]
+    public void SetSourceData_Data_Extraction_Should_Serialize_Properly()
+    {
+        // Arrange - Simulate what SetSourceData does internally
+        var geoJsonSource = new GeoJsonSource
+        {
+            Data = new FeatureCollection
+            {
+                Features = new List<IFeature>
+                {
+                    new FeatureFeature
+                    {
+                        Id = "test",
+                        Geometry = new PointGeometry
+                        {
+                            Coordinates = new[] { -122.4194, 37.7749 }
+                        },
+                        Properties = new Dictionary<string, object>
+                        {
+                            { "name", "Test Location" }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Act - This simulates the SetSourceData fix
+        var json = JsonSerializer.Serialize(geoJsonSource);
+        using var jsonDoc = JsonDocument.Parse(json);
+        var dataElement = jsonDoc.RootElement.GetProperty("data");
+        var dataJson = JsonSerializer.Serialize(dataElement);
+
+        // Assert - The extracted data should be valid GeoJSON
+        dataJson.Should().NotBeNullOrEmpty();
+        dataJson.Should().Contain("\"type\":\"FeatureCollection\"");
+        dataJson.Should().Contain("\"type\":\"Feature\"");
+        dataJson.Should().Contain("\"type\":\"Point\"");
+        dataJson.Should().Contain("\"name\":\"Test Location\"");
+        dataJson.Should().NotContain("\"type\":\"geojson\"",
+            "the data field should not contain the source type");
+    }
+
+    [Fact]
+    public void SetSourceData_With_URL_String_Should_Extract_Properly()
+    {
+        // Arrange
+        var geoJsonSource = new GeoJsonSource
+        {
+            Data = "https://example.com/data.geojson"
+        };
+
+        // Act - This simulates the SetSourceData fix
+        var json = JsonSerializer.Serialize(geoJsonSource);
+        using var jsonDoc = JsonDocument.Parse(json);
+        var dataElement = jsonDoc.RootElement.GetProperty("data");
+
+        // Assert
+        dataElement.ValueKind.Should().Be(JsonValueKind.String);
+        dataElement.GetString().Should().Be("https://example.com/data.geojson");
+    }
 }
