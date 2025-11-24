@@ -415,9 +415,9 @@ public class SetSourceDataTests
     }
 
     [Fact]
-    public void JsonElement_Clone_Should_Work_For_Bulk_Transactions()
+    public void JsonNode_Should_Work_For_Bulk_Transactions()
     {
-        // Arrange - Test that JsonElement.Clone() preserves the data correctly
+        // Arrange - Test that JsonNode works for bulk transactions (no Clone needed)
         var source = new GeoJsonSource
         {
             Data = new FeatureCollection
@@ -426,23 +426,21 @@ public class SetSourceDataTests
                 {
                     new FeatureFeature
                     {
-                        Id = "clone-test",
+                        Id = "node-test",
                         Geometry = new PointGeometry { Coordinates = new[] { 1.0, 2.0 } }
                     }
                 }
             }
         };
 
-        // Act
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data");
-        var clonedElement = dataElement.Clone();
+        // Act - Using JsonNode (simpler approach)
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
 
-        // Assert - Cloned element should be usable outside the using block
-        var clonedJson = JsonSerializer.Serialize(clonedElement);
-        clonedJson.Should().Contain("FeatureCollection");
-        clonedJson.Should().Contain("clone-test");
+        // Assert - Node should serialize correctly
+        var nodeJson = JsonSerializer.Serialize(dataNode);
+        nodeJson.Should().Contain("FeatureCollection");
+        nodeJson.Should().Contain("node-test");
     }
 
     [Fact]

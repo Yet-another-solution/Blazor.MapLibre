@@ -32,13 +32,12 @@ public class BulkTransactionTests
             }
         };
 
-        // Simulate what SetSourceData does
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        // Simulate what SetSourceData does (using JsonNode - simpler!)
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
 
         // Act
-        transaction.Add("setSourceData", "test-source", dataElement);
+        transaction.Add("setSourceData", "test-source", dataNode);
 
         // Assert
         transaction.Transactions.Should().HaveCount(1);
@@ -71,11 +70,11 @@ public class BulkTransactionTests
             }
         };
 
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+        
 
-        transaction.Add("setSourceData", "source-id", dataElement);
+        transaction.Add("setSourceData", "source-id", dataNode);
 
         // Act
         var transactionJson = JsonSerializer.Serialize(transaction.Transactions);
@@ -109,15 +108,15 @@ public class BulkTransactionTests
 
         var json1 = JsonSerializer.Serialize(source1);
         using var jsonDoc1 = JsonDocument.Parse(json1);
-        var dataElement1 = jsonDoc1.RootElement.GetProperty("data").Clone();
+        var dataNode1 = jsonDoc1.RootElement.GetProperty("data").Clone();
 
         var json2 = JsonSerializer.Serialize(source2);
         using var jsonDoc2 = JsonDocument.Parse(json2);
-        var dataElement2 = jsonDoc2.RootElement.GetProperty("data").Clone();
+        var dataNode2 = jsonDoc2.RootElement.GetProperty("data").Clone();
 
         // Act
-        transaction.Add("setSourceData", "source1", dataElement1);
-        transaction.Add("setSourceData", "source2", dataElement2);
+        transaction.Add("setSourceData", "source1", dataNode1);
+        transaction.Add("setSourceData", "source2", dataNode2);
 
         // Assert
         transaction.Transactions.Should().HaveCount(2);
@@ -145,13 +144,13 @@ public class BulkTransactionTests
             }
         };
 
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+        
 
         // Act - Mix different transaction types
         transaction.Add("addSource", "test-source", source);
-        transaction.Add("setSourceData", "test-source", dataElement);
+        transaction.Add("setSourceData", "test-source", dataNode);
         transaction.Add("removeSource", "old-source");
 
         // Assert
@@ -200,11 +199,11 @@ public class BulkTransactionTests
             }
         };
 
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+        
 
-        transaction.Add("setSourceData", "complex-source", dataElement);
+        transaction.Add("setSourceData", "complex-source", dataNode);
 
         // Act
         var transactionJson = JsonSerializer.Serialize(transaction.Transactions);
@@ -229,12 +228,12 @@ public class BulkTransactionTests
             }
         };
 
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+        
 
         // Act
-        transaction.Add("setSourceData", "empty-source", dataElement);
+        transaction.Add("setSourceData", "empty-source", dataNode);
         var transactionJson = JsonSerializer.Serialize(transaction.Transactions);
 
         // Assert
@@ -252,12 +251,12 @@ public class BulkTransactionTests
             Data = "https://api.example.com/features.geojson"
         };
 
-        var json = JsonSerializer.Serialize(source);
-        using var jsonDoc = JsonDocument.Parse(json);
-        var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+        var jsonNode = JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+        
 
         // Act
-        transaction.Add("setSourceData", "url-source", dataElement);
+        transaction.Add("setSourceData", "url-source", dataNode);
         var transactionJson = JsonSerializer.Serialize(transaction.Transactions);
 
         // Assert
@@ -285,11 +284,11 @@ public class BulkTransactionTests
                 }
             };
 
-            var json = JsonSerializer.Serialize(source);
-            using var jsonDoc = JsonDocument.Parse(json);
-            var dataElement = jsonDoc.RootElement.GetProperty("data").Clone();
+            var jsonNode = JsonSerializer.SerializeToNode(source);
+            var dataNode = jsonNode!["data"];
+            
 
-            transaction.Add("setSourceData", $"source-{i}", dataElement);
+            transaction.Add("setSourceData", $"source-{i}", dataNode);
         }
 
         // Act
