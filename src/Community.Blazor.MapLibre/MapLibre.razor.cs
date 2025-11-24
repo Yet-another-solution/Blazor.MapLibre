@@ -313,12 +313,18 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
     public async ValueTask SetSourceData(string id, GeoJsonSource source)
     {
+        // Serialize the entire source to ensure GeoJsonDataConverter is applied,
+        // then extract just the "data" field to pass to JavaScript.
+        // Using SerializeToNode is more efficient than string serialization + parsing.
+        var jsonNode = System.Text.Json.JsonSerializer.SerializeToNode(source);
+        var dataNode = jsonNode!["data"];
+
         if (_bulkTransaction is not null)
         {
-            _bulkTransaction.Add("setSourceData", id, source.Data);
+            _bulkTransaction.Add("setSourceData", id, dataNode);
             return;
         }
-        await _jsModule.InvokeVoidAsync("setSourceData", MapId, id, source.Data);
+        await _jsModule.InvokeVoidAsync("setSourceData", MapId, id, dataNode);
     }
 
     /// <summary>
