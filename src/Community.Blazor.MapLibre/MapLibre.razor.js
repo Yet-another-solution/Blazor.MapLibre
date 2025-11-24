@@ -1294,6 +1294,9 @@ export async function executeTransaction(container, data) {
             case "addSprite":
                 addSprite(container, d.data[0], d.data[1], d.data[2]);
                 break;
+            case "setSourceData":
+                setSourceData(container, d.data[0], d.data[1]);
+                break;
             case "removeControl":
                 removeControl(container, d.data[0]);
                 break;
