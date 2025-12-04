@@ -47,11 +47,9 @@ public class FeatureSerializationTests
     {
         // Arrange
         var json = @"{
-            ""$type"":""Feature"",
             ""id"":""feature1"",
             ""type"":""Feature"",
             ""geometry"":{
-                ""$type"":""Point"",
                 ""type"":""Point"",
                 ""coordinates"":[-122.4194,37.7749]
             },
@@ -128,15 +126,12 @@ public class FeatureSerializationTests
     {
         // Arrange
         var json = @"{
-            ""$type"":""FeatureCollection"",
             ""type"":""FeatureCollection"",
             ""features"":[
                 {
-                    ""$type"":""Feature"",
                     ""id"":""point1"",
                     ""type"":""Feature"",
                     ""geometry"":{
-                        ""$type"":""Point"",
                         ""type"":""Point"",
                         ""coordinates"":[-122.4194,37.7749]
                     },
