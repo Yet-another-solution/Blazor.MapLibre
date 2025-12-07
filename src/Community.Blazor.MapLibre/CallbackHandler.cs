@@ -73,7 +73,6 @@ public class CallbackHandler
         }
 
         // Deserialize arguments into the expected type.
-        Console.WriteLine(args);
         var deserializedArgs = JsonSerializer.Deserialize(args, _argumentType, Serializer);
 
         // Invoke delegate with deserialized arguments.
