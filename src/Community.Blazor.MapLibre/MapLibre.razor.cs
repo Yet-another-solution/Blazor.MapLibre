@@ -315,7 +315,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     {
         if (_bulkTransaction is not null)
         {
-            _bulkTransaction.Add("setSourceData", id, source.Data);
+            source.Data.Switch( 
+                feature =>  _bulkTransaction.Add("setSourceData", id, feature), 
+                str => _bulkTransaction.Add("setSourceData", id, str));
             return;
         }
         await source.Data.Match( 
