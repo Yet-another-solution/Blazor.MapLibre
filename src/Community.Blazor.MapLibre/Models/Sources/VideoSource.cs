@@ -7,10 +7,6 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// </summary>
 public class VideoSource : ISource
 {
-    /// <inheritdoc />
-    [JsonPropertyName("type")]
-    public string Type => "video";
-
     /// <summary>
     /// URLs to the video content. Multiple URLs should be provided for format compatibility across browsers. Required.
     /// </summary>

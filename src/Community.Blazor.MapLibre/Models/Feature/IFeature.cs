@@ -2,14 +2,11 @@
 
 namespace Community.Blazor.MapLibre.Models.Feature;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-[JsonDerivedType(typeof(FeatureCollection), typeDiscriminator: "FeatureCollection")]
-[JsonDerivedType(typeof(FeatureFeature), typeDiscriminator: "Feature")]
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(FeatureCollection), "FeatureCollection")]
+[JsonDerivedType(typeof(FeatureFeature), "Feature")]
 public interface IFeature
 {
-    [JsonPropertyName("type")]
-    string Type { get; }
-
     /// <summary>
     /// Gets the bounding box of the geometry.
     /// </summary>

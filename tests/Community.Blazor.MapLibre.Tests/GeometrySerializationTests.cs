@@ -33,7 +33,7 @@ public class GeometrySerializationTests
     public void PointGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = "{\"$type\":\"Point\",\"type\":\"Point\",\"coordinates\":[-122.4194,37.7749]}";
+        var json = "{\"type\":\"Point\",\"coordinates\":[-122.4194,37.7749]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
@@ -42,7 +42,6 @@ public class GeometrySerializationTests
         geometry.Should().NotBeNull();
         geometry.Should().BeOfType<PointGeometry>();
         var point = (PointGeometry)geometry!;
-        point.Type.Should().Be(GeometryType.Point);
         point.Coordinates.Should().HaveCount(2);
         point.Coordinates[0].Should().Be(-122.4194);
         point.Coordinates[1].Should().Be(37.7749);
@@ -74,7 +73,7 @@ public class GeometrySerializationTests
     public void LineGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = "{\"$type\":\"LineString\",\"type\":\"LineString\",\"coordinates\":[[-122.4194,37.7749],[-122.4184,37.7739]]}";
+        var json = "{\"type\":\"LineString\",\"coordinates\":[[-122.4194,37.7749],[-122.4184,37.7739]]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
@@ -83,7 +82,6 @@ public class GeometrySerializationTests
         geometry.Should().NotBeNull();
         geometry.Should().BeOfType<LineGeometry>();
         var line = (LineGeometry)geometry!;
-        line.Type.Should().Be(GeometryType.Line);
         line.Coordinates.Should().HaveCount(2);
     }
 
@@ -118,7 +116,7 @@ public class GeometrySerializationTests
     public void PolygonGeometry_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = "{\"$type\":\"Polygon\",\"type\":\"Polygon\",\"coordinates\":[[[-122.4194,37.7749],[-122.4184,37.7739],[-122.4204,37.7729],[-122.4194,37.7749]]]}";
+        var json = "{\"type\":\"Polygon\",\"coordinates\":[[[-122.4194,37.7749],[-122.4184,37.7739],[-122.4204,37.7729],[-122.4194,37.7749]]]}";
 
         // Act
         var geometry = JsonSerializer.Deserialize<IGeometry>(json);
@@ -127,7 +125,6 @@ public class GeometrySerializationTests
         geometry.Should().NotBeNull();
         geometry.Should().BeOfType<PolygonGeometry>();
         var polygon = (PolygonGeometry)geometry!;
-        polygon.Type.Should().Be(GeometryType.Polygon);
         polygon.Coordinates.Should().HaveCount(1);
         polygon.Coordinates[0].Should().HaveCount(4);
     }

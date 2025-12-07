@@ -12,6 +12,11 @@ public class CallbackHandler
     private readonly string _eventType;
     private readonly Delegate _callbackDelegate;
     private readonly Type? _argumentType;
+    private static readonly JsonSerializerOptions Serializer = new()
+    {
+        AllowOutOfOrderMetadataProperties = true,
+        
+    };
 
     /// <summary>
     /// Constructor for initializing a callback handler with arguments.
@@ -68,7 +73,8 @@ public class CallbackHandler
         }
 
         // Deserialize arguments into the expected type.
-        var deserializedArgs = JsonSerializer.Deserialize(args, _argumentType);
+        Console.WriteLine(args);
+        var deserializedArgs = JsonSerializer.Deserialize(args, _argumentType, Serializer);
 
         // Invoke delegate with deserialized arguments.
         var returnObjectWithArgs = _callbackDelegate.DynamicInvoke(deserializedArgs);

@@ -119,7 +119,7 @@ public class RealWorldScenarioTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(geoJsonSource);
+        var json = JsonSerializer.Serialize<ISource>(geoJsonSource);
 
         // Assert - Verify the output is valid GeoJSON-like structure
         json.Should().NotBeNullOrEmpty();
@@ -215,25 +215,23 @@ public class RealWorldScenarioTests
     public void Round_Trip_Serialization_Should_Work()
     {
         // Arrange
+        var featureFeature = new FeatureFeature
+        {
+            Id = "test",
+            Geometry = new PointGeometry
+            {
+                Coordinates = [-122.4194, 37.7749]
+            },
+            Properties = new Dictionary<string, object>
+            {
+                { "name", "Test Point" }
+            }
+        };
         var original = new GeoJsonSource
         {
             Data = new FeatureCollection
             {
-                Features = new List<IFeature>
-                {
-                    new FeatureFeature
-                    {
-                        Id = "test",
-                        Geometry = new PointGeometry
-                        {
-                            Coordinates = new[] { -122.4194, 37.7749 }
-                        },
-                        Properties = new Dictionary<string, object>
-                        {
-                            { "name", "Test Point" }
-                        }
-                    }
-                }
+                Features = [featureFeature]
             }
         };
 
@@ -242,20 +240,12 @@ public class RealWorldScenarioTests
         var deserialized = JsonSerializer.Deserialize<GeoJsonSource>(json);
 
         // Assert
-        deserialized.Should().NotBeNull();
-        deserialized!.Type.Should().Be("geojson");
-        deserialized.Data.AsT0.Should().BeOfType<FeatureCollection>();
-
-        var featureCollection = (FeatureCollection)deserialized.Data.AsT0;
-        featureCollection.Features.Should().HaveCount(1);
-        featureCollection.Features[0].Should().BeOfType<FeatureFeature>();
-
-        var feature = (FeatureFeature)featureCollection.Features[0];
-        feature.Id.Should().Be("test");
-        feature.Geometry.Should().BeOfType<PointGeometry>();
-
-        var point = (PointGeometry)feature.Geometry;
-        point.Coordinates.Should().BeEquivalentTo(new[] { -122.4194, 37.7749 });
+        deserialized.Should().NotBeNull()
+            .And.BeOfType<GeoJsonSource>()
+            .Which.Data.AsT0.Should().BeOfType<FeatureCollection>()
+            .Which.Features.Should().ContainSingle()
+            .Which.Should().BeOfType<FeatureFeature>()
+            .Which.Should().BeEquivalentTo(featureFeature, options => options.Excluding(f => f.Properties));
     }
 
     [Fact]

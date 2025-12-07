@@ -7,10 +7,6 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// </summary>
 public class ImageSource : ISource
 {
-    /// <inheritdoc />
-    [JsonPropertyName("type")]
-    public string Type => "image";
-
     /// <summary>
     /// The URL to the image. This is used to load the image to be displayed on the map. Required.
     /// </summary>

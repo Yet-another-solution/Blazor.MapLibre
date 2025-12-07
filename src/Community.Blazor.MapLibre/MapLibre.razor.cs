@@ -313,18 +313,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
 
     public async ValueTask SetSourceData(string id, GeoJsonSource source)
     {
-        // Serialize the entire source to ensure GeoJsonDataConverter is applied,
-        // then extract just the "data" field to pass to JavaScript.
-        // Using SerializeToNode is more efficient than string serialization + parsing.
-        var jsonNode = System.Text.Json.JsonSerializer.SerializeToNode(source);
-        var dataNode = jsonNode!["data"];
-
         if (_bulkTransaction is not null)
         {
-            _bulkTransaction.Add("setSourceData", id, dataNode);
+            _bulkTransaction.Add("setSourceData", id, source.Data);
             return;
         }
-        await _jsModule.InvokeVoidAsync("setSourceData", MapId, id, dataNode);
+        await source.Data.Match( 
+            feature =>  _jsModule.InvokeVoidAsync("setSourceData", MapId, id, feature), 
+            str => _jsModule.InvokeVoidAsync("setSourceData", MapId, id, str));
     }
 
     /// <summary>
@@ -939,8 +935,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// });
     /// </code>
     /// </example>
-    public async ValueTask<SimpleFeature[]> QuerySourceFeatures(string sourceId, QuerySourceFeatureOptions parameters) =>
-        await _jsModule.InvokeAsync<SimpleFeature[]>("querySourceFeatures", MapId, sourceId, parameters);
+    public async ValueTask<IFeature[]> QuerySourceFeatures(string sourceId, QuerySourceFeatureOptions parameters) =>
+        await _jsModule.InvokeAsync<IFeature[]>("querySourceFeatures", MapId, sourceId, parameters);
 
     /// <summary>
     /// Gets the elevation at a given location, in meters above sea level.
