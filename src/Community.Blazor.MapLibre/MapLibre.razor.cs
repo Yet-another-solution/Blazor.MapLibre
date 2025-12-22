@@ -146,7 +146,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             Options.Container = MapId;
 
             // Initialize the MapLibre map
-            _mapObject = await _jsModule.InvokeAsync<IJSObjectReference>("initializeMap", Options, _dotNetObjectReference);
+            _mapObject =
+                await _jsModule.InvokeAsync<IJSObjectReference>("initializeMap", Options, _dotNetObjectReference);
 
             // Load the plugins after the map has been initialized
             foreach (var plugin in _plugins)
@@ -239,7 +240,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="handler">The asynchronous callback.</param>
     /// <returns>A task of type <see cref="Listener"/>.</returns>
     public Task<Listener> OnClick(string? layerId, Func<MapMouseEvent, Task> handler) =>
-         AddAsyncListener("click", handler, layerId);
+        AddAsyncListener("click", handler, layerId);
 
     #endregion
 
@@ -276,6 +277,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("addImage", id, url, options);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("addImage", MapId, id, url, options);
     }
 
@@ -292,6 +294,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("addLayer", layer, beforeId);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("addLayer", MapId, layer, beforeId);
     }
 
@@ -308,6 +311,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("addSource", id, source);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("addSource", MapId, id, source);
     }
 
@@ -324,6 +328,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("setSourceData", id, dataNode);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("setSourceData", MapId, id, dataNode);
     }
 
@@ -341,6 +346,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("addSprite", id, url, options);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("addSprite", MapId, id, url, options);
     }
 
@@ -390,7 +396,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="bounds">The geographical bounding box to be fitted.</param>
     /// <param name="options">Optional parameters to customize the calculation.</param>
     /// <returns>A task that represents the asynchronous operation, containing the resulting center, zoom, and bearing.</returns>
-    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds, CameraForBoundsOptions? options = null) =>
+    public async ValueTask<CenterZoomBearing> CameraForBounds(LngLatBounds bounds,
+        CameraForBoundsOptions? options = null) =>
         await _jsModule.InvokeAsync<CenterZoomBearing>("cameraForBounds", MapId, bounds, options);
 
     /// <summary>
@@ -939,7 +946,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// });
     /// </code>
     /// </example>
-    public async ValueTask<SimpleFeature[]> QuerySourceFeatures(string sourceId, QuerySourceFeatureOptions parameters) =>
+    public async ValueTask<SimpleFeature[]>
+        QuerySourceFeatures(string sourceId, QuerySourceFeatureOptions parameters) =>
         await _jsModule.InvokeAsync<SimpleFeature[]>("querySourceFeatures", MapId, sourceId, parameters);
 
     /// <summary>
@@ -983,6 +991,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeControl", control);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeControl", MapId, control);
     }
 
@@ -1036,6 +1045,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeFeatureState", target, key);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeFeatureState", MapId, target, key);
     }
 
@@ -1050,6 +1060,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeImage", id);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeImage", MapId, id);
     }
 
@@ -1064,6 +1075,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeLayer", id);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeLayer", MapId, id);
     }
 
@@ -1078,6 +1090,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeSource", id);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeSource", MapId, id);
     }
 
@@ -1092,6 +1105,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
             _bulkTransaction.Add("removeSprite", id);
             return;
         }
+
         await _jsModule.InvokeVoidAsync("removeSprite", MapId, id);
     }
 
@@ -1316,6 +1330,31 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     {
         var id = markerId ?? Guid.NewGuid();
         await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
+        // Register event handlers if provided
+        if (options.OnClick != null)
+            await AddMarkerListener(id, "click", options.OnClick);
+    
+        if (options.OnClickAsync != null)
+            await AddAsyncMarkerListener(id, "click", options.OnClickAsync);
+
+        if (options.OnDragStart != null)
+            await AddMarkerListener(id, "dragstart", options.OnDragStart);
+    
+        if (options.OnDragStartAsync != null)
+            await AddAsyncMarkerListener(id, "dragstart", options.OnDragStartAsync);
+
+        if (options.OnDrag != null)
+            await AddMarkerListener(id, "drag", options.OnDrag);
+    
+        if (options.OnDragAsync != null)
+            await AddAsyncMarkerListener(id, "drag", options.OnDragAsync);
+
+        if (options.OnDragEnd != null)
+            await AddMarkerListener(id, "dragend", options.OnDragEnd);
+    
+        if (options.OnDragEndAsync != null)
+            await AddAsyncMarkerListener(id, "dragend", options.OnDragEndAsync);
+        
         return id;
     }
 
@@ -1335,6 +1374,39 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public async Task MoveMarker(Guid markerId, LngLat position)
         => await _jsModule.InvokeVoidAsync("moveMarker", markerId, position);
 
+    /// <summary>
+    /// Registers a synchronous event listener for a marker.
+    /// </summary>
+    /// <typeparam name="T">The type of the event payload (typically <see cref="MarkerEvent"/>).</typeparam>
+    /// <param name="markerId">The id of the marker.</param>
+    /// <param name="eventName">The name of the event to listen for (e.g., "click", "dragstart", "drag", "dragend").</param>
+    /// <param name="handler">The synchronous callback action to execute when the event occurs.</param>
+    /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
+    public Task<Listener> AddMarkerListener<T>(Guid markerId, string eventName, Action<T> handler) =>
+        AddMarkerListenerInternal<T>(markerId, eventName, handler);
+
+    /// <summary>
+    /// Registers an asynchronous event listener for a marker.
+    /// </summary>
+    /// <typeparam name="T">The type of the event payload (typically <see cref="MarkerEvent"/>).</typeparam>
+    /// <param name="markerId">The id of the marker.</param>
+    /// <param name="eventName">The name of the event to listen for (e.g., "click", "dragstart", "drag", "dragend").</param>
+    /// <param name="handler">The asynchronous callback action to execute when the event occurs.</param>
+    /// <returns>A <see cref="Listener"/> instance that allows removal of the registered listener.</returns>
+    public Task<Listener> AddAsyncMarkerListener<T>(Guid markerId, string eventName, Func<T, Task> handler) =>
+        AddMarkerListenerInternal<T>(markerId, eventName, handler);
+
+    private async Task<Listener> AddMarkerListenerInternal<T>(Guid markerId, string eventName, Delegate handler)
+    {
+        var callback = new CallbackHandler(_jsModule, eventName, handler, typeof(T));
+        var reference = DotNetObjectReference.Create(callback);
+        _references.TryAdd(Guid.NewGuid(), reference);
+
+        await _jsModule.InvokeVoidAsync("onMarker", markerId, eventName, reference);
+
+        return new Listener(callback);
+    }
+    
     #endregion
 
     #region Bulk Transaction
@@ -1370,5 +1442,4 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     }
 
     #endregion
-
 }
