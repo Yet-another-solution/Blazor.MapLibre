@@ -134,36 +134,42 @@ public class MarkerOptions
     /// <summary>
     /// Event handler called when dragging starts.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
     [JsonIgnore]
     public Action<MarkerEvent>? OnDragStart { get; set; }
 
     /// <summary>
     /// Async event handler called when dragging starts.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
     [JsonIgnore]
     public Func<MarkerEvent, Task>? OnDragStartAsync { get; set; }
 
     /// <summary>
     /// Event handler called while dragging.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
     [JsonIgnore]
     public Action<MarkerEvent>? OnDrag { get; set; }
 
     /// <summary>
     /// Async event handler called while dragging.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks> 
     [JsonIgnore]
     public Func<MarkerEvent, Task>? OnDragAsync { get; set; }
 
     /// <summary>
     /// Event handler called when dragging ends.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks> 
     [JsonIgnore]
     public Action<MarkerEvent>? OnDragEnd { get; set; }
 
     /// <summary>
     /// Async event handler called when dragging ends.
     /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
     [JsonIgnore]
     public Func<MarkerEvent, Task>? OnDragEndAsync { get; set; }
 
