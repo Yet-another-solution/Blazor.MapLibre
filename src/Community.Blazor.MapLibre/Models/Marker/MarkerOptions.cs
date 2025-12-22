@@ -115,6 +115,66 @@ public class MarkerOptions
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SubpixelPositioning { get; set; }
 
+    #region Event Handlers
+
+    /// <summary>
+    /// Event handler called when the marker is clicked.
+    /// </summary>
+    /// <remarks>Important: This will overwrite any other click-related listeners for the marker, such as Popup.</remarks> 
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnClick { get; set; }
+
+    /// <summary>
+    /// Async event handler called when the marker is clicked.
+    /// </summary>
+    /// <remarks>Important: This will overwrite any other click-related listeners for the marker, such as Popup.</remarks> 
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnClickAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called when dragging starts.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDragStart { get; set; }
+
+    /// <summary>
+    /// Async event handler called when dragging starts.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragStartAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called while dragging.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDrag { get; set; }
+
+    /// <summary>
+    /// Async event handler called while dragging.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks> 
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called when dragging ends.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks> 
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDragEnd { get; set; }
+
+    /// <summary>
+    /// Async event handler called when dragging ends.
+    /// </summary>
+    /// <remarks>Important: Draggable MUST be true for the event handler to be registered.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragEndAsync { get; set; }
+
+    #endregion
+    
     /// <summary>
     /// An object representing additional, non-standard extensions for marker configuration.
     /// Extensions can include properties or functionality not directly supported by the default MarkerOptions, allowing for enhanced customization.

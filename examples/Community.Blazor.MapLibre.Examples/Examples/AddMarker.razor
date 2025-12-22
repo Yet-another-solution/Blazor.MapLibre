@@ -10,11 +10,17 @@
           Height="600px">
 </MapLibre>
 
-<button @onclick="AddMarkerAsync" style="margin-top: 10px;">Add a random marker</button>
+<div style="padding: 10px; gap: 10px;">
+    <div style="display: flex; flex-direction: row; align-items: center; gap: 15px;">
+        <button @onclick="AddMarkerAsync">Add a random marker</button>
+        <p style="margin: 0;">Try drag a marker!</p>
+    </div>
+    <p>@DragInfo</p>
+</div>
 
 @code {
     private MapLibre _mapListener { get; set; } = new MapLibre();
-
+    public string DragInfo { get; set; } = "";
     private readonly MapOptions _mapOptions = new()
     {
         Style = "https://demotiles.maplibre.org/style.json"
@@ -24,6 +30,8 @@
     {
         var options = new MarkerOptions
         {
+            Draggable = true,
+            OnDragEndAsync = OnMarkerDragEnd,
             Extensions = new MarkerOptionsExtensions
             {
                 HtmlContent = "<div><img src='https://i.pravatar.cc/300' width='50' height='50' class='border border-white border-3 rounded-circle shadow-lg'/></div>",
@@ -32,6 +40,15 @@
         };
 
         await _mapListener.AddMarker(options, new LngLat(Random.Shared.NextDouble() * 180 - 90, Random.Shared.Next(-90, 90)));
+    }
+    
+    private Task OnMarkerDragEnd(MarkerEvent arg)
+    {
+        DragInfo = $"Lat: {arg.LngLat.Latitude}, Lng: {arg.LngLat.Longitude}";
+        Console.WriteLine($"Marker dragged to: Lat={arg.LngLat.Latitude}, Lng={arg.LngLat.Longitude}");
+        StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
 }

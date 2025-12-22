@@ -38,7 +38,7 @@ export function initializeMap(options, dotnetReference) {
     map.on('load', function () {
         dotnetReference.invokeMethodAsync("OnLoadCallback")
     });
-    
+
     return map;
 }
 
@@ -65,6 +65,7 @@ export function on(container, eventType, dotnetReference, layerIds) {
         })
     }
 }
+
 /**
  * Adds a specified control to the given map container.
  *
@@ -1231,6 +1232,10 @@ export function createMarker(container, markerId, options, position) {
     markerInstances[markerId] = new maplibregl.Marker(options)
         .setLngLat([position.lng, position.lat])
         .addTo(mapInstances[container]);
+
+    if (!markerInstances[markerId]._clickListeners) {
+        markerInstances[markerId]._clickListeners = [];
+    }
     
     if (options.extensions) {
         const extensions = options.extensions;
@@ -1267,6 +1272,57 @@ export function moveMarker(markerId, position) {
     const marker = markerInstances[markerId];
     
     marker.setLngLat([position.lng, position.lat]);
+}
+
+/**
+ * Attaches an event listener to a specified marker instance.
+ *
+ * @param {string} markerId - The marker ID.
+ * @param {string} eventType - The type of event to listen for (e.g., "click", "dragstart", "drag", "dragend").
+ * @param {object} dotnetReference - A reference to a .NET object used for invoking asynchronous methods.
+ */
+export function onMarker(markerId, eventType, dotnetReference) {
+    const marker = markerInstances[markerId];
+
+    if (!marker) {
+        console.warn(`Marker with id ${markerId} not found`);
+        return;
+    }
+    const createEventData = () => {
+        const lngLat = marker.getLngLat();
+        return {
+            type: eventType,
+            lngLat: {
+                lng: lngLat.lng,
+                lat: lngLat.lat
+            }
+        };
+    };
+
+    if (eventType === 'click') {
+        const clickHandler = (e) => {
+            e.stopPropagation(); // Prevent event from bubbling to map
+            const eventData = createEventData();
+            const result = JSON.stringify(eventData);
+            dotnetReference.invokeMethodAsync('Invoke', result);
+        };
+
+        marker.getElement().addEventListener('click', clickHandler);
+
+        // Store listener for cleanup
+        if (!marker._clickListeners) {
+            marker._clickListeners = [];
+        }
+        marker._clickListeners.push({handler: clickHandler, dotnetRef: dotnetReference});
+    } else if (['dragstart', 'drag', 'dragend'].includes(eventType)) {
+        marker.on(eventType, function (e) {
+            const eventData = createEventData();
+            const result = JSON.stringify(eventData);
+            dotnetReference.invokeMethodAsync('Invoke', result);
+        });
+    } else {
+        console.warn(`Event type '${eventType}' is not supported for markers`);
+    }
 }
 
 /**
