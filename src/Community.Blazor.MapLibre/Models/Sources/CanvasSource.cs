@@ -8,10 +8,6 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// </summary>
 public class CanvasSource : ISource
 {
-    /// <inheritdoc />
-    [JsonPropertyName("type")]
-    public string Type => "canvas";
-
     /// <summary>
     /// The geographical coordinates of the four corners of the canvas, specified in clockwise order:
     /// top left, top right, bottom right, bottom left. Required.

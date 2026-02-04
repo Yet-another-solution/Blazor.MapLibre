@@ -471,12 +471,12 @@ public class SetSourceDataTests
             Data = new FeatureFeature
             {
                 Id = "12345",
-                Geometry = new PointGeometry { Coordinates = new[] { 0.0, 0.0 } }
+                Geometry = new PointGeometry { Coordinates = [0.0, 0.0] }
             }
         };
 
         // Act
-        var json = JsonSerializer.Serialize(source);
+        var json = JsonSerializer.Serialize<ISource>(source);
         using var jsonDoc = JsonDocument.Parse(json);
         var dataElement = jsonDoc.RootElement.GetProperty("data");
 

@@ -8,15 +8,15 @@
 
 <MapLibre @ref="_mapWithGeoJson"
           Options="_mapWithGeoJsonOptions"
-          OnLoad="HandleMapLoadGeoJson"
+          OnLoad="@HandleMapLoadGeoJson"
           Class="rounded-top"
           Height="600px">
 </MapLibre>
 
 @code {
-    private MapLibre _mapWithGeoJson { get; set; } = new MapLibre();
+    private MapLibre _mapWithGeoJson = new();
 
-    private readonly MapOptions _mapWithGeoJsonOptions = new MapOptions()
+    private readonly MapOptions _mapWithGeoJsonOptions = new()
     {
         Style = "https://demotiles.maplibre.org/style.json",
         Center = new LngLat

@@ -2,7 +2,7 @@
 
 namespace Community.Blazor.MapLibre.Models.Feature;
 
-[JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(LineGeometry), typeDiscriminator: "LineString")]
 [JsonDerivedType(typeof(MultiLineGeometry), typeDiscriminator: "MultiLineString")]
 [JsonDerivedType(typeof(MultiPointGeometry), typeDiscriminator: "MultiPoint")]
@@ -11,9 +11,6 @@ namespace Community.Blazor.MapLibre.Models.Feature;
 [JsonDerivedType(typeof(PolygonGeometry), typeDiscriminator: "Polygon")]
 public interface IGeometry
 {
-    [JsonPropertyName("type")]
-    GeometryType Type { get; }
-
     /// <summary>
     /// Gets the bounding box of the geometry.
     /// </summary>

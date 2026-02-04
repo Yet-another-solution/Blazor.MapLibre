@@ -11,16 +11,12 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// </summary>
 public class GeoJsonSource : ISource
 {
-    /// <inheritdoc />
-    [JsonPropertyName("type")]
-    public string Type => "geojson";
-
     /// <summary>
     /// The GeoJSON data, either as an inline GeoJSON object or a URL string to an external GeoJSON file. Required.
     /// Use <see cref="IFeature"/> for inline GeoJSON data or <see cref="string"/> for a URL.
     /// </summary>
     [JsonPropertyName("data")]
-    [JsonConverter(typeof(GeoJsonDataConverter))]
+    [JsonConverter(typeof(ObjectOrStringConverter<IFeature>))]
     public required OneOf<IFeature, string> Data { get; set; }
 
     /// <summary>

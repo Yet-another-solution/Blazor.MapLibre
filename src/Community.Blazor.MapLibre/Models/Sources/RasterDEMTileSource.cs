@@ -8,10 +8,6 @@ namespace Community.Blazor.MapLibre.Models.Sources;
 /// </summary>
 public class RasterDEMTileSource : ISource
 {
-    /// <inheritdoc />
-    [JsonPropertyName("type")]
-    public string Type => "raster-dem";
-
     /// <summary>
     /// URL to a TileJSON resource providing metadata about this source. Optional.
     /// </summary>

@@ -1,35 +1,30 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using Community.Blazor.MapLibre.Converter;
 
 namespace Community.Blazor.MapLibre.Models.Layers;
 
 /// <summary>
 /// Represents a Layer in the MapLibre map which defines rendering and customization of different map elements.
 /// </summary>
-[JsonDerivedType(typeof(BackgroundLayer))]
-[JsonDerivedType(typeof(CircleLayer))]
-[JsonDerivedType(typeof(FillExtrusionLayer))]
-[JsonDerivedType(typeof(FillLayer))]
-[JsonDerivedType(typeof(HeatMapLayer))]
-[JsonDerivedType(typeof(HillShadeLayer))]
-[JsonDerivedType(typeof(LineLayer))]
-[JsonDerivedType(typeof(RasterLayer))]
-[JsonDerivedType(typeof(SymbolLayer))]
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(BackgroundLayer), "background")]
+[JsonDerivedType(typeof(CircleLayer), "circle")]
+[JsonDerivedType(typeof(FillExtrusionLayer), "fill-extrusion")]
+[JsonDerivedType(typeof(FillLayer), "fill")]
+[JsonDerivedType(typeof(HeatMapLayer), "heatmap")]
+[JsonDerivedType(typeof(HillShadeLayer), "hillshade")]
+[JsonDerivedType(typeof(LineLayer), "line")]
+[JsonDerivedType(typeof(RasterLayer), "raster")]
+[JsonDerivedType(typeof(SymbolLayer), "symbol")]
 public abstract class Layer
 {
     /// <summary>
     /// Gets or sets the unique name of the layer. This is required.
     /// </summary>
     [JsonPropertyName("id")]
+    [JsonConverter(typeof(StringOrNumberConverter))]
     public required string Id { get; set; }
-
-    /// <summary>
-    /// Gets or sets the rendering type of the layer. This is required.
-    /// Possible values: "fill", "line", "symbol", "circle", "heatmap", "fill-extrusion", "raster", "hillshade", "background".
-    /// </summary>
-    [JsonPropertyName("type")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public abstract LayerType Type { get; }
 
     /// <summary>
     /// The minimum zoom level for the layer. At zoom levels less than the minzoom, the layer will be hidden.

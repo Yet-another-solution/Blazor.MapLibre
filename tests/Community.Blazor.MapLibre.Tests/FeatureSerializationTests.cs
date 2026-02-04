@@ -46,19 +46,19 @@ public class FeatureSerializationTests
     public void FeatureFeature_Should_Deserialize_Successfully()
     {
         // Arrange
-        var json = @"{
-            ""$type"":""Feature"",
-            ""id"":""feature1"",
-            ""type"":""Feature"",
-            ""geometry"":{
-                ""$type"":""Point"",
-                ""type"":""Point"",
-                ""coordinates"":[-122.4194,37.7749]
-            },
-            ""properties"":{
-                ""name"":""San Francisco""
-            }
-        }";
+        var json = """
+                   {
+                        "type":"Feature",
+                        "id":"feature1",
+                        "geometry":{
+                            "type":"Point",
+                            "coordinates":[-122.4194,37.7749]
+                        },
+                        "properties":{
+                            "name":"San Francisco"
+                        }
+                   }
+                   """;
 
         // Act
         var feature = JsonSerializer.Deserialize<IFeature>(json);
@@ -67,7 +67,6 @@ public class FeatureSerializationTests
         feature.Should().NotBeNull();
         feature.Should().BeOfType<FeatureFeature>();
         var featureFeature = (FeatureFeature)feature!;
-        featureFeature.Type.Should().Be("Feature");
         featureFeature.Id.Should().Be("feature1");
         featureFeature.Geometry.Should().BeOfType<PointGeometry>();
         featureFeature.Properties.Should().ContainKey("name");
@@ -128,15 +127,12 @@ public class FeatureSerializationTests
     {
         // Arrange
         var json = @"{
-            ""$type"":""FeatureCollection"",
             ""type"":""FeatureCollection"",
             ""features"":[
                 {
-                    ""$type"":""Feature"",
-                    ""id"":""point1"",
                     ""type"":""Feature"",
+                    ""id"":""point1"",
                     ""geometry"":{
-                        ""$type"":""Point"",
                         ""type"":""Point"",
                         ""coordinates"":[-122.4194,37.7749]
                     },
@@ -154,7 +150,6 @@ public class FeatureSerializationTests
         feature.Should().NotBeNull();
         feature.Should().BeOfType<FeatureCollection>();
         var featureCollection = (FeatureCollection)feature!;
-        featureCollection.Type.Should().Be("FeatureCollection");
         featureCollection.Features.Should().HaveCount(1);
         featureCollection.Features[0].Should().BeOfType<FeatureFeature>();
     }
@@ -189,7 +184,7 @@ public class FeatureSerializationTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(source);
+        var json = JsonSerializer.Serialize<ISource>(source);
 
         // Assert
         json.Should().NotBeNullOrEmpty();
@@ -358,7 +353,7 @@ public class FeatureSerializationTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(geoJsonSource);
+        var json = JsonSerializer.Serialize<ISource>(geoJsonSource);
 
         // Assert
         json.Should().NotBeNullOrEmpty();
@@ -387,7 +382,7 @@ public class FeatureSerializationTests
         };
 
         // Act
-        var json = JsonSerializer.Serialize(geoJsonSource);
+        var json = JsonSerializer.Serialize<ISource>(geoJsonSource);
 
         // Assert
         json.Should().NotBeNullOrEmpty();
