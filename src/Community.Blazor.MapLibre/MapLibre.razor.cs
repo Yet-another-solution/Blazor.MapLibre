@@ -55,6 +55,13 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </summary>
     private IJSObjectReference _mapObject = null!;
 
+    /// <summary>
+    /// The raw MapLibre GL JS map object (<c>maplibregl.Map</c>). Use this to call a MapLibre GL JS
+    /// method that this library hasn't wrapped yet, without having to write a JS file or a plugin, e.g.
+    /// <c>await Map.NativeMap.InvokeVoidAsync("rotateTo", bearing, new { duration = 0 });</c>.
+    /// </summary>
+    public IJSObjectReference NativeMap => _mapObject;
+
     #region Parameters
 
     /// <summary>
@@ -212,13 +219,28 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public Task<Listener> AddAsyncListener<T>(string eventName, Func<T, Task> handler, object? layer = null) =>
         AddListenerInternal<T>(eventName, handler, layer);
 
-    private async Task<Listener> AddListenerInternal<T>(string eventName, Delegate handler, object? layer = null)
+    private Task<Listener> AddListenerInternal<T>(string eventName, Delegate handler, object? layer = null) =>
+        RegisterEventListener<T>("on", eventName, handler, MapId, eventName, layer);
+
+    /// <summary>
+    /// Shared plumbing for wiring a JS-side event to a C# delegate: creates a <see cref="CallbackHandler"/>,
+    /// wraps it in a <see cref="DotNetObjectReference{TValue}"/> the JS side can invoke back into, calls the
+    /// given JS registration function, and returns a <see cref="Listener"/> for cleanup. Used for both
+    /// map-level (<c>on</c>) and marker-level (<c>onMarker</c>) event registration so both share one
+    /// implementation instead of duplicating the interop wiring.
+    /// </summary>
+    /// <typeparam name="T">The type of the event payload.</typeparam>
+    /// <param name="jsFunctionName">The exported JS function that registers the listener (e.g. "on", "onMarker").</param>
+    /// <param name="eventName">The event type being listened for, passed through to <see cref="CallbackHandler"/> for logging/diagnostics.</param>
+    /// <param name="handler">The C# delegate to invoke when the event fires.</param>
+    /// <param name="jsArgs">The arguments to pass to <paramref name="jsFunctionName"/>, in order, before the <see cref="DotNetObjectReference"/> is appended.</param>
+    private async Task<Listener> RegisterEventListener<T>(string jsFunctionName, string eventName, Delegate handler, params object?[] jsArgs)
     {
         var callback = new CallbackHandler(_jsModule, eventName, handler, typeof(T));
         var reference = DotNetObjectReference.Create(callback);
         _references.TryAdd(Guid.NewGuid(), reference);
 
-        await _jsModule.InvokeVoidAsync("on", MapId, eventName, reference, layer);
+        await _jsModule.InvokeVoidAsync(jsFunctionName, [.. jsArgs, reference]);
 
         return new Listener(callback);
     }
@@ -240,6 +262,38 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <returns>A task of type <see cref="Listener"/>.</returns>
     public Task<Listener> OnClick(string? layerId, Func<MapMouseEvent, Task> handler) =>
          AddAsyncListener("click", handler, layerId);
+
+    /// <summary>
+    /// Registers a synchronous listener for the map's "rotate" event.
+    /// </summary>
+    /// <param name="handler">The synchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnRotate(Action<MapLibreEvent> handler) =>
+        AddListener<MapLibreEvent>("rotate", handler);
+
+    /// <summary>
+    /// Registers an asynchronous listener for the map's "rotate" event.
+    /// </summary>
+    /// <param name="handler">The asynchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnRotate(Func<MapLibreEvent, Task> handler) =>
+        AddAsyncListener<MapLibreEvent>("rotate", handler);
+
+    /// <summary>
+    /// Registers a synchronous listener for the map's "pitch" event.
+    /// </summary>
+    /// <param name="handler">The synchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnPitch(Action<MapLibreEvent> handler) =>
+        AddListener<MapLibreEvent>("pitch", handler);
+
+    /// <summary>
+    /// Registers an asynchronous listener for the map's "pitch" event.
+    /// </summary>
+    /// <param name="handler">The asynchronous callback.</param>
+    /// <returns>A task of type <see cref="Listener"/>.</returns>
+    public Task<Listener> OnPitch(Func<MapLibreEvent, Task> handler) =>
+        AddAsyncListener<MapLibreEvent>("pitch", handler);
 
     #endregion
 
@@ -1304,6 +1358,16 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     #region Marker
 
     /// <summary>
+    /// Markers currently tracked by this component, keyed by the id returned from <see cref="AddMarker"/>.
+    /// The JS side (<c>markerInstances</c>) remains the source of truth for the actual marker objects; this
+    /// collection just lets C# enumerate/query what it has created without maintaining a separate id list.
+    /// </summary>
+    private readonly ConcurrentDictionary<Guid, MarkerOptions> _markers = new();
+
+    /// <inheritdoc cref="_markers"/>
+    public IReadOnlyDictionary<Guid, MarkerOptions> Markers => _markers;
+
+    /// <summary>
     /// Adds a new marker to the map at the specified position with the provided options.
     /// </summary>
     /// <param name="options">The options that define the appearance and behavior of the marker.</param>
@@ -1313,7 +1377,26 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     public async Task<Guid> AddMarker(MarkerOptions options, LngLat position, Guid? markerId = null)
     {
         var id = markerId ?? Guid.NewGuid();
-        await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position);
+        await _jsModule.InvokeVoidAsync("createMarker", MapId, id, options, position, options.Element);
+        _markers[id] = options;
+
+        if (options.OnClick is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "click", options.OnClick, id, "click");
+        if (options.OnClickAsync is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "click", options.OnClickAsync, id, "click");
+        if (options.OnDragStart is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "dragstart", options.OnDragStart, id, "dragstart");
+        if (options.OnDragStartAsync is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "dragstart", options.OnDragStartAsync, id, "dragstart");
+        if (options.OnDrag is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "drag", options.OnDrag, id, "drag");
+        if (options.OnDragAsync is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "drag", options.OnDragAsync, id, "drag");
+        if (options.OnDragEnd is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "dragend", options.OnDragEnd, id, "dragend");
+        if (options.OnDragEndAsync is not null)
+            await RegisterEventListener<MarkerEvent>("onMarker", "dragend", options.OnDragEndAsync, id, "dragend");
+
         return id;
     }
 
@@ -1323,7 +1406,10 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <param name="markerId">The unique identifier of the marker to be removed.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task RemoveMarker(Guid markerId)
-        => await _jsModule.InvokeVoidAsync("removeMarker", markerId);
+    {
+        await _jsModule.InvokeVoidAsync("removeMarker", markerId);
+        _markers.TryRemove(markerId, out _);
+    }
 
     /// <summary>
     /// Moves a marker on the map.
