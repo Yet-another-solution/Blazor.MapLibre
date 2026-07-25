@@ -9,6 +9,22 @@ At a high-level, a plugin can, but not exclusively:
 - Use the MapLibre map object reference in its own JavaScript module(s).
 - Expose a type-safe API similar to the core library.
 
+## Quick escape hatch - no plugin project needed
+
+If all you need is to call one MapLibre GL JS method that the wrapper library hasn't caught up
+to yet, a full plugin project is more ceremony than the job needs. `MapLibre.NativeMap` exposes
+the underlying `maplibregl.Map` JS object directly, and `IJSObjectReference.InvokeAsync`/
+`InvokeVoidAsync` call methods on it with no `.js` file required:
+
+```csharp
+// Equivalent to the rotate-around-a-point plugin below, without writing any JavaScript.
+await _map.NativeMap.InvokeVoidAsync("rotateTo", bearing, new { duration = 0 });
+```
+
+Reach for a full plugin (below) instead when you need real custom JS logic - helper functions,
+an external library, or several coordinated calls with your own state - not just one more native
+map method.
+
 ## Steps
 
 1. Create a **Razor Class Library** project.
