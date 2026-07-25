@@ -2,6 +2,7 @@
 
 namespace Community.Blazor.MapLibre.Models;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Visibility
 {
     [JsonStringEnumMemberName("visible")]

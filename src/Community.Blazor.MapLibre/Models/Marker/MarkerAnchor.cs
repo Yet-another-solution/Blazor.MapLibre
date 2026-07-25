@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Community.Blazor.MapLibre.Models.Marker;
@@ -9,30 +8,30 @@ namespace Community.Blazor.MapLibre.Models.Marker;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum MarkerAnchor
 {
-    [EnumMember(Value = "center")]
+    [JsonStringEnumMemberName("center")]
     Center,
-    
-    [EnumMember(Value = "top")]
+
+    [JsonStringEnumMemberName("top")]
     Top,
-    
-    [EnumMember(Value = "bottom")]
+
+    [JsonStringEnumMemberName("bottom")]
     Bottom,
-    
-    [EnumMember(Value = "left")]
+
+    [JsonStringEnumMemberName("left")]
     Left,
-    
-    [EnumMember(Value = "right")]
+
+    [JsonStringEnumMemberName("right")]
     Right,
-    
-    [EnumMember(Value = "top-left")]
+
+    [JsonStringEnumMemberName("top-left")]
     TopLeft,
-    
-    [EnumMember(Value = "top-right")]
+
+    [JsonStringEnumMemberName("top-right")]
     TopRight,
-    
-    [EnumMember(Value = "bottom-left")]
+
+    [JsonStringEnumMemberName("bottom-left")]
     BottomLeft,
-    
-    [EnumMember(Value = "bottom-right")]
+
+    [JsonStringEnumMemberName("bottom-right")]
     BottomRight
 }

@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Community.Blazor.MapLibre.Models.Marker;
@@ -9,12 +8,12 @@ namespace Community.Blazor.MapLibre.Models.Marker;
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum MarkerAlignment
 {
-    [EnumMember(Value = "auto")]
+    [JsonStringEnumMemberName("auto")]
     Auto,
-    
-    [EnumMember(Value = "map")]
+
+    [JsonStringEnumMemberName("map")]
     Map,
-    
-    [EnumMember(Value = "viewport")]
+
+    [JsonStringEnumMemberName("viewport")]
     Viewport
 }

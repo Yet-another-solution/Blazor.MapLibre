@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Community.Blazor.MapLibre.Converter;
 using Community.Blazor.MapLibre.Models.Padding;
 using OneOf;
 
@@ -23,5 +24,6 @@ public class CameraForBoundsOptions : CameraOptions
     /// </summary>
     [JsonPropertyName("padding")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public OneOf<decimal, PaddingOptions> Padding { get; set; }
+    [JsonConverter(typeof(OneOfJsonConverter<decimal, PaddingOptions>))]
+    public OneOf<decimal, PaddingOptions>? Padding { get; set; }
 }
