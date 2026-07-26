@@ -1,5 +1,6 @@
 using Bunit;
 using Community.Blazor.MapLibre.Models;
+using Community.Blazor.MapLibre.Models.Control;
 using Community.Blazor.MapLibre.Models.Sources;
 using FluentAssertions;
 using Xunit;
@@ -72,7 +73,8 @@ public class QueryMethodsBatchCInteropTests : MapLibreInteropTestBase
     public async Task HasControl_Should_Invoke_HasControl_With_MapId_And_Control_And_Return_Value()
     {
         var cut = RenderMapLibre(parameters => parameters.Add(p => p.MapId, "test-map"));
-        var control = new { type = "navigation" };
+        // Realistic usage: the control handle passed to HasControl is whatever AddControl returned.
+        var control = (await cut.Instance.AddControl(ControlType.NavigationControl))!;
         JSInterop.Setup<bool>("hasControl", "test-map", control).SetResult(true);
 
         var result = await cut.Instance.HasControl(control);

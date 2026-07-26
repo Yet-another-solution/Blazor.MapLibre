@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Layers;
 using FluentAssertions;
 using Xunit;
@@ -261,6 +263,66 @@ public class LayerSerializationTests
         heatMapLayer.Id.Should().Be("heatmap-layer");
         heatMapLayer.Source.Should().Be("earthquakes");
         heatMapLayer.SourceLayer.Should().Be("quakes");
+    }
+
+    [Fact]
+    public void HeatMapLayer_With_Paint_Should_Serialize_Successfully()
+    {
+        // Arrange
+        var layer = new HeatMapLayer
+        {
+            Id = "heatmap-layer",
+            Source = "earthquakes",
+            Visibility = Visibility.Visible,
+            Paint = new HeatMapLayerPaint
+            {
+                HeatmapRadius = 30,
+                HeatmapWeight = 1,
+                HeatmapIntensity = 1,
+                HeatmapOpacity = 0.8,
+                HeatmapColor = new JsonArray("interpolate", new JsonArray("linear"), new JsonArray("heatmap-density"))
+            }
+        };
+
+        // Act
+        var json = JsonSerializer.Serialize<Layer>(layer);
+
+        // Assert
+        json.Should().Contain("\"visibility\":\"visible\"");
+        json.Should().Contain("\"heatmap-radius\":30");
+        json.Should().Contain("\"heatmap-weight\":1");
+        json.Should().Contain("\"heatmap-intensity\":1");
+        json.Should().Contain("\"heatmap-opacity\":0.8");
+        json.Should().Contain("\"heatmap-color\":[\"interpolate\"");
+    }
+
+    [Fact]
+    public void HeatMapLayer_With_Paint_Should_Deserialize_Successfully()
+    {
+        // Arrange
+        var json = """
+                   {
+                        "type":"heatmap",
+                        "id":"heatmap-layer",
+                        "source":"earthquakes",
+                        "paint": {
+                            "heatmap-radius": 30,
+                            "heatmap-weight": 1,
+                            "heatmap-intensity": 1,
+                            "heatmap-opacity": 0.8
+                        }
+                   }
+                   """;
+
+        // Act
+        var layer = (HeatMapLayer)JsonSerializer.Deserialize<Layer>(json)!;
+
+        // Assert
+        layer.Paint.Should().NotBeNull();
+        layer.Paint!.HeatmapRadius!.Value.AsT0.Should().Be(30);
+        layer.Paint.HeatmapWeight!.Value.AsT0.Should().Be(1);
+        layer.Paint.HeatmapIntensity!.Value.AsT0.Should().Be(1);
+        layer.Paint.HeatmapOpacity!.Value.AsT0.Should().Be(0.8);
     }
 
     [Fact]

@@ -26,27 +26,32 @@ public class AddRemoveInteropTests : MapLibreInteropTestBase
     // ---- AddControl ----------------------------------------------------
 
     [Fact]
-    public async Task AddControl_Should_Invoke_AddControl_With_MapId_ControlTypeString_And_Position()
+    public async Task AddControl_Should_Invoke_AddControl_With_MapId_ControlTypeString_Position_And_Options()
     {
         var cut = RenderMap();
+        var options = new { showCompass = false };
 
-        await cut.Instance.AddControl(ControlType.NavigationControl, ControlPosition.TopLeft);
+        var control = await cut.Instance.AddControl(ControlType.NavigationControl, ControlPosition.TopLeft, options);
 
+        control.Should().NotBeNull();
         var invocation = JSInterop.VerifyInvoke("addControl");
-        invocation.Arguments.Should().HaveCount(3);
+        invocation.Arguments.Should().HaveCount(4);
         invocation.Arguments[0].Should().Be(MapId);
         invocation.Arguments[1].Should().Be("NavigationControl");
         invocation.Arguments[2].Should().Be(ControlPosition.TopLeft);
+        invocation.Arguments[3].Should().BeSameAs(options);
     }
 
     [Fact]
-    public async Task AddControl_During_BulkTransaction_Should_Defer_To_ExecuteTransaction()
+    public async Task AddControl_During_BulkTransaction_Should_Defer_To_ExecuteTransaction_And_Return_Null()
     {
         var cut = RenderMap();
         cut.Instance.StartTransaction();
 
-        await cut.Instance.AddControl(ControlType.NavigationControl, ControlPosition.TopLeft);
+        var control = await cut.Instance.AddControl(ControlType.NavigationControl, ControlPosition.TopLeft);
 
+        // No control exists yet while queued in a transaction, so there's nothing to return a handle to.
+        control.Should().BeNull();
         JSInterop.VerifyNotInvoke("addControl");
 
         await cut.Instance.Commit();
@@ -55,7 +60,7 @@ public class AddRemoveInteropTests : MapLibreInteropTestBase
         invocation.Arguments[0].Should().Be(MapId);
         var transactions = (List<Transaction>)invocation.Arguments[1]!;
         var transaction = transactions.Should().ContainSingle(t => t.Event == "addControl").Subject;
-        transaction.Data.Should().Equal("NavigationControl", ControlPosition.TopLeft);
+        transaction.Data.Should().Equal("NavigationControl", ControlPosition.TopLeft, null);
     }
 
     // ---- AddImage --------------------------------------------------------
@@ -226,7 +231,8 @@ public class AddRemoveInteropTests : MapLibreInteropTestBase
     public async Task RemoveControl_Should_Invoke_RemoveControl_With_MapId_And_Control()
     {
         var cut = RenderMap();
-        var control = new object();
+        // Realistic usage: the control handle passed to RemoveControl is whatever AddControl returned.
+        var control = (await cut.Instance.AddControl(ControlType.NavigationControl))!;
 
         await cut.Instance.RemoveControl(control);
 
@@ -240,7 +246,7 @@ public class AddRemoveInteropTests : MapLibreInteropTestBase
     public async Task RemoveControl_During_BulkTransaction_Should_Defer_To_ExecuteTransaction()
     {
         var cut = RenderMap();
-        var control = new object();
+        var control = (await cut.Instance.AddControl(ControlType.NavigationControl))!;
         cut.Instance.StartTransaction();
 
         await cut.Instance.RemoveControl(control);

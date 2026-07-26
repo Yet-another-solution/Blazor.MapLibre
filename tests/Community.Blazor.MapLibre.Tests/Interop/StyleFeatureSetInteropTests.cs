@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using Bunit;
 using Community.Blazor.MapLibre.Models;
 using Community.Blazor.MapLibre.Models.Feature;
@@ -95,12 +96,23 @@ public class StyleFeatureSetInteropTests : MapLibreInteropTestBase
     }
 
     [Fact]
+    public async Task SetStyle_With_JsonObject_Style_Should_Invoke_SetStyle()
+    {
+        var cut = RenderMapLibre(parameters => parameters.Add(p => p.MapId, "test-map"));
+        var style = new JsonObject { ["version"] = 8 };
+
+        await cut.Instance.SetStyle(style);
+
+        var invocation = JSInterop.VerifyInvoke("setStyle");
+        invocation.Arguments[1].Should().BeSameAs(style);
+    }
+
+    [Fact]
     public async Task SetStyle_With_No_Options_Should_Pass_Null()
     {
         var cut = RenderMapLibre(parameters => parameters.Add(p => p.MapId, "test-map"));
-        var style = new { version = 8 };
 
-        await cut.Instance.SetStyle(style);
+        await cut.Instance.SetStyle("mapbox://styles/mapbox/streets-v11");
 
         var invocation = JSInterop.VerifyInvoke("setStyle");
         invocation.Arguments[2].Should().BeNull();
@@ -124,7 +136,8 @@ public class StyleFeatureSetInteropTests : MapLibreInteropTestBase
     public async Task UpdateImage_Should_Invoke_UpdateImage_With_MapId_Id_And_Image()
     {
         var cut = RenderMapLibre(parameters => parameters.Add(p => p.MapId, "test-map"));
-        var image = new { url = "https://example.com/image.png" };
+        // Realistic usage: the image handle passed to UpdateImage is whatever LoadImage returned.
+        var image = await cut.Instance.LoadImage("https://example.com/image.png");
 
         await cut.Instance.UpdateImage("image-1", image);
 
