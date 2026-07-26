@@ -47,10 +47,10 @@ export function initializeMap(options, dotnetReference) {
  *
  * @param {string} container - The identifier for the specific map instance.
  * @param {string} eventType - The type of event to listen for (e.g., "click", "zoom").
- * @param {object} dotnetReference - A reference to a .NET object used for invoking asynchronous methods.
  * @param {string | string[]} layerIds - Optional layer to pass when adding the event listener. If not provided, the event is added without a layer.
+ * @param {object} dotnetReference - A reference to a .NET object used for invoking asynchronous methods.
  */
-export function on(container, eventType, dotnetReference, layerIds) {
+export function on(container, eventType, layerIds, dotnetReference) {
     if (layerIds === undefined || layerIds === null) {
         mapInstances[container].on(eventType, function (e) {
             e.target = null; // Remove map to prevent circular references.
@@ -1227,11 +1227,24 @@ export function createPopup(container, settings, options) {
         .addTo(mapInstances[container]);
 }
 
-export function createMarker(container, markerId, options, position) {
+/**
+ * Creates a marker on the specified map container.
+ *
+ * @param {string} container - The identifier for the map container.
+ * @param {string} markerId - The unique identifier to store the marker under.
+ * @param {Object} options - MarkerOptions to pass to maplibregl.Marker.
+ * @param {Object} position - The {lng, lat} position for the marker.
+ * @param {HTMLElement} [element] - A DOM element (e.g. from a Blazor ElementReference) to use as the marker, taking priority over `options.element`.
+ */
+export function createMarker(container, markerId, options, position, element) {
+    if (element) {
+        options.element = element;
+    }
+
     markerInstances[markerId] = new maplibregl.Marker(options)
         .setLngLat([position.lng, position.lat])
         .addTo(mapInstances[container]);
-    
+
     if (options.extensions) {
         const extensions = options.extensions;
         
@@ -1265,8 +1278,45 @@ export function removeMarker(markerId){
  */
 export function moveMarker(markerId, position) {
     const marker = markerInstances[markerId];
-    
+
     marker.setLngLat([position.lng, position.lat]);
+}
+
+/**
+ * Attaches an event listener to a specified marker instance.
+ *
+ * @param {string} markerId - The marker ID.
+ * @param {string} eventType - The type of event to listen for (e.g., "click", "dragstart", "drag", "dragend").
+ * @param {object} dotnetReference - A reference to a .NET object used for invoking asynchronous methods.
+ */
+export function onMarker(markerId, eventType, dotnetReference) {
+    const marker = markerInstances[markerId];
+
+    if (!marker) {
+        console.warn(`Marker with id ${markerId} not found`);
+        return;
+    }
+
+    const dispatch = () => {
+        const lngLat = marker.getLngLat();
+        const result = JSON.stringify({
+            type: eventType,
+            lngLat: {lng: lngLat.lng, lat: lngLat.lat}
+        });
+        dotnetReference.invokeMethodAsync('Invoke', result);
+    };
+
+    if (eventType === 'click') {
+        // maplibregl.Marker does not emit its own "click" event, so listen on its DOM element directly.
+        marker.getElement().addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the click from also bubbling to the map.
+            dispatch();
+        });
+    } else if (['dragstart', 'drag', 'dragend'].includes(eventType)) {
+        marker.on(eventType, dispatch);
+    } else {
+        console.warn(`Event type '${eventType}' is not supported for markers`);
+    }
 }
 
 /**
