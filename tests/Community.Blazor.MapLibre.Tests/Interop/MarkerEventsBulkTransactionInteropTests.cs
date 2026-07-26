@@ -27,12 +27,15 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
 
         var id = await cut.Instance.AddMarker(options, position);
 
+        // createMarker now also receives options.Element as a 5th argument (added in #167) so
+        // Blazor can marshal a custom DOM element through to the JS side.
         var invocation = JSInterop.VerifyInvoke("createMarker");
-        invocation.Arguments.Should().HaveCount(4);
+        invocation.Arguments.Should().HaveCount(5);
         invocation.Arguments[0].Should().Be("test-map");
         invocation.Arguments[1].Should().Be(id);
         invocation.Arguments[2].Should().BeSameAs(options);
         invocation.Arguments[3].Should().BeSameAs(position);
+        invocation.Arguments[4].Should().Be(options.Element);
     }
 
     [Fact]
@@ -96,8 +99,8 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
         invocation.Arguments.Should().HaveCount(4);
         invocation.Arguments[0].Should().Be("test-map");
         invocation.Arguments[1].Should().Be("customevent");
-        invocation.Arguments[2].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
-        invocation.Arguments[3].Should().Be("layer-1");
+        invocation.Arguments[2].Should().Be("layer-1");
+        invocation.Arguments[3].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
     }
 
     [Fact]
@@ -109,7 +112,7 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
         await cut.Instance.AddListener("customevent", handler);
 
         var invocation = JSInterop.VerifyInvoke("on");
-        invocation.Arguments[3].Should().BeNull();
+        invocation.Arguments[2].Should().BeNull();
     }
 
     [Fact]
@@ -124,8 +127,8 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
         invocation.Arguments.Should().HaveCount(4);
         invocation.Arguments[0].Should().Be("test-map");
         invocation.Arguments[1].Should().Be("customevent");
-        invocation.Arguments[2].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
-        invocation.Arguments[3].Should().Be("layer-2");
+        invocation.Arguments[2].Should().Be("layer-2");
+        invocation.Arguments[3].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
     }
 
     [Fact]
@@ -140,8 +143,8 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
         invocation.Arguments.Should().HaveCount(4);
         invocation.Arguments[0].Should().Be("test-map");
         invocation.Arguments[1].Should().Be("click");
-        invocation.Arguments[2].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
-        invocation.Arguments[3].Should().Be("some-layer");
+        invocation.Arguments[2].Should().Be("some-layer");
+        invocation.Arguments[3].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
     }
 
     [Fact]
@@ -156,8 +159,8 @@ public class MarkerEventsBulkTransactionInteropTests : MapLibreInteropTestBase
         invocation.Arguments.Should().HaveCount(4);
         invocation.Arguments[0].Should().Be("test-map");
         invocation.Arguments[1].Should().Be("click");
-        invocation.Arguments[2].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
-        invocation.Arguments[3].Should().Be("some-layer");
+        invocation.Arguments[2].Should().Be("some-layer");
+        invocation.Arguments[3].Should().BeAssignableTo<DotNetObjectReference<CallbackHandler>>();
     }
 
     #endregion
