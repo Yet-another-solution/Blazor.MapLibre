@@ -5,6 +5,7 @@ namespace Community.Blazor.MapLibre.Models;
 /// <summary>
 /// Enumeration of possible values for <c>StyleImageMetadata.textFitWidth</c> and <c>textFitHeight</c>.
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TextFit
 {
     /// <summary>

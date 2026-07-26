@@ -3,9 +3,11 @@ name: Build, Test, and Publish Multi-Project Solution
 on:
   push:
     branches:
-      - "main"
-      - "release/*"  # For library publishing
-  workflow_dispatch: # Allow manual triggering of the workflow
+      - "main"       # For docs site build/deploy
+    tags:
+      - "v*"         # For library publishing - only an actual version tag triggers a NuGet push,
+                      # not every merge/push to a release/* branch
+  workflow_dispatch: # Allow manual triggering of the workflow (can also target a tag ref to publish)
 
 jobs:
   # Job 1: Build and Test Both Projects
@@ -45,13 +47,13 @@ jobs:
 
       # Step 7: Pack the Library for NuGet
       - name: Pack NuGet Library
-        if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
+        if: startsWith(github.ref, 'refs/tags/v')
         run: dotnet pack src/Community.Blazor.MapLibre/Community.Blazor.MapLibre.csproj -c Release --no-build --output nuget
         # Only pack `Community.Blazor.MapLibre.csproj` for NuGet, not the examples
 
       # Step 8: Upload NuGet packages as artifact
       - name: Upload NuGet Artifact
-        if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4
         with:
           name: nuget
@@ -75,8 +77,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]  # Requires the Build job to complete
 
-    if: >
-      ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref_name, 'release'))
+    # Only an actual version tag push (or a manual workflow_dispatch run against one) publishes to NuGet
+    if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
       # Step 1: Download NuGet package artifact from the Build job

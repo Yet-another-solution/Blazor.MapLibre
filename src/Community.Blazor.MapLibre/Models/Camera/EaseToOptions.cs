@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Community.Blazor.MapLibre.Converter;
 using Community.Blazor.MapLibre.Models.Padding;
 using OneOf;
 
@@ -28,6 +29,7 @@ public class EaseToOptions : IAnimationOptions, ICameraOptions
     
     [JsonPropertyName("padding")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonConverter(typeof(OneOfJsonConverter<double, PaddingOptions>))]
     public OneOf<double, PaddingOptions>? Padding { get; set; }
 
     #region IAnimationOptions
@@ -84,12 +86,18 @@ public class EaseToOptions : IAnimationOptions, ICameraOptions
     #region ICenterZoomBearing
 
     /// <inheritdoc />
+    [JsonPropertyName("center")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public LngLat? Center { get; set; }
 
     /// <inheritdoc />
+    [JsonPropertyName("zoom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Zoom { get; set; }
 
     /// <inheritdoc />
+    [JsonPropertyName("bearing")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? Bearing { get; set; }
 
     #endregion
