@@ -17,6 +17,10 @@
 
 <textarea @bind="_eventDataText" rows="10" style="width: 100%; height: 300px; margin-top: 10px;" readonly></textarea>
 
+<button @onclick="TriggerRepaintViaNativeMap" style="margin-top: 10px;">
+    Force a repaint via NativeMap (no wrapper method needed)
+</button>
+
 @code {
     private MapLibre _map = new();
     private string _eventDataText = "";
@@ -82,5 +86,12 @@
     {
         _eventDataText = JsonSerializer.Serialize(eventData.Features);
         StateHasChanged();
+    }
+
+    // NativeMap gives you the raw maplibregl.Map JS object, so you can call any MapLibre GL JS
+    // method the wrapper hasn't caught up to yet, without writing a JS file or a plugin.
+    private async Task TriggerRepaintViaNativeMap()
+    {
+        await _map.NativeMap.InvokeVoidAsync("triggerRepaint");
     }
 }

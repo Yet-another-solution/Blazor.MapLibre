@@ -48,6 +48,11 @@ public class MarkerOptions
     /// <summary>
     /// DOM element to use as a marker. The default is a light blue, droplet-shaped SVG marker.
     /// </summary>
+    /// <remarks>
+    /// An <see cref="ElementReference"/> can't be represented as JSON (it's an opaque Blazor handle, not
+    /// data), so it is ignored by serialization and instead passed as a separate JS interop argument by
+    /// <see cref="MapLibre.AddMarker"/>, which Blazor marshals to the real DOM element on the JS side.
+    /// </remarks>
     [JsonIgnore]
     public ElementReference? Element { get; set; }
 
@@ -121,4 +126,64 @@ public class MarkerOptions
     /// </summary>
     [JsonPropertyName("extensions")]
     public MarkerOptionsExtensions? Extensions { get; set; }
+
+    #region Event Handlers
+
+    /// <summary>
+    /// Event handler called when the marker is clicked.
+    /// </summary>
+    /// <remarks>This will overwrite any other click-related listeners for the marker, such as a Popup.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnClick { get; set; }
+
+    /// <summary>
+    /// Async event handler called when the marker is clicked.
+    /// </summary>
+    /// <remarks>This will overwrite any other click-related listeners for the marker, such as a Popup.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnClickAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called when dragging starts.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDragStart { get; set; }
+
+    /// <summary>
+    /// Async event handler called when dragging starts.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragStartAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called while dragging.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDrag { get; set; }
+
+    /// <summary>
+    /// Async event handler called while dragging.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragAsync { get; set; }
+
+    /// <summary>
+    /// Event handler called when dragging ends.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Action<MarkerEvent>? OnDragEnd { get; set; }
+
+    /// <summary>
+    /// Async event handler called when dragging ends.
+    /// </summary>
+    /// <remarks><see cref="Draggable"/> must be true for this handler to ever be called.</remarks>
+    [JsonIgnore]
+    public Func<MarkerEvent, Task>? OnDragEndAsync { get; set; }
+
+    #endregion
 }
