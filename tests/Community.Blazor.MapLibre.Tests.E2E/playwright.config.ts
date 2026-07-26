@@ -26,7 +26,9 @@ export default defineConfig({
     command: 'dotnet run --project ../../examples/Community.Blazor.MapLibre.Examples --urls ' + BASE_URL,
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    // CI runners restore+build the WASM app cold (no local nuget/obj cache), so give it more room
+    // than a typical local run needs.
+    timeout: process.env.CI ? 300_000 : 120_000,
     stdout: 'pipe',
     stderr: 'pipe',
   },
