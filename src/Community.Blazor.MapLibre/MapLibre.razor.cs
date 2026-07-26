@@ -12,6 +12,8 @@ using Community.Blazor.MapLibre.Models.Sprite;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Collections.Concurrent;
+using System.Text.Json.Nodes;
+using OneOf;
 
 namespace Community.Blazor.MapLibre;
 
@@ -303,17 +305,27 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Adds a control to the map instance based on the specified control type and options.
     /// </summary>
     /// <param name="controlType">The type of control to be added to the map.</param>
-    /// <param name="position">Optional settings or parameters specific to the control being added.</param>
-    /// <returns>A task that represents the asynchronous operation of adding the control.</returns>
-    public async ValueTask AddControl(ControlType controlType, ControlPosition? position = null)
+    /// <param name="position">Optional position on the map to add the control to.</param>
+    /// <param name="options">
+    /// Optional, control-specific constructor options (e.g. <c>new { customAttribution = "..." }</c> for
+    /// <see cref="ControlType.AttributionControl"/>, or <c>new { showCompass = false }</c> for
+    /// <see cref="ControlType.NavigationControl"/>) - passed straight through to that control's own JS
+    /// constructor.
+    /// </param>
+    /// <returns>
+    /// A handle to the created control, usable with <see cref="HasControl"/>/<see cref="RemoveControl"/> -
+    /// or <c>null</c> if a bulk transaction is in progress (the control doesn't exist yet until
+    /// <see cref="Commit"/> runs, so there's nothing to return a handle to).
+    /// </returns>
+    public async ValueTask<IJSObjectReference?> AddControl(ControlType controlType, ControlPosition? position = null, object? options = null)
     {
         if (_bulkTransaction is not null)
         {
-            _bulkTransaction.Add("addControl", controlType.ToString(), position);
-            return;
+            _bulkTransaction.Add("addControl", controlType.ToString(), position, options);
+            return null;
         }
 
-        await _jsModule.InvokeVoidAsync("addControl", MapId, controlType.ToString(), position);
+        return await _jsModule.InvokeAsync<IJSObjectReference>("addControl", MapId, controlType.ToString(), position, options);
     }
 
     /// <summary>
@@ -828,9 +840,9 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Checks if a specific control exists on the map.
     /// </summary>
-    /// <param name="control">The control instance to check for.</param>
+    /// <param name="control">The control instance to check for, as returned by <see cref="AddControl"/>.</param>
     /// <returns>True if the control exists on the map; otherwise, false.</returns>
-    public async ValueTask<bool> HasControl(object control) =>
+    public async ValueTask<bool> HasControl(IJSObjectReference control) =>
         await _jsModule.InvokeAsync<bool>("hasControl", MapId, control);
 
     /// <summary>
@@ -916,9 +928,12 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Loads an image from an external URL and returns it.
     /// </summary>
     /// <param name="url">The URL of the image to load.</param>
-    /// <returns>An object containing the loaded image.</returns>
-    public async ValueTask<object> LoadImage(string url) =>
-        await _jsModule.InvokeAsync<object>("loadImage", MapId, url);
+    /// <returns>
+    /// A handle to the loaded image resource, ready to pass directly into <see cref="UpdateImage"/>
+    /// (or a future typed <c>AddImage</c> overload).
+    /// </returns>
+    public async ValueTask<IJSObjectReference> LoadImage(string url) =>
+        await _jsModule.InvokeAsync<IJSObjectReference>("loadImage", MapId, url);
 
     /// <summary>
     /// Moves a layer to a different z-position in the style.
@@ -960,11 +975,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Queries the map for rendered features within a specified geometry or options.
     /// </summary>
-    /// <param name="query">The query geometry or options.</param>
+    /// <param name="query">
+    /// The query geometry: omit for the whole viewport, a single <see cref="PointLike"/>, or an
+    /// <c>object[]</c> of two <see cref="PointLike"/> values describing a bounding box.
+    /// </param>
     /// <param name="options">Additional query options (e.g., layer IDs).</param>
-    /// <returns>An array of features matching the query.</returns>
-    public async ValueTask<object[]> QueryRenderedFeatures(object query, object? options = null) =>
-        await _jsModule.InvokeAsync<object[]>("queryRenderedFeatures", MapId, query, options);
+    /// <returns>An array of features matching the query, matching <see cref="QuerySourceFeatures"/>'s shape.</returns>
+    public async ValueTask<IFeature[]> QueryRenderedFeatures(object? query = null, object? options = null) =>
+        await _jsModule.InvokeAsync<IFeature[]>("queryRenderedFeatures", MapId, query, options);
 
     /// <summary>
     /// Returns an array of <see cref="SimpleFeature"/> objects representing features within the specified vector tile or GeoJSON source that satisfy the query parameters.
@@ -1027,8 +1045,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Removes a control from the map.
     /// </summary>
-    /// <param name="control">The control to remove.</param>
-    public async ValueTask RemoveControl(object control)
+    /// <param name="control">The control to remove, as returned by <see cref="AddControl"/>.</param>
+    public async ValueTask RemoveControl(IJSObjectReference control)
     {
         if (_bulkTransaction is not null)
         {
@@ -1289,8 +1307,14 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// </summary>
     /// <param name="style">The style configuration object or URL.</param>
     /// <param name="options">Optional parameters for the style application.</param>
-    public async ValueTask SetStyle(object style, object? options = null) =>
-        await _jsModule.InvokeVoidAsync("setStyle", MapId, style, options);
+    public async ValueTask SetStyle(OneOf<JsonObject, string> style, object? options = null) =>
+        // Resolve to a concrete value before crossing into JS interop - a bare OneOf<T1,T2> argument
+        // has no [JsonConverter] to guide it (that only applies to model properties, not interop
+        // parameters) and would hit the same broken default serialization CameraForBoundsOptions.Padding
+        // and EaseToOptions.Padding did before they got one; SetSourceData resolves its OneOf the same way.
+        await style.Match(
+            styleObject => _jsModule.InvokeVoidAsync("setStyle", MapId, styleObject, options),
+            styleUrl => _jsModule.InvokeVoidAsync("setStyle", MapId, styleUrl, options));
 
     /// <summary>
     /// Stops any animated transition currently underway on the map.
@@ -1310,8 +1334,8 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     /// Updates an existing image in the map's sprite.
     /// </summary>
     /// <param name="id">The image ID.</param>
-    /// <param name="image">The new image data to update.</param>
-    public async ValueTask UpdateImage(string id, object image)
+    /// <param name="image">The new image data to update, as returned by <see cref="LoadImage"/>.</param>
+    public async ValueTask UpdateImage(string id, IJSObjectReference image)
     {
         await _jsModule.InvokeVoidAsync("updateImage", MapId, id, image);
     }
