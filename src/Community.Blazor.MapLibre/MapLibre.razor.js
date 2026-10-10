@@ -1,4 +1,13 @@
 import splitGeoJSON from './geojson-antimeridian-cut/cut.js'
+import * as maplibregl from './maplibre-6.13.0.min.js'
+
+// The bundled files are renamed from upstream's maplibre-gl.mjs / maplibre-gl-worker.mjs (versioned,
+// and .js so every static host serves them with a JavaScript MIME type), so the worker can't be
+// auto-detected next to the main module.
+maplibregl.setWorkerUrl(new URL('./maplibre-6.13.0-worker.min.js', import.meta.url).href);
+
+// MapLibre GL JS v6 no longer defines a global; keep it for plugins and custom JS that rely on it.
+globalThis.maplibregl ??= maplibregl;
 
 const mapInstances = {};
 const optionsInstances = {};

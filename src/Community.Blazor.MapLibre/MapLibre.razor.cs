@@ -142,10 +142,7 @@ public partial class MapLibre : ComponentBase, IAsyncDisposable
     {
         if (firstRender)
         {
-            await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/Community.Blazor.MapLibre/maplibre-5.12.0.min.js");
-
-            // Import your JavaScript module
+            // Import your JavaScript module (it imports MapLibre GL JS itself, which is ESM-only since v6)
             _jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/Community.Blazor.MapLibre/MapLibre.razor.js");
 

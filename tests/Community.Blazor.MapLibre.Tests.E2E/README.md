@@ -43,7 +43,7 @@ maintainers, since it changes shared pipeline infrastructure.
   correctly-based request succeeds. Filtered in `tests/helpers.ts` (`trackPageErrors`) rather than
   fixed here - it's a real bug in the Examples app worth fixing separately, not a library issue.
 - **`mapbox-gl-draw.spec.ts`**: the vendored third-party `mapbox-gl-draw.js` sets
-  `"line-dasharray": [2, 2]` as a bare array on two style layers, which MapLibre GL JS 5.12.0's
+  `"line-dasharray": [2, 2]` as a bare array on two style layers, which MapLibre GL JS's (5.12.0+, including 6.13.0)
   stricter style validator rejects (it wants `["literal", [2, 2]]`). The control still loads, but
   those two layers' dash styling silently fails to apply. Documented and filtered in that spec file
   rather than patched in the vendored asset.
