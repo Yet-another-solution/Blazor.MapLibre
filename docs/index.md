@@ -10,6 +10,18 @@ This project should help people working on Blazor projects to use maps more easi
 
 This project is created on .NET 8/9 so you need to use this or never version to run it.
 
+#### Browser requirements (WebGL)
+
+Version 2.0.0 and newer bundle MapLibre GL JS 6.x, which **requires WebGL2**. WebGL1 is no longer supported, so the map will not render in a browser or on a device that only offers WebGL1.
+
+If you need WebGL1 support, stay on version 1.4.0, the last release that bundles MapLibre GL JS 5.x (which supports both WebGL1 and WebGL2):
+
+```bash
+dotnet add package Community.Blazor.MapLibre --version 1.4.0
+```
+
+With 1.4.0 the stylesheet link is `_content/Community.Blazor.MapLibre/maplibre-5.12.0.min.css`.
+
 ### Installation
 
 Install the package:
