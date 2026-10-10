@@ -21,7 +21,7 @@ dotnet add package Community.Blazor.MapLibre
 Add this to head of your file to load the css for the maps:
 
 ```html
-<link href="_content/Community.Blazor.MapLibre/maplibre-5.12.0.min.css" rel="stylesheet" />
+<link href="_content/Community.Blazor.MapLibre/maplibre-6.13.0.min.css" rel="stylesheet" />
 ```
 
 ## Usage

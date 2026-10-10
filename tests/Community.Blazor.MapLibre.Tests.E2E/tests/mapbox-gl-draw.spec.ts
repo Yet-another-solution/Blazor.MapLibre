@@ -4,7 +4,7 @@ import { expectMapCanvasVisible, trackPageErrors } from './helpers';
 // BUG found by this test (not fixed here - it's in the vendored third-party mapbox-gl-draw.js
 // asset under examples/Community.Blazor.MapLibre.Examples.MapboxGlPlugin, not this library):
 // two of its style layers ("gl-draw-lines" cold/hot) set `"line-dasharray": [2, 2]` as a bare
-// number array. MapLibre GL JS 5.12.0's style validator now requires numeric literal arrays to be
+// number array. MapLibre GL JS's style validator (since 5.12.0, still the case in 6.13.0) requires numeric literal arrays to be
 // wrapped as `["literal", [2, 2]]` expressions and rejects the bare form with
 // "Expression name must be a string, but found number instead." The control still loads (this is
 // exactly why the plugin's own "Control added successfully" log is checked below, not just "no

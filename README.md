@@ -83,8 +83,16 @@ dotnet add package Community.Blazor.MapLibre
 
 Add this to head of your file to load the css for the maps.
 ```html
-<link href="_content/Community.Blazor.MapLibre/maplibre-5.12.0.min.css" rel="stylesheet" />
+<link href="_content/Community.Blazor.MapLibre/maplibre-6.13.0.min.css" rel="stylesheet" />
 ```
+
+> **Upgrading from a release that bundled MapLibre GL JS 5.x?** The library now ships MapLibre GL JS 6.13.0:
+> - Update the stylesheet link above to `maplibre-6.13.0.min.css`.
+> - WebGL2 is required (WebGL1 support was removed upstream).
+> - Nested objects/arrays in GeoJSON feature properties now arrive as real JSON objects instead of JSON strings.
+> - `window.maplibregl` is still available for plugins and custom JavaScript once the first map has loaded.
+>
+> See the [MapLibre GL JS v5 to v6 migration guide](https://github.com/maplibre/maplibre-gl-js/blob/main/docs/guides/v5-to-v6-migration-guide.md) for the full list of upstream changes.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
