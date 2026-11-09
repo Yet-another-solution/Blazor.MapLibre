@@ -1,37 +1,46 @@
 <a id="readme-top"></a>
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Unlicense License][license-shield]][license-url]
-[![Issues][issues-shield]][issues-url]
-[![NuGet][nuget-shield]][nuget-url]
-
-
-
-<!-- PROJECT LOGO -->
-<br />
 <div align="center">
-  <a>
-    <img src="https://maplibre.org/_astro/maplibre-logo.wyLiUNdu_Zcg5mX.svg" alt="Logo" width="300" height="100">
+  <a href="https://github.com/Yet-another-solution/Blazor.MapLibre">
+    <img src="https://maplibre.org/_astro/maplibre-logo.wyLiUNdu_Zcg5mX.svg" alt="Blazor.MapLibre logo" width="300" height="100">
   </a>
 
-<h3 align="center">Blazor.MapLibre</h3>
+  <h3 align="center">Blazor.MapLibre</h3>
+
+  <p align="center">A C# wrapper around MapLibre GL JS for Blazor</p>
+
+[![build](https://img.shields.io/github/actions/workflow/status/Yet-another-solution/Blazor.MapLibre/build-deploy-publish.yml?style=for-the-badge&label=build)](https://github.com/Yet-another-solution/Blazor.MapLibre/actions/workflows/build-deploy-publish.yml) [![NuGet](https://img.shields.io/nuget/v/Community.Blazor.MapLibre?style=for-the-badge)](https://www.nuget.org/packages/Community.Blazor.MapLibre) [![Last commit](https://img.shields.io/github/last-commit/Yet-another-solution/Blazor.MapLibre?style=for-the-badge)](https://github.com/Yet-another-solution/Blazor.MapLibre/commits)<br>
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white) ![Blazor](https://img.shields.io/badge/Blazor-512BD4?style=for-the-badge&logo=blazor&logoColor=white) ![MapLibre](https://img.shields.io/badge/MapLibre-396CB2?style=for-the-badge&logo=maplibre&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
   <p align="center">
-    A C# wrapper around MapLibre GL JS library
-    <br />
-    <br />
-    <a href="https://yet-another-solution.github.io/Blazor.MapLibre/">View Demo</a>
+    <a href="https://yet-another-solution.github.io/Blazor.MapLibre/"><strong>View demo</strong></a>
     &middot;
-    <a href="https://github.com/Yet-another-solution/Blazor.MapLibre/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/Yet-another-solution/Blazor.MapLibre/issues/new?labels=bug">Report Bug</a>
     &middot;
-    <a href="https://github.com/Yet-another-solution/Blazor.MapLibre/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/Yet-another-solution/Blazor.MapLibre/issues/new?labels=enhancement">Request Feature</a>
   </p>
 </div>
 
+<hr>
 
+<table>
+  <tr>
+    <td nowrap><img src="docs/images/icons/layers.svg" width="16" height="16" alt="">&nbsp;<strong>What</strong></td>
+    <td>Interactive maps in Blazor with typed C#: markers, popups, layers, styles</td>
+  </tr>
+  <tr>
+    <td nowrap><img src="docs/images/icons/monitor.svg" width="16" height="16" alt="">&nbsp;<strong>Works&nbsp;with</strong></td>
+    <td>Blazor WebAssembly and Blazor Server</td>
+  </tr>
+  <tr>
+    <td nowrap><img src="docs/images/icons/terminal.svg" width="16" height="16" alt="">&nbsp;<strong>Install</strong></td>
+    <td><code>dotnet add package Community.Blazor.MapLibre</code></td>
+  </tr>
+  <tr>
+    <td nowrap><img src="docs/images/icons/progress.svg" width="16" height="16" alt="">&nbsp;<strong>Status</strong></td>
+    <td>Published on NuGet, see <a href="#roadmap">Roadmap</a><img align="right" src="docs/images/icons/spacer.svg" width="2000" height="1" alt=""></td>
+  </tr>
+</table>
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -332,15 +341,5 @@ Use this space to list resources you find helpful and would like to give credit 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
-[contributors-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
-[forks-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/network/members
-[stars-shield]: https://img.shields.io/github/stars/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
-[stars-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
-[issues-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/issues
-[license-shield]: https://img.shields.io/github/license/Yet-another-solution/Blazor.MapLibre.svg?style=for-the-badge
-[license-url]: https://github.com/Yet-another-solution/Blazor.MapLibre/blob/master/LICENSE.txt
 [nuget-shield]: https://img.shields.io/nuget/v/Community.Blazor.MapLibre.svg?style=for-the-badge
 [nuget-url]: https://www.nuget.org/packages/Community.Blazor.MapLibre
